@@ -77,10 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "DevisPro — Devis & Factures pour l'Afrique" },
       { name: "description", content: "Gérez vos devis, factures, clients et paiements. Pensé pour les PME d'Afrique francophone." },
-      { property: "og:title", content: "DevisPro" },
-      { property: "og:description", content: "Devis & factures pour les PME africaines" },
+      { property: "og:title", content: "DevisPro — Devis & Factures pour l'Afrique" },
+      { property: "og:description", content: "Gérez vos devis, factures, clients et paiements. Pensé pour les PME d'Afrique francophone." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
+      { name: "twitter:title", content: "DevisPro — Devis & Factures pour l'Afrique" },
+      { name: "twitter:description", content: "Gérez vos devis, factures, clients et paiements. Pensé pour les PME d'Afrique francophone." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/211c43ae-20cb-4596-8a6f-275457774f22" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/211c43ae-20cb-4596-8a6f-275457774f22" },
     ],
     links: [
       {
