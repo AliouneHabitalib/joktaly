@@ -1,10 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
 import { useEntreprise } from "@/hooks/use-entreprise";
-import { formatMontant, formatDate } from "@/lib/format";
+import { getUserQuota } from "@/lib/quota.functions";
+import { formatMontant } from "@/lib/format";
+import { PLANS } from "@/lib/plans";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { FileText, Receipt, Users, TrendingUp, Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
@@ -14,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/dashboard")({
 function DashboardPage() {
   const { user } = useAuth();
   const { data: entreprise } = useEntreprise(user?.id);
+  const fetchQuota = useServerFn(getUserQuota);
 
   const { data: stats } = useQuery({
     queryKey: ["dashboard-stats", entreprise?.id],
@@ -43,6 +48,16 @@ function DashboardPage() {
     },
   });
 
+  const { data: quota } = useQuery({
+    queryKey: ["quota"],
+    queryFn: () => fetchQuota(),
+  });
+
+  const devisLimit = quota ? PLANS[quota.plan].limites.devis_par_mois : null;
+  const facturesLimit = quota ? PLANS[quota.plan].limites.factures_par_mois : null;
+  const devisPct = devisLimit && devisLimit > 0 ? Math.min(100, Math.round((quota!.devisCount / devisLimit) * 100)) : 0;
+  const facturesPct = facturesLimit && facturesLimit > 0 ? Math.min(100, Math.round((quota!.facturesCount / facturesLimit) * 100)) : 0;
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -65,16 +80,40 @@ function DashboardPage() {
         <KpiCard icon={Users} label="Clients" value={`${stats?.clientsCount ?? 0}`} />
       </div>
 
-      <div className="rounded-2xl border bg-card p-8 text-center shadow-[var(--shadow-card)]">
-        <p className="text-sm text-muted-foreground">
-          📊 Les modules <strong>Devis</strong>, <strong>Factures</strong>, <strong>Clients</strong>,
-          <strong> Produits</strong>, <strong>Statistiques</strong> et <strong>Paramètres</strong> sont prêts
-          côté base de données (RLS configurée, numérotation auto, calculs de paiement).
-        </p>
-        <p className="mt-3 text-sm text-muted-foreground">
-          Demandez-moi de générer le module suivant (par ex. <em>« génère le module clients »</em>) et je le construirai.
-        </p>
-      </div>
+      {quota && (devisLimit !== null || facturesLimit !== null) && (
+        <div className="rounded-2xl border bg-card p-5 shadow-[var(--shadow-card)]">
+          <h2 className="text-sm font-semibold text-foreground">Utilisation mensuelle — Plan {PLANS[quota.plan].nom}</h2>
+          <div className="mt-4 grid gap-5 md:grid-cols-2">
+            {devisLimit !== null && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Devis</span>
+                  <span className="font-medium tabular-nums">{quota.devisCount} / {devisLimit}</span>
+                </div>
+                <Progress value={devisPct} className="h-2" />
+                <p className="text-xs text-muted-foreground">{devisLimit - quota.devisCount} restant(s) ce mois-ci</p>
+              </div>
+            )}
+            {facturesLimit !== null && (
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-muted-foreground">Factures</span>
+                  <span className="font-medium tabular-nums">{quota.facturesCount} / {facturesLimit}</span>
+                </div>
+                <Progress value={facturesPct} className="h-2" />
+                <p className="text-xs text-muted-foreground">{facturesLimit - quota.facturesCount} restante(s) ce mois-ci</p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {quota && devisLimit === null && facturesLimit === null && (
+        <div className="rounded-2xl border bg-card p-5 shadow-[var(--shadow-card)]">
+          <h2 className="text-sm font-semibold text-foreground">Plan {PLANS[quota.plan].nom}</h2>
+          <p className="mt-1 text-sm text-muted-foreground">Devis et factures illimités.</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -93,5 +132,3 @@ function KpiCard({ icon: Icon, label, value, sub, tone }: { icon: React.Componen
     </div>
   );
 }
-
-void formatDate;
