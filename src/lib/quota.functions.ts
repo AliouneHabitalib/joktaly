@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { getMonthStartISO } from "./quota-period";
 
 export const getUserQuota = createServerFn({ method: "GET" })
   .middleware([requireSupabaseAuth])
@@ -18,10 +19,7 @@ export const getUserQuota = createServerFn({ method: "GET" })
       .eq("user_id", userId)
       .maybeSingle();
 
-    const monthStart = new Date();
-    monthStart.setDate(1);
-    monthStart.setHours(0, 0, 0, 0);
-    const monthStartStr = monthStart.toISOString().split("T")[0];
+    const monthStartStr = getMonthStartISO();
 
     let devisCount = 0;
     let facturesCount = 0;
