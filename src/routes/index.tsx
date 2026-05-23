@@ -216,8 +216,8 @@ function Index() {
               },
               {
                 nom: "Business",
-                prix: "25",
-                periode: "$/mois",
+                prix: "15 000",
+                periode: "FCFA / mois",
                 ideal: "Équipes et entreprises",
                 features: ["Jusqu'à 5 utilisateurs", "Statistiques avancées", "Export Excel / CSV", "Support prioritaire", "Accès API + webhooks"],
                 cta: "Choisir Business",
