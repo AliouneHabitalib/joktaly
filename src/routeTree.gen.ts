@@ -22,6 +22,7 @@ import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
 import { Route as AuthenticatedParametresEntrepriseRouteImport } from './routes/_authenticated/parametres.entreprise'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
+import { Route as ApiPublicHooksQuotaResetCheckRouteImport } from './routes/api/public/hooks/quota-reset-check'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -90,6 +91,12 @@ const AuthenticatedAdminJournalRoute =
     path: '/admin/journal',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const ApiPublicHooksQuotaResetCheckRoute =
+  ApiPublicHooksQuotaResetCheckRouteImport.update({
+    id: '/api/public/hooks/quota-reset-check',
+    path: '/api/public/hooks/quota-reset-check',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -104,6 +111,7 @@ export interface FileRoutesByFullPath {
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
+  '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,6 +126,7 @@ export interface FileRoutesByTo {
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
+  '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -134,6 +143,7 @@ export interface FileRoutesById {
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
   '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/_authenticated/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
+  '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/statistiques'
     | '/admin/journal'
     | '/parametres/entreprise'
+    | '/api/public/hooks/quota-reset-check'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/statistiques'
     | '/admin/journal'
     | '/parametres/entreprise'
+    | '/api/public/hooks/quota-reset-check'
   id:
     | '__root__'
     | '/'
@@ -179,6 +191,7 @@ export interface FileRouteTypes {
     | '/_authenticated/statistiques'
     | '/_authenticated/admin/journal'
     | '/_authenticated/parametres/entreprise'
+    | '/api/public/hooks/quota-reset-check'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -186,6 +199,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  ApiPublicHooksQuotaResetCheckRoute: typeof ApiPublicHooksQuotaResetCheckRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -281,6 +295,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminJournalRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/api/public/hooks/quota-reset-check': {
+      id: '/api/public/hooks/quota-reset-check'
+      path: '/api/public/hooks/quota-reset-check'
+      fullPath: '/api/public/hooks/quota-reset-check'
+      preLoaderRoute: typeof ApiPublicHooksQuotaResetCheckRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -318,6 +339,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  ApiPublicHooksQuotaResetCheckRoute: ApiPublicHooksQuotaResetCheckRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
