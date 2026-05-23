@@ -206,8 +206,8 @@ function Index() {
               },
               {
                 nom: "Pro",
-                prix: "10",
-                periode: "$/mois",
+                prix: "6 000",
+                periode: "FCFA / mois",
                 ideal: "PME et prestataires actifs",
                 features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Statistiques de base", "Modèles personnalisés"],
                 cta: "Choisir Pro",
