@@ -25,6 +25,7 @@ const LABELS: Record<string, { label: string; tone: "default" | "secondary" | "d
   facture_created: { label: "Facture créée", tone: "default" },
   quota_refused_devis: { label: "Quota devis refusé", tone: "destructive" },
   quota_refused_facture: { label: "Quota facture refusé", tone: "destructive" },
+  quota_reset_check: { label: "Vérification mensuelle", tone: "secondary" },
 };
 
 function JournalPage() {
