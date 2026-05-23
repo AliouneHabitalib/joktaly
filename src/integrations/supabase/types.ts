@@ -624,6 +624,7 @@ export type Database = {
         | "facture_created"
         | "quota_refused_devis"
         | "quota_refused_facture"
+        | "quota_reset_check"
       app_role: "admin" | "user"
       devis_statut: "brouillon" | "envoye" | "accepte" | "refuse" | "expire"
       facture_statut: "non_payee" | "partiellement_payee" | "payee" | "annulee"
@@ -762,6 +763,7 @@ export const Constants = {
         "facture_created",
         "quota_refused_devis",
         "quota_refused_facture",
+        "quota_reset_check",
       ],
       app_role: ["admin", "user"],
       devis_statut: ["brouillon", "envoye", "accepte", "refuse", "expire"],
