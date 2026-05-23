@@ -187,7 +187,7 @@ function Index() {
               {
                 nom: "Gratuit",
                 prix: "0",
-                periode: "/mois",
+                periode: "FCFA / mois",
                 ideal: "Tester l'application",
                 features: ["3 devis / mois", "1 facture / mois", "Export PDF", "Envoi WhatsApp & email"],
                 cta: "Commencer",
