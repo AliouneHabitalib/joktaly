@@ -196,8 +196,8 @@ function Index() {
               },
               {
                 nom: "Starter",
-                prix: "5",
-                periode: "$/mois",
+                prix: "3 000",
+                periode: "FCFA / mois",
                 ideal: "Petits entrepreneurs",
                 features: ["20 devis / mois", "10 factures / mois", "20 clients", "Suivi simple des paiements", "Export PDF"],
                 cta: "Choisir Starter",
