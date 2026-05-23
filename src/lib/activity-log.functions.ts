@@ -38,7 +38,7 @@ export const logQuotaRefusal = createServerFn({ method: "POST" })
       .maybeSingle();
     const { error } = await supabaseAdmin.rpc("log_quota_refusal", {
       _user_id: userId,
-      _entreprise_id: entreprise?.id ?? null,
+      _entreprise_id: entreprise?.id as string,
       _kind: data.kind,
     });
     if (error) throw new Error(error.message);
