@@ -187,7 +187,7 @@ function Index() {
               {
                 nom: "Gratuit",
                 prix: "0",
-                periode: "/mois",
+                periode: "FCFA / mois",
                 ideal: "Tester l'application",
                 features: ["3 devis / mois", "1 facture / mois", "Export PDF", "Envoi WhatsApp & email"],
                 cta: "Commencer",
@@ -196,8 +196,8 @@ function Index() {
               },
               {
                 nom: "Starter",
-                prix: "5",
-                periode: "$/mois",
+                prix: "3 000",
+                periode: "FCFA / mois",
                 ideal: "Petits entrepreneurs",
                 features: ["20 devis / mois", "10 factures / mois", "20 clients", "Suivi simple des paiements", "Export PDF"],
                 cta: "Choisir Starter",
@@ -206,8 +206,8 @@ function Index() {
               },
               {
                 nom: "Pro",
-                prix: "10",
-                periode: "$/mois",
+                prix: "6 000",
+                periode: "FCFA / mois",
                 ideal: "PME et prestataires actifs",
                 features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Statistiques de base", "Modèles personnalisés"],
                 cta: "Choisir Pro",
@@ -216,8 +216,8 @@ function Index() {
               },
               {
                 nom: "Business",
-                prix: "25",
-                periode: "$/mois",
+                prix: "15 000",
+                periode: "FCFA / mois",
                 ideal: "Équipes et entreprises",
                 features: ["Jusqu'à 5 utilisateurs", "Statistiques avancées", "Export Excel / CSV", "Support prioritaire", "Accès API + webhooks"],
                 cta: "Choisir Business",
