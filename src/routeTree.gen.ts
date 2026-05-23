@@ -21,6 +21,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
 import { Route as AuthenticatedParametresEntrepriseRouteImport } from './routes/_authenticated/parametres.entreprise'
+import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
 
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
@@ -83,6 +84,12 @@ const AuthenticatedParametresEntrepriseRoute =
     path: '/parametres/entreprise',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedAdminJournalRoute =
+  AuthenticatedAdminJournalRouteImport.update({
+    id: '/admin/journal',
+    path: '/admin/journal',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/factures': typeof AuthenticatedFacturesRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
 }
 export interface FileRoutesByTo {
@@ -108,6 +116,7 @@ export interface FileRoutesByTo {
   '/factures': typeof AuthenticatedFacturesRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
 }
 export interface FileRoutesById {
@@ -123,6 +132,7 @@ export interface FileRoutesById {
   '/_authenticated/factures': typeof AuthenticatedFacturesRoute
   '/_authenticated/produits': typeof AuthenticatedProduitsRoute
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/_authenticated/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
 }
 export interface FileRouteTypes {
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/factures'
     | '/produits'
     | '/statistiques'
+    | '/admin/journal'
     | '/parametres/entreprise'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/factures'
     | '/produits'
     | '/statistiques'
+    | '/admin/journal'
     | '/parametres/entreprise'
   id:
     | '__root__'
@@ -165,6 +177,7 @@ export interface FileRouteTypes {
     | '/_authenticated/factures'
     | '/_authenticated/produits'
     | '/_authenticated/statistiques'
+    | '/_authenticated/admin/journal'
     | '/_authenticated/parametres/entreprise'
   fileRoutesById: FileRoutesById
 }
@@ -261,6 +274,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParametresEntrepriseRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/admin/journal': {
+      id: '/_authenticated/admin/journal'
+      path: '/admin/journal'
+      fullPath: '/admin/journal'
+      preLoaderRoute: typeof AuthenticatedAdminJournalRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
   }
 }
 
@@ -272,6 +292,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFacturesRoute: typeof AuthenticatedFacturesRoute
   AuthenticatedProduitsRoute: typeof AuthenticatedProduitsRoute
   AuthenticatedStatistiquesRoute: typeof AuthenticatedStatistiquesRoute
+  AuthenticatedAdminJournalRoute: typeof AuthenticatedAdminJournalRoute
   AuthenticatedParametresEntrepriseRoute: typeof AuthenticatedParametresEntrepriseRoute
 }
 
@@ -283,6 +304,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFacturesRoute: AuthenticatedFacturesRoute,
   AuthenticatedProduitsRoute: AuthenticatedProduitsRoute,
   AuthenticatedStatistiquesRoute: AuthenticatedStatistiquesRoute,
+  AuthenticatedAdminJournalRoute: AuthenticatedAdminJournalRoute,
   AuthenticatedParametresEntrepriseRoute:
     AuthenticatedParametresEntrepriseRoute,
 }
@@ -300,13 +322,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

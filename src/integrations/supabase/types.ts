@@ -14,6 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_logs: {
+        Row: {
+          created_at: string
+          entreprise_id: string | null
+          id: string
+          message: string | null
+          metadata: Json
+          target_id: string | null
+          type: Database["public"]["Enums"]["activity_type"]
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          entreprise_id?: string | null
+          id?: string
+          message?: string | null
+          metadata?: Json
+          target_id?: string | null
+          type: Database["public"]["Enums"]["activity_type"]
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          entreprise_id?: string | null
+          id?: string
+          message?: string | null
+          metadata?: Json
+          target_id?: string | null
+          type?: Database["public"]["Enums"]["activity_type"]
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       clients: {
         Row: {
           adresse: string | null
@@ -574,6 +607,10 @@ export type Database = {
         }
         Returns: boolean
       }
+      log_quota_refusal: {
+        Args: { _entreprise_id: string; _kind: string; _user_id: string }
+        Returns: undefined
+      }
       next_devis_numero: { Args: { _entreprise_id: string }; Returns: string }
       next_facture_numero: { Args: { _entreprise_id: string }; Returns: string }
       user_owns_entreprise: {
@@ -582,6 +619,11 @@ export type Database = {
       }
     }
     Enums: {
+      activity_type:
+        | "devis_created"
+        | "facture_created"
+        | "quota_refused_devis"
+        | "quota_refused_facture"
       app_role: "admin" | "user"
       devis_statut: "brouillon" | "envoye" | "accepte" | "refuse" | "expire"
       facture_statut: "non_payee" | "partiellement_payee" | "payee" | "annulee"
@@ -715,6 +757,12 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      activity_type: [
+        "devis_created",
+        "facture_created",
+        "quota_refused_devis",
+        "quota_refused_facture",
+      ],
       app_role: ["admin", "user"],
       devis_statut: ["brouillon", "envoye", "accepte", "refuse", "expire"],
       facture_statut: ["non_payee", "partiellement_payee", "payee", "annulee"],

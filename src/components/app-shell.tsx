@@ -1,10 +1,12 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, FileText, Receipt, Users, Package, BarChart3, Settings, HelpCircle, LogOut, Menu, X } from "lucide-react";
+import { LayoutDashboard, FileText, Receipt, Users, Package, BarChart3, Settings, HelpCircle, LogOut, Menu, X, ScrollText } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/hooks/use-auth";
 
 const NAV = [
   { to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
@@ -21,6 +23,24 @@ export function AppShell() {
   const navigate = useNavigate();
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user } = useAuth();
+  const { data: isAdmin } = useQuery({
+    queryKey: ["is-admin", user?.id],
+    enabled: !!user?.id,
+    queryFn: async () => {
+      const { data } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user!.id)
+        .eq("role", "admin")
+        .maybeSingle();
+      return !!data;
+    },
+  });
+
+  const nav = isAdmin
+    ? [...NAV, { to: "/admin/journal", label: "Journal admin", icon: ScrollText } as const]
+    : NAV;
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -39,7 +59,7 @@ export function AppShell() {
           <span className="text-lg font-bold">DevisPro</span>
         </div>
         <nav className="flex-1 space-y-1 p-3">
-          {NAV.map(({ to, label, icon: Icon }) => (
+          {nav.map(({ to, label, icon: Icon }) => (
             <Link
               key={to}
               to={to}
@@ -87,7 +107,7 @@ export function AppShell() {
                 </Button>
               </div>
               <nav className="flex-1 space-y-1 p-3">
-                {NAV.map(({ to, label, icon: Icon }) => (
+                {nav.map(({ to, label, icon: Icon }) => (
                   <Link
                     key={to}
                     to={to}
