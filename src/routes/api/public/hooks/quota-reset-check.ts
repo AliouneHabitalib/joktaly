@@ -47,7 +47,7 @@ export const Route = createFileRoute("/api/public/hooks/quota-reset-check")({
 
         // Trace dans le journal d'activité
         await admin.from("activity_logs").insert({
-          type: "devis_created", // type existant; on note l'événement dans message
+          type: "quota_reset_check",
           message: ok
             ? `[CRON] Vérification quotas OK — nouveau mois ${monthStart}`
             : `[CRON] Vérification quotas en ERREUR pour ${monthStart}`,
