@@ -199,7 +199,7 @@ function Index() {
                 prix: "3 000",
                 periode: "FCFA / mois",
                 ideal: "Petits entrepreneurs",
-                features: ["20 devis / mois", "10 factures / mois", "20 clients", "Suivi simple des paiements", "Export PDF"],
+                features: ["10 devis / mois", "5 factures / mois", "30 clients", "Conversion devis → facture", "Export PDF pro"],
                 cta: "Choisir Starter",
                 variant: "default" as const,
                 highlight: false,
