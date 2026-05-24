@@ -629,7 +629,7 @@ export type Database = {
       devis_statut: "brouillon" | "envoye" | "accepte" | "refuse" | "expire"
       facture_statut: "non_payee" | "partiellement_payee" | "payee" | "annulee"
       mode_paiement: "virement" | "wave" | "orange_money" | "especes" | "cheque"
-      plan_type: "starter" | "pro" | "business"
+      plan_type: "gratuit" | "starter" | "pro" | "business"
       produit_type: "produit" | "service"
     }
     CompositeTypes: {
@@ -769,7 +769,7 @@ export const Constants = {
       devis_statut: ["brouillon", "envoye", "accepte", "refuse", "expire"],
       facture_statut: ["non_payee", "partiellement_payee", "payee", "annulee"],
       mode_paiement: ["virement", "wave", "orange_money", "especes", "cheque"],
-      plan_type: ["starter", "pro", "business"],
+      plan_type: ["gratuit", "starter", "pro", "business"],
       produit_type: ["produit", "service"],
     },
   },
