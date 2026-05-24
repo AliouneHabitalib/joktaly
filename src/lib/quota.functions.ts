@@ -42,7 +42,7 @@ export const getUserQuota = createServerFn({ method: "GET" })
     }
 
     return {
-      plan: (profile?.plan as "starter" | "pro" | "business") ?? "starter",
+      plan: (profile?.plan as "gratuit" | "starter" | "pro" | "business") ?? "gratuit",
       devisCount,
       facturesCount,
     };
