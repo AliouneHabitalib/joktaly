@@ -20,7 +20,9 @@ import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
+import { Route as AuthenticatedDevisIndexRouteImport } from './routes/_authenticated/devis.index'
 import { Route as AuthenticatedParametresEntrepriseRouteImport } from './routes/_authenticated/parametres.entreprise'
+import { Route as AuthenticatedDevisIdRouteImport } from './routes/_authenticated/devis.$id'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
 import { Route as ApiPublicHooksQuotaResetCheckRouteImport } from './routes/api/public/hooks/quota-reset-check'
 
@@ -79,12 +81,22 @@ const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
   path: '/aide',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedDevisIndexRoute = AuthenticatedDevisIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedDevisRoute,
+} as any)
 const AuthenticatedParametresEntrepriseRoute =
   AuthenticatedParametresEntrepriseRouteImport.update({
     id: '/parametres/entreprise',
     path: '/parametres/entreprise',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedDevisIdRoute = AuthenticatedDevisIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedDevisRoute,
+} as any)
 const AuthenticatedAdminJournalRoute =
   AuthenticatedAdminJournalRouteImport.update({
     id: '/admin/journal',
@@ -105,12 +117,14 @@ export interface FileRoutesByFullPath {
   '/aide': typeof AuthenticatedAideRoute
   '/clients': typeof AuthenticatedClientsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/devis': typeof AuthenticatedDevisRoute
+  '/devis': typeof AuthenticatedDevisRouteWithChildren
   '/factures': typeof AuthenticatedFacturesRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
+  '/devis/$id': typeof AuthenticatedDevisIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
+  '/devis/': typeof AuthenticatedDevisIndexRoute
   '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRoutesByTo {
@@ -120,12 +134,13 @@ export interface FileRoutesByTo {
   '/aide': typeof AuthenticatedAideRoute
   '/clients': typeof AuthenticatedClientsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/devis': typeof AuthenticatedDevisRoute
   '/factures': typeof AuthenticatedFacturesRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
+  '/devis/$id': typeof AuthenticatedDevisIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
+  '/devis': typeof AuthenticatedDevisIndexRoute
   '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRoutesById {
@@ -137,12 +152,14 @@ export interface FileRoutesById {
   '/_authenticated/aide': typeof AuthenticatedAideRoute
   '/_authenticated/clients': typeof AuthenticatedClientsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/devis': typeof AuthenticatedDevisRoute
+  '/_authenticated/devis': typeof AuthenticatedDevisRouteWithChildren
   '/_authenticated/factures': typeof AuthenticatedFacturesRoute
   '/_authenticated/produits': typeof AuthenticatedProduitsRoute
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
   '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
+  '/_authenticated/devis/$id': typeof AuthenticatedDevisIdRoute
   '/_authenticated/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
+  '/_authenticated/devis/': typeof AuthenticatedDevisIndexRoute
   '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRouteTypes {
@@ -159,7 +176,9 @@ export interface FileRouteTypes {
     | '/produits'
     | '/statistiques'
     | '/admin/journal'
+    | '/devis/$id'
     | '/parametres/entreprise'
+    | '/devis/'
     | '/api/public/hooks/quota-reset-check'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -169,12 +188,13 @@ export interface FileRouteTypes {
     | '/aide'
     | '/clients'
     | '/dashboard'
-    | '/devis'
     | '/factures'
     | '/produits'
     | '/statistiques'
     | '/admin/journal'
+    | '/devis/$id'
     | '/parametres/entreprise'
+    | '/devis'
     | '/api/public/hooks/quota-reset-check'
   id:
     | '__root__'
@@ -190,7 +210,9 @@ export interface FileRouteTypes {
     | '/_authenticated/produits'
     | '/_authenticated/statistiques'
     | '/_authenticated/admin/journal'
+    | '/_authenticated/devis/$id'
     | '/_authenticated/parametres/entreprise'
+    | '/_authenticated/devis/'
     | '/api/public/hooks/quota-reset-check'
   fileRoutesById: FileRoutesById
 }
@@ -281,12 +303,26 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAideRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/devis/': {
+      id: '/_authenticated/devis/'
+      path: '/'
+      fullPath: '/devis/'
+      preLoaderRoute: typeof AuthenticatedDevisIndexRouteImport
+      parentRoute: typeof AuthenticatedDevisRoute
+    }
     '/_authenticated/parametres/entreprise': {
       id: '/_authenticated/parametres/entreprise'
       path: '/parametres/entreprise'
       fullPath: '/parametres/entreprise'
       preLoaderRoute: typeof AuthenticatedParametresEntrepriseRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/devis/$id': {
+      id: '/_authenticated/devis/$id'
+      path: '/$id'
+      fullPath: '/devis/$id'
+      preLoaderRoute: typeof AuthenticatedDevisIdRouteImport
+      parentRoute: typeof AuthenticatedDevisRoute
     }
     '/_authenticated/admin/journal': {
       id: '/_authenticated/admin/journal'
@@ -305,11 +341,24 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedDevisRouteChildren {
+  AuthenticatedDevisIdRoute: typeof AuthenticatedDevisIdRoute
+  AuthenticatedDevisIndexRoute: typeof AuthenticatedDevisIndexRoute
+}
+
+const AuthenticatedDevisRouteChildren: AuthenticatedDevisRouteChildren = {
+  AuthenticatedDevisIdRoute: AuthenticatedDevisIdRoute,
+  AuthenticatedDevisIndexRoute: AuthenticatedDevisIndexRoute,
+}
+
+const AuthenticatedDevisRouteWithChildren =
+  AuthenticatedDevisRoute._addFileChildren(AuthenticatedDevisRouteChildren)
+
 interface AuthenticatedRouteChildren {
   AuthenticatedAideRoute: typeof AuthenticatedAideRoute
   AuthenticatedClientsRoute: typeof AuthenticatedClientsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedDevisRoute: typeof AuthenticatedDevisRoute
+  AuthenticatedDevisRoute: typeof AuthenticatedDevisRouteWithChildren
   AuthenticatedFacturesRoute: typeof AuthenticatedFacturesRoute
   AuthenticatedProduitsRoute: typeof AuthenticatedProduitsRoute
   AuthenticatedStatistiquesRoute: typeof AuthenticatedStatistiquesRoute
@@ -321,7 +370,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAideRoute: AuthenticatedAideRoute,
   AuthenticatedClientsRoute: AuthenticatedClientsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedDevisRoute: AuthenticatedDevisRoute,
+  AuthenticatedDevisRoute: AuthenticatedDevisRouteWithChildren,
   AuthenticatedFacturesRoute: AuthenticatedFacturesRoute,
   AuthenticatedProduitsRoute: AuthenticatedProduitsRoute,
   AuthenticatedStatistiquesRoute: AuthenticatedStatistiquesRoute,
