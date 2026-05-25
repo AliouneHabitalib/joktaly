@@ -35,7 +35,7 @@ export async function buildPdfDoc(params: {
     .single();
   if (e1 || !doc) throw e1 ?? new Error("Document introuvable");
 
-  const { data: lignes, error: e2 } = await supabase
+  const { data: lignes, error: e2 } = await (supabase as any)
     .from(lignesTable)
     .select("*")
     .eq(fk, id)
