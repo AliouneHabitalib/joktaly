@@ -23,6 +23,7 @@ import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/a
 import { Route as AuthenticatedFacturesIndexRouteImport } from './routes/_authenticated/factures.index'
 import { Route as AuthenticatedDevisIndexRouteImport } from './routes/_authenticated/devis.index'
 import { Route as AuthenticatedParametresEntrepriseRouteImport } from './routes/_authenticated/parametres.entreprise'
+import { Route as AuthenticatedFacturesIdRouteImport } from './routes/_authenticated/factures.$id'
 import { Route as AuthenticatedDevisIdRouteImport } from './routes/_authenticated/devis.$id'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
 import { Route as ApiPublicHooksQuotaResetCheckRouteImport } from './routes/api/public/hooks/quota-reset-check'
@@ -99,6 +100,11 @@ const AuthenticatedParametresEntrepriseRoute =
     path: '/parametres/entreprise',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedFacturesIdRoute = AuthenticatedFacturesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedFacturesRoute,
+} as any)
 const AuthenticatedDevisIdRoute = AuthenticatedDevisIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -130,6 +136,7 @@ export interface FileRoutesByFullPath {
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
+  '/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
   '/devis/': typeof AuthenticatedDevisIndexRoute
   '/factures/': typeof AuthenticatedFacturesIndexRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
+  '/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
   '/devis': typeof AuthenticatedDevisIndexRoute
   '/factures': typeof AuthenticatedFacturesIndexRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
   '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/_authenticated/devis/$id': typeof AuthenticatedDevisIdRoute
+  '/_authenticated/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/_authenticated/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
   '/_authenticated/devis/': typeof AuthenticatedDevisIndexRoute
   '/_authenticated/factures/': typeof AuthenticatedFacturesIndexRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/statistiques'
     | '/admin/journal'
     | '/devis/$id'
+    | '/factures/$id'
     | '/parametres/entreprise'
     | '/devis/'
     | '/factures/'
@@ -202,6 +212,7 @@ export interface FileRouteTypes {
     | '/statistiques'
     | '/admin/journal'
     | '/devis/$id'
+    | '/factures/$id'
     | '/parametres/entreprise'
     | '/devis'
     | '/factures'
@@ -221,6 +232,7 @@ export interface FileRouteTypes {
     | '/_authenticated/statistiques'
     | '/_authenticated/admin/journal'
     | '/_authenticated/devis/$id'
+    | '/_authenticated/factures/$id'
     | '/_authenticated/parametres/entreprise'
     | '/_authenticated/devis/'
     | '/_authenticated/factures/'
@@ -335,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedParametresEntrepriseRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/factures/$id': {
+      id: '/_authenticated/factures/$id'
+      path: '/$id'
+      fullPath: '/factures/$id'
+      preLoaderRoute: typeof AuthenticatedFacturesIdRouteImport
+      parentRoute: typeof AuthenticatedFacturesRoute
+    }
     '/_authenticated/devis/$id': {
       id: '/_authenticated/devis/$id'
       path: '/$id'
@@ -373,10 +392,12 @@ const AuthenticatedDevisRouteWithChildren =
   AuthenticatedDevisRoute._addFileChildren(AuthenticatedDevisRouteChildren)
 
 interface AuthenticatedFacturesRouteChildren {
+  AuthenticatedFacturesIdRoute: typeof AuthenticatedFacturesIdRoute
   AuthenticatedFacturesIndexRoute: typeof AuthenticatedFacturesIndexRoute
 }
 
 const AuthenticatedFacturesRouteChildren: AuthenticatedFacturesRouteChildren = {
+  AuthenticatedFacturesIdRoute: AuthenticatedFacturesIdRoute,
   AuthenticatedFacturesIndexRoute: AuthenticatedFacturesIndexRoute,
 }
 
@@ -424,3 +445,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
