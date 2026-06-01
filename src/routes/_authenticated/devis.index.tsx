@@ -43,7 +43,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate } from "@/lib/format";
-import { buildPdfDoc } from "@/lib/devis-facture-shared";
 
 export const Route = createFileRoute("/_authenticated/devis/")({
   component: DevisListPage,
