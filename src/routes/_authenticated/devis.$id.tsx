@@ -20,6 +20,8 @@ import { Plus, Trash2, ArrowLeft, Save, Download } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, addDays, toDateInput } from "@/lib/format";
 import { calculerTotaux, type LigneDraft } from "@/lib/devis-facture-shared";
+import { buildPdfDoc } from "@/lib/devis-facture-shared";
+import { downloadPdf } from "@/lib/pdf";
 
 export const Route = createFileRoute("/_authenticated/devis/$id")({
   component: DevisEditorPage,
@@ -221,9 +223,13 @@ function DevisEditorPage() {
     onSuccess: async ({ devisId, thenDownload }) => {
       toast.success(isNew ? "Devis créé" : "Devis enregistré");
       qc.invalidateQueries({ queryKey: ["devis"] });
-      if (thenDownload) {
-        // Aperçu HTML → impression / PDF navigateur
-        window.open(`/print/devis/${devisId}`, "_blank", "noopener");
+      if (thenDownload && entreprise) {
+        try {
+          const pdfDoc = await buildPdfDoc({ type: "devis", id: devisId, entreprise });
+          downloadPdf(pdfDoc);
+        } catch (e) {
+          toast.error((e as Error).message);
+        }
       }
       navigate({ to: "/devis" });
     },
