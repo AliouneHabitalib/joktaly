@@ -43,7 +43,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate } from "@/lib/format";
-import { downloadPdf } from "@/lib/pdf";
 import { buildPdfDoc } from "@/lib/devis-facture-shared";
 
 export const Route = createFileRoute("/_authenticated/devis/")({
@@ -133,14 +132,9 @@ function DevisListPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const handleDownload = async (d: DevisRow) => {
-    if (!entreprise) return;
-    try {
-      const pdfDoc = await buildPdfDoc({ type: "devis", id: d.id, entreprise });
-      downloadPdf(pdfDoc);
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
+  const handleDownload = (d: DevisRow) => {
+    // Ouvre la page d'aperçu HTML qui déclenche window.print() (export PDF natif navigateur)
+    window.open(`/print/devis/${d.id}`, "_blank", "noopener");
   };
 
   const handleWhatsapp = async (d: DevisRow) => {
