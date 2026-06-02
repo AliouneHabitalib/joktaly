@@ -45,16 +45,16 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-        <div className="container mx-auto grid gap-12 px-4 py-20 text-white md:grid-cols-2 md:items-center md:py-28">
+        <div className="container mx-auto grid gap-10 px-4 py-14 text-white sm:py-20 md:grid-cols-2 md:items-center md:gap-12 md:py-28">
           <div className="text-center md:text-left">
-            <h1 className="text-4xl font-bold leading-tight md:text-6xl">
+            <h1 className="text-3xl font-bold leading-tight sm:text-4xl md:text-6xl">
               Devis & factures pour les <span className="text-accent">PME africaines</span>
             </h1>
-            <p className="mt-6 max-w-xl text-lg text-white/90 md:mx-0 mx-auto">
+            <p className="mx-auto mt-5 max-w-xl text-base text-white/90 sm:text-lg md:mx-0">
               Créez vos devis et factures en quelques clics, envoyez-les par WhatsApp ou email,
               et suivez vos paiements. Conçu pour le Sénégal et l'Afrique francophone.
             </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
+            <div className="mt-6 flex flex-wrap justify-center gap-3 sm:mt-8 md:justify-start">
               <Button size="lg" variant="secondary" asChild>
                 <Link to="/register">Essayer gratuitement</Link>
               </Button>
@@ -63,14 +63,14 @@ function Index() {
               </Button>
             </div>
           </div>
-          <div className="relative mx-auto w-full max-w-md md:max-w-none">
-            <div className="absolute -inset-4 rounded-3xl bg-accent/20 blur-2xl" aria-hidden="true" />
+          <div className="relative mx-auto w-full max-w-[260px] sm:max-w-xs md:max-w-none">
+            <div className="pointer-events-none absolute -inset-2 rounded-3xl bg-accent/20 blur-2xl sm:-inset-4" aria-hidden="true" />
             <img
               src={heroEntrepreneur}
               alt="Entrepreneure africaine utilisant DevisPro sur son smartphone"
               width={1024}
               height={1024}
-              className="relative aspect-square w-full rounded-3xl object-cover shadow-2xl ring-1 ring-white/20"
+              className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/20 sm:rounded-3xl"
             />
           </div>
         </div>
