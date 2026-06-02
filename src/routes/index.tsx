@@ -15,6 +15,7 @@ import {
   Check,
   ArrowRight,
 } from "lucide-react";
+import heroEntrepreneur from "@/assets/hero-entrepreneur.jpg";
 
 export const Route = createFileRoute("/")({
   beforeLoad: async () => {
@@ -44,21 +45,33 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-        <div className="container mx-auto px-4 py-20 text-center text-white md:py-28">
-          <h1 className="mx-auto max-w-3xl text-4xl font-bold leading-tight md:text-6xl">
-            Devis & factures pour les <span className="text-accent">PME africaines</span>
-          </h1>
-          <p className="mx-auto mt-6 max-w-2xl text-lg text-white/90">
-            Créez vos devis et factures en quelques clics, envoyez-les par WhatsApp ou email,
-            et suivez vos paiements. Conçu pour le Sénégal et l'Afrique francophone.
-          </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button size="lg" variant="secondary" asChild>
-              <Link to="/register">Essayer gratuitement</Link>
-            </Button>
-            <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20" asChild>
-              <Link to="/login">Se connecter</Link>
-            </Button>
+        <div className="container mx-auto grid gap-12 px-4 py-20 text-white md:grid-cols-2 md:items-center md:py-28">
+          <div className="text-center md:text-left">
+            <h1 className="text-4xl font-bold leading-tight md:text-6xl">
+              Devis & factures pour les <span className="text-accent">PME africaines</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-lg text-white/90 md:mx-0 mx-auto">
+              Créez vos devis et factures en quelques clics, envoyez-les par WhatsApp ou email,
+              et suivez vos paiements. Conçu pour le Sénégal et l'Afrique francophone.
+            </p>
+            <div className="mt-8 flex flex-wrap justify-center gap-3 md:justify-start">
+              <Button size="lg" variant="secondary" asChild>
+                <Link to="/register">Essayer gratuitement</Link>
+              </Button>
+              <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20" asChild>
+                <Link to="/login">Se connecter</Link>
+              </Button>
+            </div>
+          </div>
+          <div className="relative mx-auto w-full max-w-md md:max-w-none">
+            <div className="absolute -inset-4 rounded-3xl bg-accent/20 blur-2xl" aria-hidden="true" />
+            <img
+              src={heroEntrepreneur}
+              alt="Entrepreneure africaine utilisant DevisPro sur son smartphone"
+              width={1024}
+              height={1024}
+              className="relative aspect-square w-full rounded-3xl object-cover shadow-2xl ring-1 ring-white/20"
+            />
           </div>
         </div>
       </section>
