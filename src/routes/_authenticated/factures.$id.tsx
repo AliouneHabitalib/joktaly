@@ -23,6 +23,7 @@ import {
   Save,
   Download,
   Wallet,
+  Mail,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate, addDays, toDateInput } from "@/lib/format";
@@ -87,7 +88,7 @@ function FactureEditorPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("clients")
-        .select("id, nom, prenom, entreprise_nom")
+        .select("id, nom, prenom, entreprise_nom, email")
         .eq("entreprise_id", entreprise!.id)
         .order("nom");
       if (error) throw error;
@@ -195,7 +196,7 @@ function FactureEditorPage() {
   };
 
   const save = useMutation({
-    mutationFn: async (opts: { thenDownload?: boolean } = {}) => {
+    mutationFn: async (opts: { thenDownload?: boolean; thenEmail?: boolean } = {}) => {
       if (!entreprise?.id) throw new Error("Aucune entreprise");
       if (!clientId) throw new Error("Sélectionnez un client");
       const lignesClean = lignes.filter((l) => l.description.trim());
@@ -259,16 +260,29 @@ function FactureEditorPage() {
         .insert(lignesPayload.map((l) => ({ ...l, facture_id: factureId })));
       if (lerr) throw lerr;
 
-      return { factureId, thenDownload: opts.thenDownload };
+      return { factureId, thenDownload: opts.thenDownload, thenEmail: opts.thenEmail };
     },
-    onSuccess: async ({ factureId, thenDownload }) => {
+    onSuccess: async ({ factureId, thenDownload, thenEmail }) => {
       toast.success(isNew ? "Facture créée" : "Facture enregistrée");
       qc.invalidateQueries({ queryKey: ["factures"] });
       qc.invalidateQueries({ queryKey: ["facture", factureId] });
-      if (thenDownload && entreprise) {
+      if ((thenDownload || thenEmail) && entreprise) {
         try {
           const pdfDoc = await buildPdfDoc({ type: "facture", id: factureId!, entreprise });
           downloadPdf(pdfDoc);
+          if (thenEmail) {
+            const client = clients.find((c) => c.id === clientId);
+            const to = client?.email ?? "";
+            const greeting = `Bonjour ${client?.prenom ?? client?.nom ?? ""}`.trim();
+            const subject = `Facture ${pdfDoc.numero} — ${entreprise.nom}`;
+            const body =
+              `${greeting},\n\n` +
+              `Veuillez trouver ci-joint la facture ${pdfDoc.numero} d'un montant de ${formatMontant(pdfDoc.total_ttc, entreprise.devise ?? "FCFA")}.\n` +
+              `(Le PDF vient d'être téléchargé sur votre appareil — pensez à l'attacher à cet email.)\n\n` +
+              `Cordialement,\n${entreprise.nom}`;
+            window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            if (!to) toast.message("Aucun email pour ce client — destinataire à compléter.");
+          }
         } catch (e) {
           toast.error((e as Error).message);
         }
@@ -340,13 +354,22 @@ function FactureEditorPage() {
         </div>
         <div className="flex gap-2">
           {!isNew && (
-            <Button
-              variant="outline"
-              onClick={() => save.mutate({ thenDownload: true })}
-              disabled={save.isPending}
-            >
-              <Download className="mr-1 h-4 w-4" /> Enregistrer + PDF
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                onClick={() => save.mutate({ thenDownload: true })}
+                disabled={save.isPending}
+              >
+                <Download className="mr-1 h-4 w-4" /> Enregistrer + PDF
+              </Button>
+              <Button
+                variant="outline"
+                onClick={() => save.mutate({ thenEmail: true })}
+                disabled={save.isPending}
+              >
+                <Mail className="mr-1 h-4 w-4" /> Envoyer par email
+              </Button>
+            </>
           )}
           <Button onClick={() => save.mutate({})} disabled={save.isPending}>
             <Save className="mr-1 h-4 w-4" />
