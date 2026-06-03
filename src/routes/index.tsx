@@ -402,15 +402,15 @@ function Index() {
               <span className="font-bold">DevisPro</span>
             </div>
             <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
-              <Link to="/conditions" className="hover:text-foreground">
+              <a href="/conditions" className="hover:text-foreground">
                 Conditions d'utilisation
-              </Link>
-              <Link to="/confidentialite" className="hover:text-foreground">
+              </a>
+              <a href="/confidentialite" className="hover:text-foreground">
                 Politique de confidentialité
-              </Link>
-              <Link to="/contact" className="hover:text-foreground">
+              </a>
+              <a href="/contact" className="hover:text-foreground">
                 Contact
-              </Link>
+              </a>
             </nav>
           </div>
           <div className="flex flex-col items-center justify-between gap-2 border-t pt-4 text-sm text-muted-foreground md:flex-row">
