@@ -2,6 +2,12 @@ import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
   FileText,
   Users,
   CreditCard,
@@ -14,8 +20,8 @@ import {
   GraduationCap,
   Check,
   ArrowRight,
+  Star,
 } from "lucide-react";
-import heroEntrepreneur from "@/assets/hero-entrepreneur.jpg";
 
 export const Route = createFileRoute("/")({
   beforeLoad: async () => {
@@ -63,16 +69,7 @@ function Index() {
               </Button>
             </div>
           </div>
-          <div className="relative mx-auto w-full max-w-[260px] sm:max-w-xs md:max-w-none">
-            <div className="pointer-events-none absolute -inset-2 rounded-3xl bg-accent/20 blur-2xl sm:-inset-4" aria-hidden="true" />
-            <img
-              src={heroEntrepreneur}
-              alt="Entrepreneure africaine utilisant DevisPro sur son smartphone"
-              width={1024}
-              height={1024}
-              className="relative aspect-square w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/20 sm:rounded-3xl"
-            />
-          </div>
+          <InvoiceMockup />
         </div>
       </section>
 
@@ -151,6 +148,68 @@ function Index() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Témoignages */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">Ils nous font confiance</h2>
+          <p className="mt-4 text-muted-foreground">
+            Des entrepreneurs africains témoignent de leur expérience avec DevisPro.
+          </p>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              nom: "Aminata Diallo",
+              role: "Consultante RH – Dakar",
+              initiales: "AD",
+              couleur: "bg-primary/15 text-primary",
+              citation:
+                "En 10 minutes j'avais créé mon premier devis pro. Mes clients reçoivent tout par WhatsApp, c'est parfait.",
+            },
+            {
+              nom: "Moussa Traoré",
+              role: "Entrepreneur BTP – Abidjan",
+              initiales: "MT",
+              couleur: "bg-accent/20 text-accent-foreground",
+              citation:
+                "Je suivais mes paiements sur un cahier. Maintenant j'ai tout sur mon téléphone. Un vrai gain de temps.",
+            },
+            {
+              nom: "Fatou Seck",
+              role: "Gérante de boutique – Dakar",
+              initiales: "FS",
+              couleur: "bg-secondary text-secondary-foreground",
+              citation:
+                "Les relances automatiques des impayés m'ont fait récupérer de l'argent que j'avais déjà oublié.",
+            },
+          ].map((t) => (
+            <div
+              key={t.nom}
+              className="flex flex-col rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)]"
+            >
+              <div className="flex items-center gap-3">
+                <div
+                  className={`flex h-12 w-12 items-center justify-center rounded-full font-semibold ${t.couleur}`}
+                  aria-hidden="true"
+                >
+                  {t.initiales}
+                </div>
+                <div>
+                  <p className="font-semibold">{t.nom}</p>
+                  <p className="text-sm text-muted-foreground">{t.role}</p>
+                </div>
+              </div>
+              <div className="mt-4 flex gap-0.5" aria-label="5 étoiles sur 5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} className="h-4 w-4 fill-accent text-accent" />
+                ))}
+              </div>
+              <p className="mt-4 italic text-muted-foreground">"{t.citation}"</p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -287,18 +346,136 @@ function Index() {
         </div>
       </section>
 
+      {/* FAQ */}
+      <section className="bg-muted/30 py-20">
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl text-center">
+            <h2 className="text-3xl font-bold md:text-4xl">Questions fréquentes</h2>
+            <p className="mt-4 text-muted-foreground">
+              Tout ce que vous devez savoir pour bien démarrer avec DevisPro.
+            </p>
+          </div>
+          <div className="mx-auto mt-10 max-w-3xl rounded-2xl border bg-card px-6 shadow-[var(--shadow-card)]">
+            <Accordion type="single" collapsible className="w-full">
+              {[
+                {
+                  q: "Comment puis-je payer mon abonnement ?",
+                  a: "Vous pouvez payer via Wave, Orange Money, Free Money ou carte bancaire. Paiement 100% sécurisé.",
+                },
+                {
+                  q: "Puis-je annuler à tout moment ?",
+                  a: "Oui, sans engagement. Vous pouvez annuler votre abonnement en un clic depuis votre espace client.",
+                },
+                {
+                  q: "Mes données sont-elles sécurisées ?",
+                  a: "Toutes vos données sont chiffrées et hébergées sur des serveurs sécurisés. Nous ne partageons jamais vos informations.",
+                },
+                {
+                  q: "Est-ce que DevisPro fonctionne sans connexion rapide ?",
+                  a: "Oui. L'application est optimisée pour les connexions lentes (3G/4G) courantes en Afrique.",
+                },
+                {
+                  q: "Puis-je passer d'un plan à un autre ?",
+                  a: "Oui, vous pouvez upgrader ou downgrader votre plan à tout moment depuis votre tableau de bord.",
+                },
+              ].map((item, i) => (
+                <AccordionItem key={i} value={`faq-${i}`}>
+                  <AccordionTrigger className="text-base font-semibold">
+                    {item.q}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {item.a}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="border-t bg-card py-8">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-4 md:flex-row">
-          <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
-            <span className="font-bold">DevisPro</span>
+        <div className="container mx-auto flex flex-col gap-6 px-4">
+          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
+            <div className="flex items-center gap-2">
+              <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
+              <span className="font-bold">DevisPro</span>
+            </div>
+            <nav className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm text-muted-foreground">
+              <Link to="/conditions" className="hover:text-foreground">
+                Conditions d'utilisation
+              </Link>
+              <Link to="/confidentialite" className="hover:text-foreground">
+                Politique de confidentialité
+              </Link>
+              <Link to="/contact" className="hover:text-foreground">
+                Contact
+              </Link>
+            </nav>
           </div>
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} DevisPro. Tous droits réservés.
-          </p>
+          <div className="flex flex-col items-center justify-between gap-2 border-t pt-4 text-sm text-muted-foreground md:flex-row">
+            <p>© {new Date().getFullYear()} DevisPro. Tous droits réservés.</p>
+            <p>
+              Made with <span aria-label="amour">❤️</span> pour les entrepreneurs africains
+            </p>
+          </div>
         </div>
       </footer>
+    </div>
+  );
+}
+
+function InvoiceMockup() {
+  return (
+    <div className="relative mx-auto w-full max-w-sm md:max-w-md">
+      <div
+        className="pointer-events-none absolute -inset-4 rounded-3xl bg-accent/20 blur-2xl"
+        aria-hidden="true"
+      />
+      <div className="relative rounded-[2rem] border border-white/20 bg-slate-900/60 p-3 shadow-2xl ring-1 ring-white/10 backdrop-blur">
+        <div className="rounded-[1.5rem] bg-white p-5 text-slate-800 shadow-xl sm:p-6">
+          <div className="flex items-center justify-between border-b pb-3">
+            <div className="flex items-center gap-2">
+              <div className="h-7 w-7 rounded-md bg-gradient-to-br from-primary to-primary/70" />
+              <span className="font-bold text-slate-900">DevisPro</span>
+            </div>
+            <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">
+              DEV-2026-001
+            </span>
+          </div>
+          <div className="mt-4">
+            <p className="text-[11px] uppercase tracking-wide text-slate-400">Client</p>
+            <p className="text-sm font-semibold text-slate-900">Entreprise Sow & Fils</p>
+            <p className="text-xs text-slate-500">Dakar, Sénégal</p>
+          </div>
+          <div className="mt-4 divide-y text-sm">
+            <div className="flex items-start justify-between gap-3 py-2">
+              <span className="text-slate-700">Conception site web</span>
+              <span className="whitespace-nowrap font-medium text-slate-900">
+                150 000 FCFA
+              </span>
+            </div>
+            <div className="flex items-start justify-between gap-3 py-2">
+              <span className="text-slate-700">Maintenance mensuelle</span>
+              <span className="whitespace-nowrap font-medium text-slate-900">
+                25 000 FCFA
+              </span>
+            </div>
+          </div>
+          <div className="mt-3 flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
+            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              Total
+            </span>
+            <span className="text-base font-bold text-slate-900">175 000 FCFA</span>
+          </div>
+          <div className="mt-4 flex items-center gap-2">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
+              <Send className="h-3 w-3" />
+              Envoyé par WhatsApp
+            </span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
