@@ -1,7 +1,9 @@
 import { supabase } from "@/integrations/supabase/client";
 import type { PdfDoc } from "./pdf";
+import { getEntrepriseExtras } from "./entreprise-extras";
 
 export interface EntrepriseLite {
+  id?: string;
   nom: string;
   slogan?: string | null;
   logo_url?: string | null;
@@ -24,6 +26,7 @@ export async function buildPdfDoc(params: {
   entreprise: EntrepriseLite;
 }): Promise<PdfDoc> {
   const { type, id, entreprise } = params;
+  const extras = getEntrepriseExtras(entreprise.id);
   const table = type === "devis" ? "devis" : "factures";
   const lignesTable = type === "devis" ? "devis_lignes" : "factures_lignes";
   const fk = type === "devis" ? "devis_id" : "facture_id";
@@ -91,6 +94,7 @@ export async function buildPdfDoc(params: {
       devise: entreprise.devise ?? "FCFA",
       couleur_primaire: entreprise.couleur_primaire ?? "#1D9E75",
       coordonnees_bancaires: entreprise.coordonnees_bancaires,
+      mentions_legales: extras.mentions_legales ?? null,
     },
   };
 }
