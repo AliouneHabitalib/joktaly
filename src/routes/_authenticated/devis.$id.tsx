@@ -22,6 +22,7 @@ import { formatMontant, addDays, toDateInput } from "@/lib/format";
 import { calculerTotaux, type LigneDraft } from "@/lib/devis-facture-shared";
 import { buildPdfDoc } from "@/lib/devis-facture-shared";
 import { downloadPdf } from "@/lib/pdf";
+import { getEntrepriseExtras } from "@/lib/entreprise-extras";
 
 export const Route = createFileRoute("/_authenticated/devis/$id")({
   component: DevisEditorPage,
@@ -127,6 +128,14 @@ function DevisEditorPage() {
       if (lgs.length) setLignes(lgs);
     }
   }, [existing]);
+
+  // Pré-remplir depuis les paramètres entreprise (nouveau devis uniquement)
+  useEffect(() => {
+    if (!isNew || !entreprise) return;
+    const extras = getEntrepriseExtras(entreprise.id);
+    setConditions((c) => c || extras.conditions_paiement || "");
+    if (entreprise.tva_taux != null) setTvaTaux((t) => (t === 18 ? Number(entreprise.tva_taux) : t));
+  }, [isNew, entreprise]);
 
   const totaux = useMemo(
     () => calculerTotaux(lignes, tvaActive, remisePourcent),
