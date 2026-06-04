@@ -53,6 +53,7 @@ export interface PdfDoc {
     devise: string;
     couleur_primaire: string;
     coordonnees_bancaires?: string | null;
+    mentions_legales?: string | null;
   };
 }
 
@@ -72,14 +73,31 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.setFillColor(r, g, b);
   pdf.rect(0, 0, pageW, 35, "F");
 
+  // Logo (si data URI)
+  let textX = margin;
+  const logo = doc.entreprise.logo_url;
+  if (logo && /^data:image\/(png|jpe?g|svg\+xml|webp)/i.test(logo)) {
+    try {
+      const fmt = logo.includes("image/png")
+        ? "PNG"
+        : logo.includes("image/webp")
+        ? "WEBP"
+        : "JPEG";
+      pdf.addImage(logo, fmt, margin, 6, 22, 22, undefined, "FAST");
+      textX = margin + 26;
+    } catch {
+      /* ignore logo errors */
+    }
+  }
+
   pdf.setTextColor(255, 255, 255);
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(20);
-  pdf.text(doc.entreprise.nom, margin, 15);
+  pdf.text(doc.entreprise.nom, textX, 15);
   if (doc.entreprise.slogan) {
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(9);
-    pdf.text(doc.entreprise.slogan, margin, 21);
+    pdf.text(doc.entreprise.slogan, textX, 21);
   }
 
   // Type document (droite)
@@ -276,6 +294,14 @@ export function generatePdf(doc: PdfDoc): jsPDF {
     pdf.text("Coordonnées bancaires :", margin, ty);
     pdf.setFont("helvetica", "normal");
     const split = pdf.splitTextToSize(doc.entreprise.coordonnees_bancaires, pageW - 2 * margin);
+    pdf.text(split, margin, ty + 5);
+    ty += 5 + split.length * 4.5 + 3;
+  }
+  if (doc.entreprise.mentions_legales) {
+    pdf.setFont("helvetica", "bold");
+    pdf.text("Mentions légales :", margin, ty);
+    pdf.setFont("helvetica", "normal");
+    const split = pdf.splitTextToSize(doc.entreprise.mentions_legales, pageW - 2 * margin);
     pdf.text(split, margin, ty + 5);
   }
 
