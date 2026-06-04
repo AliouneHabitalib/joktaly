@@ -7,6 +7,10 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import slideCreerDevis from "@/assets/slide-creer-devis.png.asset.json";
+import slideDocumentsPro from "@/assets/slide-documents-pro.png.asset.json";
+import slideSuiviPaiements from "@/assets/slide-suivi-paiements.png.asset.json";
+import slideGagnezTemps from "@/assets/slide-gagnez-temps.png.asset.json";
 import {
   FileText,
   Users,
