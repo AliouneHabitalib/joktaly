@@ -93,6 +93,36 @@ function Index() {
         ))}
       </section>
 
+      {/* Aperçu visuel — slides */}
+      <section className="container mx-auto px-4 py-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-3xl font-bold md:text-4xl">DevisPro en images</h2>
+          <p className="mt-4 text-muted-foreground">
+            Découvrez l'application et ses bénéfices en un coup d'œil.
+          </p>
+        </div>
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            { src: slideCreerDevis.url, alt: "Créez un devis en quelques clics" },
+            { src: slideDocumentsPro.url, alt: "Des documents clairs et professionnels" },
+            { src: slideSuiviPaiements.url, alt: "Suivez vos paiements facilement" },
+            { src: slideGagnezTemps.url, alt: "Gagnez du temps, travaillez plus professionnellement" },
+          ].map((img) => (
+            <div
+              key={img.src}
+              className="overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] transition-shadow hover:shadow-lg"
+            >
+              <img
+                src={img.src}
+                alt={img.alt}
+                loading="lazy"
+                className="h-auto w-full object-cover"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* Pourquoi choisir DevisPro ? */}
       <section className="bg-muted/30 py-20">
         <div className="container mx-auto px-4">
