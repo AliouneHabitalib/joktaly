@@ -12,7 +12,19 @@ import { getMonthStartISO } from "@/lib/quota-period";
 export const Route = createFileRoute("/api/public/hooks/quota-reset-check")({
   server: {
     handlers: {
-      POST: async () => {
+      POST: async ({ request }) => {
+        // Auth: require the project's anon/publishable key in the `apikey`
+        // header (the same key pg_cron sends). Blocks anonymous internet
+        // callers from triggering service-role writes and reading platform
+        // aggregates.
+        const expectedKey = process.env.SUPABASE_PUBLISHABLE_KEY;
+        const providedKey =
+          request.headers.get("apikey") ??
+          request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+        if (!expectedKey || !providedKey || providedKey !== expectedKey) {
+          return new Response("Unauthorized", { status: 401 });
+        }
+
         const url = process.env.SUPABASE_URL!;
         const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!;
         const admin = createClient(url, serviceKey, {
@@ -54,7 +66,9 @@ export const Route = createFileRoute("/api/public/hooks/quota-reset-check")({
           metadata: summary,
         });
 
-        return new Response(JSON.stringify({ ok, ...summary }), {
+        // Don't leak aggregate counts / internal errors to callers; details
+        // are persisted in activity_logs for admin review.
+        return new Response(JSON.stringify({ ok }), {
           status: ok ? 200 : 500,
           headers: { "Content-Type": "application/json" },
         });
