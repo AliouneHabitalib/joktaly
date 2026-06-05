@@ -9,10 +9,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
-import slideCreerDevis from "@/assets/slide-creer-devis.png.asset.json";
-import slideDocumentsPro from "@/assets/slide-documents-pro.png.asset.json";
-import slideSuiviPaiements from "@/assets/slide-suivi-paiements.png.asset.json";
-import slideGagnezTemps from "@/assets/slide-gagnez-temps.png.asset.json";
 import {
   FileText,
   Users,
@@ -165,37 +161,35 @@ function Index() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Voir l'app en action</h2>
           <p className="mt-4 text-muted-foreground">
-            4 étapes simples pour passer du devis au paiement.
+            Regardez la démo vidéo : du devis au paiement en quelques minutes.
           </p>
         </div>
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {[
-            { step: 1, src: slideCreerDevis.url, title: "Créez un devis", caption: "Formulaire pré-rempli, numérotation automatique." },
-            { step: 2, src: slideDocumentsPro.url, title: "Document PDF pro", caption: "Logo, conditions, mentions légales incluses." },
-            { step: 3, src: slideSuiviPaiements.url, title: "Envoi WhatsApp", caption: "Partagez le PDF en un clic à votre client." },
-            { step: 4, src: slideGagnezTemps.url, title: "Suivi paiements", caption: "Statuts colorés : payé, en attente, impayé." },
-          ].map((img) => (
-            <div
-              key={img.step}
-              className="group overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="relative">
-                <span className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-accent text-sm font-bold text-accent-foreground shadow-md">
-                  {img.step}
-                </span>
-                <img
-                  src={img.src}
-                  alt={img.title}
-                  loading="lazy"
-                  className="h-auto w-full object-cover"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold">{img.title}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{img.caption}</p>
+        <div className="mx-auto mt-12 max-w-4xl">
+          <div className="relative overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)]">
+            <div className="relative aspect-video w-full bg-gradient-to-br from-primary/10 via-muted to-accent/10">
+              {/* Placeholder vidéo — remplacez src par votre fichier ou utilisez <iframe> YouTube/Vimeo */}
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                controls
+                preload="metadata"
+                poster=""
+              >
+                <source src="" type="video/mp4" />
+                Votre navigateur ne prend pas en charge la lecture vidéo.
+              </video>
+              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
+                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/90 shadow-lg">
+                  <PlayCircle className="h-12 w-12 text-accent-foreground" />
+                </div>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Vidéo de démo bientôt disponible
+                </p>
               </div>
             </div>
-          ))}
+          </div>
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            Durée : ~60 secondes • Découvrez les fonctionnalités clés de DevisPro.
+          </p>
         </div>
       </section>
 
@@ -428,20 +422,20 @@ function Index() {
                 highlight: false,
               },
               {
-                nom: "Pro",
+                nom: "Essentiel",
                 base: 6000,
                 ideal: "PME et prestataires actifs",
                 features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Statistiques de base", "Modèles personnalisés"],
-                cta: "Choisir Pro",
+                cta: "Choisir Essentiel",
                 variant: "default" as const,
                 highlight: true,
               },
               {
-                nom: "Essentiel",
+                nom: "Pro",
                 base: 9500,
                 ideal: "Activités en croissance",
                 features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés"],
-                cta: "Choisir Essentiel",
+                cta: "Choisir Pro",
                 variant: "default" as const,
                 highlight: false,
               },
