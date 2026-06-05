@@ -428,7 +428,7 @@ function Index() {
                 features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés"],
                 cta: "Choisir Essentiel",
                 variant: "default" as const,
-                highlight: true,
+                highlight: false,
               },
               {
                 nom: "Pro",
@@ -437,7 +437,7 @@ function Index() {
                 features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Statistiques de base", "Modèles personnalisés"],
                 cta: "Choisir Pro",
                 variant: "default" as const,
-                highlight: false,
+                highlight: true,
               },
               {
                 nom: "Business",
@@ -608,8 +608,8 @@ function Index() {
 
       {/* Footer */}
       <footer className="border-t bg-card py-12">
-        <div className="container mx-auto grid gap-10 px-4 md:grid-cols-4">
-          <div>
+        <div className="container mx-auto px-4">
+          <div className="max-w-md">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
               <span className="text-lg font-bold">DevisPro</span>
@@ -628,44 +628,6 @@ function Index() {
                 <MessageCircle className="h-4 w-4" />
               </a>
             </div>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">Produit</p>
-            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground">Fonctionnalités</a></li>
-              <li><a href="#" className="hover:text-foreground">Tarifs</a></li>
-              <li><a href="#" className="hover:text-foreground">Blog</a></li>
-              <li><a href="#" className="hover:text-foreground">À propos</a></li>
-            </ul>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">Légal</p>
-            <ul className="mt-3 space-y-2 text-sm text-muted-foreground">
-              <li><a href="/contact" className="hover:text-foreground">Contact</a></li>
-              <li><a href="/conditions" className="hover:text-foreground">Mentions légales</a></li>
-              <li><a href="/conditions" className="hover:text-foreground">CGV</a></li>
-              <li><a href="/confidentialite" className="hover:text-foreground">Confidentialité</a></li>
-            </ul>
-          </div>
-          <div>
-            <p className="text-sm font-semibold">Newsletter</p>
-            <p className="mt-3 text-sm text-muted-foreground">
-              Conseils facturation pour entrepreneurs africains.
-            </p>
-            <form
-              onSubmit={(e) => e.preventDefault()}
-              className="mt-3 flex gap-2"
-            >
-              <input
-                type="email"
-                required
-                placeholder="votre@email.com"
-                className="flex-1 rounded-md border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-              />
-              <Button type="submit" size="sm" className="bg-accent text-accent-foreground hover:bg-accent/90">
-                OK
-              </Button>
-            </form>
           </div>
         </div>
         <div className="container mx-auto mt-10 flex flex-col items-center justify-between gap-2 border-t px-4 pt-6 text-sm text-muted-foreground md:flex-row">
