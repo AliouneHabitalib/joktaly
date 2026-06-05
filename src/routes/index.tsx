@@ -424,8 +424,8 @@ function Index() {
               {
                 nom: "Essentiel",
                 base: 6000,
-                ideal: "PME et prestataires actifs",
-                features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Statistiques de base", "Modèles personnalisés"],
+                ideal: "Activités en croissance",
+                features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés"],
                 cta: "Choisir Essentiel",
                 variant: "default" as const,
                 highlight: true,
@@ -433,8 +433,8 @@ function Index() {
               {
                 nom: "Pro",
                 base: 9500,
-                ideal: "Activités en croissance",
-                features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés"],
+                ideal: "PME et prestataires actifs",
+                features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Statistiques de base", "Modèles personnalisés"],
                 cta: "Choisir Pro",
                 variant: "default" as const,
                 highlight: false,
