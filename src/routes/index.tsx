@@ -9,6 +9,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { InteractiveDemo } from "@/components/interactive-demo";
 import {
   FileText,
   Users,
