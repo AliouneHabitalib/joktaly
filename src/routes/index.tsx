@@ -30,8 +30,6 @@ import {
   Server,
   MessageCircle,
   X,
-  Facebook,
-  Linkedin,
   BadgeCheck,
   PlayCircle,
 } from "lucide-react";
