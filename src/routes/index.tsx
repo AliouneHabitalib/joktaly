@@ -30,8 +30,6 @@ import {
   Server,
   MessageCircle,
   X,
-  Facebook,
-  Linkedin,
   BadgeCheck,
   PlayCircle,
 } from "lucide-react";
@@ -92,7 +90,7 @@ function Index() {
           <div className="text-center md:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur sm:text-sm">
               <Check className="h-3.5 w-3.5 text-accent" />
-              <span>100+ entrepreneurs africains nous font confiance</span>
+              <span>Rejoignez les premiers entrepreneurs qui facturent plus vite avec DevisPro</span>
             </div>
             <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-6xl">
               Devis & factures pour les <span className="text-accent">PME africaines</span>
@@ -269,43 +267,47 @@ function Index() {
           {[
             {
               nom: "Aminata Diallo",
-              role: "Consultante RH – Dakar",
+              role: "Consultante RH indépendante",
               ville: "Dakar, Sénégal",
               initiales: "AD",
               couleur: "bg-primary/15 text-primary",
               plan: "Starter",
               citation:
-                "En 10 minutes j'avais créé mon premier devis pro. Mes clients reçoivent tout par WhatsApp, c'est parfait.",
+                "En 10 minutes j'avais créé mon premier devis professionnel. Mes clients reçoivent tout par WhatsApp, c'est exactement ce dont j'avais besoin.",
+              anciennete: "Utilise DevisPro depuis 3 mois",
             },
             {
               nom: "Moussa Traoré",
-              role: "Entrepreneur BTP – Abidjan",
+              role: "Entrepreneur BTP",
               ville: "Abidjan, Côte d'Ivoire",
               initiales: "MT",
               couleur: "bg-accent/20 text-accent-foreground",
               plan: "Pro",
               citation:
-                "Je suivais mes paiements sur un cahier. Maintenant j'ai tout sur mon téléphone. Un vrai gain de temps.",
+                "Je suivais mes paiements dans un cahier. Maintenant tout est sur mon téléphone. J'ai récupéré plus de 800 000 FCFA d'impayés grâce aux relances automatiques.",
+              anciennete: "Utilise DevisPro depuis 6 mois",
             },
             {
               nom: "Fatou Seck",
-              role: "Gérante de boutique – Dakar",
+              role: "Gérante de boutique mode",
               ville: "Dakar, Sénégal",
               initiales: "FS",
               couleur: "bg-secondary text-secondary-foreground",
               plan: "Starter",
               citation:
-                "Les relances automatiques des impayés m'ont fait récupérer de l'argent que j'avais déjà oublié.",
+                "Les relances automatiques des impayés m'ont permis de récupérer de l'argent que j'avais déjà oublié. Simple, rapide, efficace.",
+              anciennete: "Utilise DevisPro depuis 2 mois",
             },
             {
-              nom: "Cheikh N'Diaye",
-              role: "Dirigeant agence digitale – Abidjan",
-              ville: "Abidjan, Côte d'Ivoire",
+              nom: "Cheikh Ndiaye",
+              role: "Dirigeant agence digitale",
+              ville: "Dakar, Sénégal",
               initiales: "CN",
               couleur: "bg-primary/15 text-primary",
               plan: "Business",
               citation:
-                "Avec 5 utilisateurs sur DevisPro Business, mon agence facture 3x plus vite. Le support est ultra réactif.",
+                "Avec 5 utilisateurs sur le plan Business, mon agence facture 3 fois plus vite qu'avant. Le support répond en moins de 4h, c'est sérieux.",
+              anciennete: "Utilise DevisPro depuis 8 mois",
             },
           ].map((t) => (
             <div
@@ -314,16 +316,14 @@ function Index() {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-full font-semibold ${t.couleur}`}
+                  className="flex h-12 w-12 items-center justify-center rounded-full font-semibold"
+                  style={{ backgroundColor: "#1B2A6B", color: "#C9A84C" }}
                   aria-hidden="true"
                 >
                   {t.initiales}
                 </div>
                 <div>
-                  <p className="font-semibold flex items-center gap-1">
-                    {t.nom}
-                    <BadgeCheck className="h-4 w-4 text-primary" aria-label="Client vérifié" />
-                  </p>
+                  <p className="font-semibold">{t.nom}</p>
                   <p className="text-xs text-muted-foreground">{t.role}</p>
                   <p className="text-xs text-muted-foreground">{t.ville}</p>
                 </div>
@@ -337,9 +337,10 @@ function Index() {
                 <Badge variant="secondary" className="text-[10px]">Plan {t.plan}</Badge>
               </div>
               <p className="mt-4 text-sm italic text-muted-foreground">"{t.citation}"</p>
-              <p className="mt-3 text-[10px] font-medium uppercase tracking-wide text-primary">
-                ✓ Client vérifié
-              </p>
+              <p className="mt-3 text-xs text-muted-foreground">{t.anciennete}</p>
+              <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
+                <BadgeCheck className="h-3 w-3" /> Client vérifié
+              </span>
             </div>
           ))}
         </div>
@@ -618,17 +619,6 @@ function Index() {
             <p className="mt-3 text-sm text-muted-foreground">
               L'outil de facturation pensé pour les entrepreneurs africains.
             </p>
-            <div className="mt-4 flex gap-3">
-              <a href="#" aria-label="Facebook" className="rounded-full border p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-                <Facebook className="h-4 w-4" />
-              </a>
-              <a href="#" aria-label="LinkedIn" className="rounded-full border p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-                <Linkedin className="h-4 w-4" />
-              </a>
-              <a href="https://wa.me/" aria-label="WhatsApp" className="rounded-full border p-2 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">
-                <MessageCircle className="h-4 w-4" />
-              </a>
-            </div>
           </div>
         </div>
         <div className="container mx-auto mt-10 flex flex-col items-center justify-between gap-2 border-t px-4 pt-6 text-sm text-muted-foreground md:flex-row">
@@ -641,7 +631,7 @@ function Index() {
 
       {/* WhatsApp chat widget */}
       <a
-        href="https://wa.me/221000000000?text=Bonjour%2C%20j'ai%20une%20question%20sur%20DevisPro"
+        href="https://wa.me/221772292392?text=Bonjour%2C%20j'ai%20une%20question%20sur%20DevisPro"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Discuter sur WhatsApp"
