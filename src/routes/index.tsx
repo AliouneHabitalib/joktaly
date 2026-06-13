@@ -157,40 +157,40 @@ function Index() {
         ))}
       </section>
 
-      {/* Voir l'app en action */}
-      <section id="demo" className="container mx-auto px-4 py-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Voir l'app en action</h2>
-          <p className="mt-4 text-muted-foreground">
-            Regardez la démo vidéo : du devis au paiement en quelques minutes.
-          </p>
-        </div>
-        <div className="mx-auto mt-12 max-w-4xl">
-          <div className="relative overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)]">
-            <div className="relative aspect-video w-full bg-gradient-to-br from-primary/10 via-muted to-accent/10">
-              {/* Placeholder vidéo — remplacez src par votre fichier ou utilisez <iframe> YouTube/Vimeo */}
-              <video
-                className="absolute inset-0 h-full w-full object-cover"
-                controls
-                preload="metadata"
-                poster=""
-              >
-                <source src="" type="video/mp4" />
-                Votre navigateur ne prend pas en charge la lecture vidéo.
-              </video>
-              <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-center">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full bg-accent/90 shadow-lg">
-                  <PlayCircle className="h-12 w-12 text-accent-foreground" />
-                </div>
-                <p className="text-sm font-medium text-muted-foreground">
-                  Vidéo de démo bientôt disponible
-                </p>
-              </div>
-            </div>
+      {/* Voir l'app en action — démo interactive */}
+      <section id="demo" className="py-20" style={{ backgroundColor: "#f8f9ff" }}>
+        <div className="container mx-auto px-4">
+          <div className="mx-auto max-w-3xl text-center">
+            <span
+              className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
+              style={{ backgroundColor: "#e0e4f7", color: "#1B2A6B" }}
+            >
+              Démo interactive
+            </span>
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl" style={{ color: "#1B2A6B" }}>
+              Voir l'app en action
+            </h2>
+            <p className="mt-3 text-muted-foreground">
+              Explorez DevisPro sans créer de compte.
+            </p>
           </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            Durée : ~60 secondes • Découvrez les fonctionnalités clés de DevisPro.
-          </p>
+          <div className="mt-10">
+            <InteractiveDemo />
+          </div>
+          <div className="mx-auto mt-8 max-w-md text-center">
+            <Link to="/register">
+              <Button
+                size="lg"
+                className="w-full text-white hover:opacity-90"
+                style={{ backgroundColor: "#1B2A6B" }}
+              >
+                Créer mon compte gratuitement →
+              </Button>
+            </Link>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Gratuit · Aucune carte requise · Prêt en 2 minutes
+            </p>
+          </div>
         </div>
       </section>
 
