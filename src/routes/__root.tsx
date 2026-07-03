@@ -80,17 +80,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:title", content: "TERA-DEVIS — Devis & Factures pour l'Afrique" },
       { property: "og:description", content: "Gérez vos devis, factures, clients et paiements. Pensé pour les PME d'Afrique francophone." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      { property: "og:site_name", content: "TERA-DEVIS" },
+      { property: "og:locale", content: "fr_FR" },
+      { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "TERA-DEVIS — Devis & Factures pour l'Afrique" },
       { name: "twitter:description", content: "Gérez vos devis, factures, clients et paiements. Pensé pour les PME d'Afrique francophone." },
-      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/211c43ae-20cb-4596-8a6f-275457774f22" },
-      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/211c43ae-20cb-4596-8a6f-275457774f22" },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "icon", type: "image/png", href: "/favicon.png" },
+      { rel: "apple-touch-icon", href: "/favicon.png" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
