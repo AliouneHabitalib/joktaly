@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { InteractiveDemo } from "@/components/interactive-demo";
+import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
 import {
   FileText,
   Users,
@@ -40,6 +41,24 @@ export const Route = createFileRoute("/")({
     const { data } = await supabase.auth.getSession();
     if (data.session) throw redirect({ to: "/dashboard" });
   },
+  head: () => ({
+    meta: [
+      { title: "TERA-DEVIS — Devis & Factures WhatsApp pour PME d'Afrique" },
+      { name: "description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
+      { property: "og:title", content: "TERA-DEVIS — Devis & Factures WhatsApp pour PME d'Afrique" },
+      { property: "og:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements." },
+      { property: "og:url", content: "https://tera-devis.lovable.app/" },
+      { property: "og:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
+      { property: "og:image:width", content: "1216" },
+      { property: "og:image:height", content: "640" },
+      { name: "twitter:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
+      { name: "twitter:title", content: "TERA-DEVIS — Devis & Factures WhatsApp pour PME d'Afrique" },
+      { name: "twitter:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp." },
+    ],
+    links: [
+      { rel: "canonical", href: "https://tera-devis.lovable.app/" },
+    ],
+  }),
   component: Index,
 });
 
