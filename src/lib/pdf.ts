@@ -312,7 +312,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.line(margin, pageH - 15, pageW - margin, pageH - 15);
   pdf.setFontSize(8);
   pdf.setTextColor(140, 140, 140);
-  pdf.text(`${doc.entreprise.nom} — Document généré avec DevisPro`, margin, pageH - 10);
+  pdf.text(`${doc.entreprise.nom} — Document généré avec TERA-DEVIS`, margin, pageH - 10);
   pdf.text(`Page 1`, pageW - margin, pageH - 10, { align: "right" });
 
   return pdf;

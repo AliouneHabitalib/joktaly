@@ -58,7 +58,7 @@ function RegisterPage() {
         <div className="mb-6 text-center">
           <Link to="/" className="inline-flex items-center gap-2">
             <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
-            <span className="text-xl font-bold">DevisPro</span>
+            <span className="text-xl font-bold">TERA-DEVIS</span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold">Créer un compte</h1>
           <p className="text-sm text-muted-foreground">Commencez gratuitement, sans carte bancaire</p>

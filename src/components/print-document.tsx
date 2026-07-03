@@ -303,7 +303,7 @@ export function PrintDocument({ doc, autoPrint = true }: Props) {
             )}
 
             <div className="pp-footer">
-              {doc.entreprise.nom} — Document généré avec DevisPro
+              {doc.entreprise.nom} — Document généré avec TERA-DEVIS
             </div>
           </div>
         </div>

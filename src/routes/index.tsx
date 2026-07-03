@@ -67,7 +67,7 @@ function Index() {
         <div className="container mx-auto flex items-center justify-between gap-2 px-4 py-3 sm:py-4">
           <div className="flex items-center gap-2">
             <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
-            <span className="text-lg font-bold sm:text-xl">DevisPro</span>
+            <span className="text-lg font-bold sm:text-xl">TERA-DEVIS</span>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
@@ -90,7 +90,7 @@ function Index() {
           <div className="text-center md:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur sm:text-sm">
               <Check className="h-3.5 w-3.5 text-accent" />
-              <span>Rejoignez les premiers entrepreneurs qui facturent plus vite avec DevisPro</span>
+              <span>Rejoignez les premiers entrepreneurs qui facturent plus vite avec TERA-DEVIS</span>
             </div>
             <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-6xl">
               Devis & factures pour les <span className="text-accent">PME africaines</span>
@@ -169,7 +169,7 @@ function Index() {
               Voir l'app en action
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Explorez DevisPro sans créer de compte.
+              Explorez TERA-DEVIS sans créer de compte.
             </p>
           </div>
           <div className="mt-10">
@@ -192,11 +192,11 @@ function Index() {
         </div>
       </section>
 
-      {/* Pourquoi choisir DevisPro ? */}
+      {/* Pourquoi choisir TERA-DEVIS ? */}
       <section className="bg-muted/30 py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold md:text-4xl">Pourquoi choisir DevisPro ?</h2>
+            <h2 className="text-3xl font-bold md:text-4xl">Pourquoi choisir TERA-DEVIS ?</h2>
             <p className="mt-4 text-muted-foreground">
               L'outil de facturation pensé pour vous faire gagner du temps et de l'argent.
             </p>
@@ -260,7 +260,7 @@ function Index() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Ils nous font confiance</h2>
           <p className="mt-4 text-muted-foreground">
-            Des entrepreneurs africains témoignent de leur expérience avec DevisPro.
+            Des entrepreneurs africains témoignent de leur expérience avec TERA-DEVIS.
           </p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -274,7 +274,7 @@ function Index() {
               plan: "Starter",
               citation:
                 "En 10 minutes j'avais créé mon premier devis professionnel. Mes clients reçoivent tout par WhatsApp, c'est exactement ce dont j'avais besoin.",
-              anciennete: "Utilise DevisPro depuis 3 mois",
+              anciennete: "Utilise TERA-DEVIS depuis 3 mois",
             },
             {
               nom: "Moussa Traoré",
@@ -285,7 +285,7 @@ function Index() {
               plan: "Pro",
               citation:
                 "Je suivais mes paiements dans un cahier. Maintenant tout est sur mon téléphone. J'ai récupéré plus de 800 000 FCFA d'impayés grâce aux relances automatiques.",
-              anciennete: "Utilise DevisPro depuis 6 mois",
+              anciennete: "Utilise TERA-DEVIS depuis 6 mois",
             },
             {
               nom: "Fatou Seck",
@@ -296,7 +296,7 @@ function Index() {
               plan: "Starter",
               citation:
                 "Les relances automatiques des impayés m'ont permis de récupérer de l'argent que j'avais déjà oublié. Simple, rapide, efficace.",
-              anciennete: "Utilise DevisPro depuis 2 mois",
+              anciennete: "Utilise TERA-DEVIS depuis 2 mois",
             },
             {
               nom: "Cheikh Ndiaye",
@@ -307,7 +307,7 @@ function Index() {
               plan: "Business",
               citation:
                 "Avec 5 utilisateurs sur le plan Business, mon agence facture 3 fois plus vite qu'avant. Le support répond en moins de 4h, c'est sérieux.",
-              anciennete: "Utilise DevisPro depuis 8 mois",
+              anciennete: "Utilise TERA-DEVIS depuis 8 mois",
             },
           ].map((t) => (
             <div
@@ -352,7 +352,7 @@ function Index() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Pour qui ?</h2>
           <p className="mt-4 text-muted-foreground">
-            DevisPro s'adresse à tous les professionnels qui veulent facturer simplement et professionnellement.
+            TERA-DEVIS s'adresse à tous les professionnels qui veulent facturer simplement et professionnellement.
           </p>
         </div>
         <div className="mt-12 flex flex-wrap justify-center gap-3">
@@ -537,7 +537,7 @@ function Index() {
         <div className="mx-auto max-w-2xl rounded-3xl border bg-card p-10 text-center shadow-[var(--shadow-card)]">
           <h2 className="text-2xl font-bold md:text-3xl">Prêt à simplifier votre facturation ?</h2>
           <p className="mt-4 text-muted-foreground">
-            Rejoignez les entrepreneurs qui gagnent du temps chaque jour avec DevisPro.
+            Rejoignez les entrepreneurs qui gagnent du temps chaque jour avec TERA-DEVIS.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button size="lg" asChild>
@@ -555,7 +555,7 @@ function Index() {
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">Questions fréquentes</h2>
             <p className="mt-4 text-muted-foreground">
-              Tout ce que vous devez savoir pour bien démarrer avec DevisPro.
+              Tout ce que vous devez savoir pour bien démarrer avec TERA-DEVIS.
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-3xl rounded-2xl border bg-card px-6 shadow-[var(--shadow-card)]">
@@ -590,7 +590,7 @@ function Index() {
                   a: "Vous pouvez payer via Wave, Orange Money, Free Money ou carte bancaire. Paiement 100% sécurisé.",
                 },
                 {
-                  q: "Est-ce que DevisPro fonctionne sans connexion rapide ?",
+                  q: "Est-ce que TERA-DEVIS fonctionne sans connexion rapide ?",
                   a: "Oui. L'application est optimisée pour les connexions lentes (3G/4G) courantes en Afrique.",
                 },
               ].map((item, i) => (
@@ -614,7 +614,7 @@ function Index() {
           <div className="max-w-md">
             <div className="flex items-center gap-2">
               <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
-              <span className="text-lg font-bold">DevisPro</span>
+              <span className="text-lg font-bold">TERA-DEVIS</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
               L'outil de facturation pensé pour les entrepreneurs africains.
@@ -622,7 +622,7 @@ function Index() {
           </div>
         </div>
         <div className="container mx-auto mt-10 flex flex-col items-center justify-between gap-2 border-t px-4 pt-6 text-sm text-muted-foreground md:flex-row">
-          <p>© {new Date().getFullYear()} DevisPro. Tous droits réservés.</p>
+          <p>© {new Date().getFullYear()} TERA-DEVIS. Tous droits réservés.</p>
           <p>
             Made with <span aria-label="amour">❤️</span> pour l'Afrique
           </p>
@@ -631,7 +631,7 @@ function Index() {
 
       {/* WhatsApp chat widget */}
       <a
-        href="https://wa.me/221772292392?text=Bonjour%2C%20j'ai%20une%20question%20sur%20DevisPro"
+        href="https://wa.me/221772292392?text=Bonjour%2C%20j'ai%20une%20question%20sur%20TERA-DEVIS"
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Discuter sur WhatsApp"
@@ -698,7 +698,7 @@ function InvoiceMockup() {
           <div className="flex items-center justify-between border-b pb-3">
             <div className="flex items-center gap-2">
               <div className="h-7 w-7 rounded-md bg-gradient-to-br from-primary to-primary/70" />
-              <span className="font-bold text-slate-900">DevisPro</span>
+              <span className="font-bold text-slate-900">TERA-DEVIS</span>
             </div>
             <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">
               DEV-2026-001
