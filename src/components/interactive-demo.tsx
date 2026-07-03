@@ -30,7 +30,7 @@ export function InteractiveDemo() {
         style={{ backgroundColor: NAVY }}
       >
         <span className="font-bold tracking-wide" style={{ color: GOLD }}>
-          DevisPro
+          TERA-DEVIS
         </span>
         <div className="flex items-center gap-2">
           <span className="h-3 w-3 rounded-full bg-red-500" />
