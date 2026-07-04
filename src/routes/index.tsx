@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
+import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 import {
   FileText,
   Users,
@@ -85,7 +86,7 @@ function Index() {
       <header className="border-b bg-card/90 backdrop-blur sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto flex items-center justify-between gap-2 px-4 py-3 sm:py-4">
           <div className="flex items-center gap-2">
-            <div className="h-9 w-9 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
+            <img src={logoAsset.url} alt="TERA-DEVIS" className="h-9 w-9 object-contain" />
             <span className="text-lg font-bold sm:text-xl">TERA-DEVIS</span>
           </div>
           <div className="flex items-center gap-2">
@@ -632,7 +633,7 @@ function Index() {
         <div className="container mx-auto px-4">
           <div className="max-w-md">
             <div className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
+              <img src={logoAsset.url} alt="TERA-DEVIS" className="h-8 w-8 object-contain" />
               <span className="text-lg font-bold">TERA-DEVIS</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
@@ -716,7 +717,7 @@ function InvoiceMockup() {
         <div className="rounded-[1.5rem] bg-white p-5 text-slate-800 shadow-xl sm:p-6">
           <div className="flex items-center justify-between border-b pb-3">
             <div className="flex items-center gap-2">
-              <div className="h-7 w-7 rounded-md bg-gradient-to-br from-primary to-primary/70" />
+              <img src={logoAsset.url} alt="TERA-DEVIS" className="h-7 w-7 object-contain" />
               <span className="font-bold text-slate-900">TERA-DEVIS</span>
             </div>
             <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">

@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/use-auth";
+import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
 const NAV = [
   { to: "/dashboard", label: "Tableau de bord", icon: LayoutDashboard },
@@ -55,7 +56,7 @@ export function AppShell() {
       {/* Sidebar Desktop */}
       <aside className="hidden w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground md:flex">
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
+          <img src={logoAsset.url} alt="TERA-DEVIS" className="h-8 w-8 object-contain" />
           <span className="text-lg font-bold">TERA-DEVIS</span>
         </div>
         <nav className="flex-1 space-y-1 p-3">
@@ -87,7 +88,7 @@ export function AppShell() {
       <div className="flex flex-1 flex-col">
         <header className="flex h-14 items-center justify-between border-b bg-card px-4 md:hidden">
           <div className="flex items-center gap-2">
-            <div className="h-7 w-7 rounded-lg bg-gradient-to-br from-primary to-primary/70" />
+            <img src={logoAsset.url} alt="TERA-DEVIS" className="h-7 w-7 object-contain" />
             <span className="font-bold">TERA-DEVIS</span>
           </div>
           <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)}>
