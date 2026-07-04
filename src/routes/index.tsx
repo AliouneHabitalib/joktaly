@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/accordion";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
+import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 import {
   FileText,
   Users,
