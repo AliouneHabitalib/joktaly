@@ -86,7 +86,7 @@ function Index() {
       <header className="border-b bg-card/90 backdrop-blur sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto flex items-center justify-between gap-2 px-4 py-3 sm:py-4">
           <div className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="TERA-DEVIS" className="h-9 w-9 object-contain" />
+            <img src={logoAsset.url} alt="Logo TERA-DEVIS — application de devis et factures" className="h-9 w-9 object-contain" />
             <span className="text-lg font-bold sm:text-xl">TERA-DEVIS</span>
           </div>
           <div className="flex items-center gap-2">
@@ -429,8 +429,8 @@ function Index() {
                 nom: "Gratuit",
                 base: 0,
                 ideal: "Tester l'application",
-                features: ["5 devis / mois", "3 factures / mois", "10 clients", "Export PDF", "Envoi WhatsApp"],
-                cta: "Commencer",
+                features: ["5 devis / mois", "3 factures / mois", "10 clients", "Export PDF"],
+                cta: "Commencer gratuitement",
                 variant: "outline" as const,
                 highlight: false,
               },
@@ -531,11 +531,11 @@ function Index() {
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {[
-              { icon: Lock, title: "SSL sécurisé", desc: "Chiffrement bout-en-bout sur toutes les pages." },
-              { icon: Server, title: "Hébergé en Europe", desc: "Conforme RGPD + sauvegarde quotidienne." },
-              { icon: ShieldCheck, title: "Conforme DGI Sénégal", desc: "Mentions légales fiscales locales." },
-              { icon: CreditCard, title: "Paiement Stripe", desc: "Paiements sécurisés Stripe et mobile money." },
-              { icon: HeadphonesIcon, title: "Support réactif", desc: "Réponse sous 4h en jours ouvrés." },
+              { icon: Lock, title: "Connexion sécurisée (SSL)", desc: "Vos échanges sont chiffrés de bout en bout." },
+              { icon: Server, title: "Hébergement européen", desc: "Infrastructure conforme RGPD avec sauvegardes quotidiennes." },
+              { icon: ShieldCheck, title: "Adapté au Sénégal", desc: "Mentions légales et fiscales prêtes pour vos documents." },
+              { icon: CreditCard, title: "Paiements sécurisés", desc: "Wave, Orange Money et carte bancaire pris en charge." },
+              { icon: HeadphonesIcon, title: "Support réactif", desc: "Une équipe qui vous répond sous 4h ouvrées." },
             ].map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
@@ -579,7 +579,7 @@ function Index() {
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-3xl rounded-2xl border bg-card px-6 shadow-[var(--shadow-card)]">
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion type="multiple" defaultValue={["faq-0"]} className="w-full">
               {[
                 {
                   q: "Comment fonctionne l'envoi WhatsApp ?",
@@ -615,10 +615,10 @@ function Index() {
                 },
               ].map((item, i) => (
                 <AccordionItem key={i} value={`faq-${i}`}>
-                  <AccordionTrigger className="text-base font-semibold">
+                  <AccordionTrigger className="text-base font-semibold text-left">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
+                  <AccordionContent className="text-sm text-foreground/80 leading-relaxed">
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -633,7 +633,7 @@ function Index() {
         <div className="container mx-auto px-4">
           <div className="max-w-md">
             <div className="flex items-center gap-2">
-              <img src={logoAsset.url} alt="TERA-DEVIS" className="h-8 w-8 object-contain" />
+              <img src={logoAsset.url} alt="Logo TERA-DEVIS dans l'aperçu d'un devis" className="h-8 w-8 object-contain" />
               <span className="text-lg font-bold">TERA-DEVIS</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
@@ -717,7 +717,7 @@ function InvoiceMockup() {
         <div className="rounded-[1.5rem] bg-white p-5 text-slate-800 shadow-xl sm:p-6">
           <div className="flex items-center justify-between border-b pb-3">
             <div className="flex items-center gap-2">
-              <img src={logoAsset.url} alt="TERA-DEVIS" className="h-7 w-7 object-contain" />
+              <img src={logoAsset.url} alt="Logo TERA-DEVIS — pied de page" className="h-7 w-7 object-contain" />
               <span className="font-bold text-slate-900">TERA-DEVIS</span>
             </div>
             <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">
