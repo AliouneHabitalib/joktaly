@@ -9,29 +9,33 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as RegisterRouteImport } from './routes/register'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
-import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticated/produits'
-import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticated/factures'
-import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/devis'
-import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
-import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
+import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
-import { Route as AuthenticatedFacturesIndexRouteImport } from './routes/_authenticated/factures.index'
-import { Route as AuthenticatedDevisIndexRouteImport } from './routes/_authenticated/devis.index'
-import { Route as PrintDevisIdRouteImport } from './routes/print.devis.$id'
-import { Route as AuthenticatedParametresEntrepriseRouteImport } from './routes/_authenticated/parametres.entreprise'
-import { Route as AuthenticatedFacturesIdRouteImport } from './routes/_authenticated/factures.$id'
-import { Route as AuthenticatedDevisIdRouteImport } from './routes/_authenticated/devis.$id'
+import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/devis'
+import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticated/factures'
+import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticated/produits'
+import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
+import { Route as AuthenticatedDevisIndexRouteImport } from './routes/_authenticated/devis.index'
+import { Route as AuthenticatedDevisIdRouteImport } from './routes/_authenticated/devis.$id'
+import { Route as AuthenticatedFacturesIndexRouteImport } from './routes/_authenticated/factures.index'
+import { Route as AuthenticatedFacturesIdRouteImport } from './routes/_authenticated/factures.$id'
+import { Route as AuthenticatedParametresEntrepriseRouteImport } from './routes/_authenticated/parametres.entreprise'
+import { Route as PrintDevisIdRouteImport } from './routes/print.devis.$id'
 import { Route as ApiPublicHooksQuotaResetCheckRouteImport } from './routes/api/public/hooks/quota-reset-check'
 
-const RegisterRoute = RegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRoute = AuthenticatedRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -39,39 +43,14 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRoute = AuthenticatedRouteImport.update({
-  id: '/_authenticated',
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedStatistiquesRoute =
-  AuthenticatedStatistiquesRouteImport.update({
-    id: '/statistiques',
-    path: '/statistiques',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
-const AuthenticatedProduitsRoute = AuthenticatedProduitsRouteImport.update({
-  id: '/produits',
-  path: '/produits',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedFacturesRoute = AuthenticatedFacturesRouteImport.update({
-  id: '/factures',
-  path: '/factures',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedDevisRoute = AuthenticatedDevisRouteImport.update({
-  id: '/devis',
-  path: '/devis',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
-const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
+  id: '/aide',
+  path: '/aide',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
 const AuthenticatedClientsRoute = AuthenticatedClientsRouteImport.update({
@@ -79,10 +58,47 @@ const AuthenticatedClientsRoute = AuthenticatedClientsRouteImport.update({
   path: '/clients',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
-  id: '/aide',
-  path: '/aide',
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedDevisRoute = AuthenticatedDevisRouteImport.update({
+  id: '/devis',
+  path: '/devis',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedFacturesRoute = AuthenticatedFacturesRouteImport.update({
+  id: '/factures',
+  path: '/factures',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedProduitsRoute = AuthenticatedProduitsRouteImport.update({
+  id: '/produits',
+  path: '/produits',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
+const AuthenticatedStatistiquesRoute =
+  AuthenticatedStatistiquesRouteImport.update({
+    id: '/statistiques',
+    path: '/statistiques',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedAdminJournalRoute =
+  AuthenticatedAdminJournalRouteImport.update({
+    id: '/admin/journal',
+    path: '/admin/journal',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedDevisIndexRoute = AuthenticatedDevisIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedDevisRoute,
+} as any)
+const AuthenticatedDevisIdRoute = AuthenticatedDevisIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedDevisRoute,
 } as any)
 const AuthenticatedFacturesIndexRoute =
   AuthenticatedFacturesIndexRouteImport.update({
@@ -90,15 +106,10 @@ const AuthenticatedFacturesIndexRoute =
     path: '/',
     getParentRoute: () => AuthenticatedFacturesRoute,
   } as any)
-const AuthenticatedDevisIndexRoute = AuthenticatedDevisIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AuthenticatedDevisRoute,
-} as any)
-const PrintDevisIdRoute = PrintDevisIdRouteImport.update({
-  id: '/print/devis/$id',
-  path: '/print/devis/$id',
-  getParentRoute: () => rootRouteImport,
+const AuthenticatedFacturesIdRoute = AuthenticatedFacturesIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedFacturesRoute,
 } as any)
 const AuthenticatedParametresEntrepriseRoute =
   AuthenticatedParametresEntrepriseRouteImport.update({
@@ -106,22 +117,11 @@ const AuthenticatedParametresEntrepriseRoute =
     path: '/parametres/entreprise',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedFacturesIdRoute = AuthenticatedFacturesIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthenticatedFacturesRoute,
+const PrintDevisIdRoute = PrintDevisIdRouteImport.update({
+  id: '/print/devis/$id',
+  path: '/print/devis/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedDevisIdRoute = AuthenticatedDevisIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
-  getParentRoute: () => AuthenticatedDevisRoute,
-} as any)
-const AuthenticatedAdminJournalRoute =
-  AuthenticatedAdminJournalRouteImport.update({
-    id: '/admin/journal',
-    path: '/admin/journal',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
 const ApiPublicHooksQuotaResetCheckRoute =
   ApiPublicHooksQuotaResetCheckRouteImport.update({
     id: '/api/public/hooks/quota-reset-check',
@@ -262,18 +262,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/register': {
-      id: '/register'
-      path: '/register'
-      fullPath: '/register'
-      preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -283,46 +276,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/statistiques': {
-      id: '/_authenticated/statistiques'
-      path: '/statistiques'
-      fullPath: '/statistiques'
-      preLoaderRoute: typeof AuthenticatedStatistiquesRouteImport
-      parentRoute: typeof AuthenticatedRoute
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/produits': {
-      id: '/_authenticated/produits'
-      path: '/produits'
-      fullPath: '/produits'
-      preLoaderRoute: typeof AuthenticatedProduitsRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/factures': {
-      id: '/_authenticated/factures'
-      path: '/factures'
-      fullPath: '/factures'
-      preLoaderRoute: typeof AuthenticatedFacturesRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/devis': {
-      id: '/_authenticated/devis'
-      path: '/devis'
-      fullPath: '/devis'
-      preLoaderRoute: typeof AuthenticatedDevisRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+    '/_authenticated/aide': {
+      id: '/_authenticated/aide'
+      path: '/aide'
+      fullPath: '/aide'
+      preLoaderRoute: typeof AuthenticatedAideRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/clients': {
@@ -332,19 +304,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedClientsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/aide': {
-      id: '/_authenticated/aide'
-      path: '/aide'
-      fullPath: '/aide'
-      preLoaderRoute: typeof AuthenticatedAideRouteImport
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/factures/': {
-      id: '/_authenticated/factures/'
-      path: '/'
-      fullPath: '/factures/'
-      preLoaderRoute: typeof AuthenticatedFacturesIndexRouteImport
-      parentRoute: typeof AuthenticatedFacturesRoute
+    '/_authenticated/devis': {
+      id: '/_authenticated/devis'
+      path: '/devis'
+      fullPath: '/devis'
+      preLoaderRoute: typeof AuthenticatedDevisRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/factures': {
+      id: '/_authenticated/factures'
+      path: '/factures'
+      fullPath: '/factures'
+      preLoaderRoute: typeof AuthenticatedFacturesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/produits': {
+      id: '/_authenticated/produits'
+      path: '/produits'
+      fullPath: '/produits'
+      preLoaderRoute: typeof AuthenticatedProduitsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/statistiques': {
+      id: '/_authenticated/statistiques'
+      path: '/statistiques'
+      fullPath: '/statistiques'
+      preLoaderRoute: typeof AuthenticatedStatistiquesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/admin/journal': {
+      id: '/_authenticated/admin/journal'
+      path: '/admin/journal'
+      fullPath: '/admin/journal'
+      preLoaderRoute: typeof AuthenticatedAdminJournalRouteImport
+      parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/devis/': {
       id: '/_authenticated/devis/'
@@ -353,19 +353,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDevisIndexRouteImport
       parentRoute: typeof AuthenticatedDevisRoute
     }
-    '/print/devis/$id': {
-      id: '/print/devis/$id'
-      path: '/print/devis/$id'
-      fullPath: '/print/devis/$id'
-      preLoaderRoute: typeof PrintDevisIdRouteImport
-      parentRoute: typeof rootRouteImport
+    '/_authenticated/devis/$id': {
+      id: '/_authenticated/devis/$id'
+      path: '/$id'
+      fullPath: '/devis/$id'
+      preLoaderRoute: typeof AuthenticatedDevisIdRouteImport
+      parentRoute: typeof AuthenticatedDevisRoute
     }
-    '/_authenticated/parametres/entreprise': {
-      id: '/_authenticated/parametres/entreprise'
-      path: '/parametres/entreprise'
-      fullPath: '/parametres/entreprise'
-      preLoaderRoute: typeof AuthenticatedParametresEntrepriseRouteImport
-      parentRoute: typeof AuthenticatedRoute
+    '/_authenticated/factures/': {
+      id: '/_authenticated/factures/'
+      path: '/'
+      fullPath: '/factures/'
+      preLoaderRoute: typeof AuthenticatedFacturesIndexRouteImport
+      parentRoute: typeof AuthenticatedFacturesRoute
     }
     '/_authenticated/factures/$id': {
       id: '/_authenticated/factures/$id'
@@ -374,19 +374,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFacturesIdRouteImport
       parentRoute: typeof AuthenticatedFacturesRoute
     }
-    '/_authenticated/devis/$id': {
-      id: '/_authenticated/devis/$id'
-      path: '/$id'
-      fullPath: '/devis/$id'
-      preLoaderRoute: typeof AuthenticatedDevisIdRouteImport
-      parentRoute: typeof AuthenticatedDevisRoute
-    }
-    '/_authenticated/admin/journal': {
-      id: '/_authenticated/admin/journal'
-      path: '/admin/journal'
-      fullPath: '/admin/journal'
-      preLoaderRoute: typeof AuthenticatedAdminJournalRouteImport
+    '/_authenticated/parametres/entreprise': {
+      id: '/_authenticated/parametres/entreprise'
+      path: '/parametres/entreprise'
+      fullPath: '/parametres/entreprise'
+      preLoaderRoute: typeof AuthenticatedParametresEntrepriseRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/print/devis/$id': {
+      id: '/print/devis/$id'
+      path: '/print/devis/$id'
+      fullPath: '/print/devis/$id'
+      preLoaderRoute: typeof PrintDevisIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/public/hooks/quota-reset-check': {
       id: '/api/public/hooks/quota-reset-check'
@@ -466,13 +466,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
