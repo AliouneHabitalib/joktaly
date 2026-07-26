@@ -44,17 +44,17 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "TERA-DEVIS — Devis & Factures WhatsApp pour PME d'Afrique" },
+      { title: "TERA-DEVIS — Devis & Factures pour PME d'Afrique" },
       { name: "description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
-      { property: "og:title", content: "TERA-DEVIS — Devis & Factures WhatsApp pour PME d'Afrique" },
-      { property: "og:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements." },
+      { property: "og:title", content: "TERA-DEVIS — Devis & Factures pour PME d'Afrique" },
+      { property: "og:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
       { property: "og:url", content: "https://tera-devis.lovable.app/" },
       { property: "og:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
       { property: "og:image:width", content: "1216" },
       { property: "og:image:height", content: "640" },
       { name: "twitter:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
-      { name: "twitter:title", content: "TERA-DEVIS — Devis & Factures WhatsApp pour PME d'Afrique" },
-      { name: "twitter:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp." },
+      { name: "twitter:title", content: "TERA-DEVIS — Devis & Factures pour PME d'Afrique" },
+      { name: "twitter:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
     ],
     links: [
       { rel: "canonical", href: "https://tera-devis.lovable.app/" },
