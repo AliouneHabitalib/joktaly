@@ -1,0 +1,14 @@
+User-agent: *
+Allow: /
+Disallow: /aide
+Disallow: /clients
+Disallow: /dashboard
+Disallow: /devis
+Disallow: /factures
+Disallow: /produits
+Disallow: /statistiques
+Disallow: /admin
+Disallow: /parametres
+Disallow: /api/
+
+Sitemap: https://tera-devis.lovable.app/sitemap.xml
