@@ -9,6 +9,42 @@ import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
+  head: () => ({
+    meta: [
+      { title: "Créer un compte — TERA-DEVIS" },
+      {
+        name: "description",
+        content:
+          "Inscrivez-vous gratuitement à TERA-DEVIS et gérez vos devis, factures et paiements pour votre PME.",
+      },
+      {
+        property: "og:title",
+        content: "Créer un compte — TERA-DEVIS",
+      },
+      {
+        property: "og:description",
+        content:
+          "Inscrivez-vous gratuitement à TERA-DEVIS et gérez vos devis, factures et paiements pour votre PME.",
+      },
+      {
+        property: "og:url",
+        content: "https://tera-devis.lovable.app/register",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:title", content: "Créer un compte — TERA-DEVIS" },
+      {
+        name: "twitter:description",
+        content:
+          "Inscrivez-vous gratuitement à TERA-DEVIS et gérez vos devis, factures et paiements pour votre PME.",
+      },
+    ],
+    links: [
+      {
+        rel: "canonical",
+        href: "https://tera-devis.lovable.app/register",
+      },
+    ],
+  }),
 });
 
 function RegisterPage() {

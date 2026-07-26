@@ -9,6 +9,36 @@ import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
+  head: () => ({
+    meta: [
+      { title: "Connexion — TERA-DEVIS" },
+      {
+        name: "description",
+        content:
+          "Connectez-vous à TERA-DEVIS pour créer des devis et factures professionnels en quelques clics.",
+      },
+      {
+        property: "og:title",
+        content: "Connexion — TERA-DEVIS",
+      },
+      {
+        property: "og:description",
+        content:
+          "Connectez-vous à TERA-DEVIS pour créer des devis et factures professionnels en quelques clics.",
+      },
+      { property: "og:url", content: "https://tera-devis.lovable.app/login" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:title", content: "Connexion — TERA-DEVIS" },
+      {
+        name: "twitter:description",
+        content:
+          "Connectez-vous à TERA-DEVIS pour créer des devis et factures professionnels en quelques clics.",
+      },
+    ],
+    links: [
+      { rel: "canonical", href: "https://tera-devis.lovable.app/login" },
+    ],
+  }),
 });
 
 function LoginPage() {
