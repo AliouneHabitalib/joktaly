@@ -40,6 +40,66 @@ export const startCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: { plan: string; cycle: string }) => data)
   .handler(async ({ data, context }) => {
+    return startCheckoutImpl(data, context);
+  });
+
+/** Enregistre l'intention d'abonnement payant (bloque l'accès au dashboard). */
+export const selectPaidPlan = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { plan: string; cycle: string }) => data)
+  .handler(async ({ data, context }) => {
+    const { normalizePlan, normalizeCycle, chargedAmount, isPaidPlan } = await import("./pricing");
+    const plan = normalizePlan(data.plan);
+    if (!plan || !isPaidPlan(plan)) throw new Error("Plan invalide");
+    const cycle = normalizeCycle(data.cycle);
+    const montant = chargedAmount(plan, cycle);
+
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+
+    const { data: profile } = await admin
+      .from("profiles")
+      .select("plan")
+      .eq("id", context.userId)
+      .maybeSingle();
+    if (profile?.plan && profile.plan !== "gratuit") {
+      return { ok: true as const, alreadyActive: true as const };
+    }
+
+    const { data: existing } = await admin
+      .from("abonnements")
+      .select("id, plan, cycle")
+      .eq("user_id", context.userId)
+      .eq("statut", "en_attente")
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (existing) {
+      if (existing.plan !== plan || existing.cycle !== cycle) {
+        await admin
+          .from("abonnements")
+          .update({ plan, cycle, montant, provider_token: null })
+          .eq("id", existing.id);
+      }
+      return { ok: true as const, alreadyActive: false as const };
+    }
+
+    await admin.from("abonnements").insert({
+      user_id: context.userId,
+      plan,
+      cycle,
+      montant,
+      statut: "en_attente",
+      provider: "paydunya",
+    });
+    return { ok: true as const, alreadyActive: false as const };
+  });
+
+const _startCheckoutLegacy = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((data: { plan: string; cycle: string }) => data)
+  .handler(async ({ data, context }) => {
     const { normalizePlan, normalizeCycle, chargedAmount, PRICING, isPaidPlan } = await import("./pricing");
     const plan = normalizePlan(data.plan);
     if (!plan || !isPaidPlan(plan)) throw new Error("Plan invalide");
