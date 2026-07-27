@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      abonnements: {
+        Row: {
+          created_at: string
+          cycle: string
+          devise: string
+          id: string
+          montant: number
+          paid_at: string | null
+          plan: string
+          provider: string
+          provider_response: Json
+          provider_token: string | null
+          statut: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          cycle?: string
+          devise?: string
+          id?: string
+          montant?: number
+          paid_at?: string | null
+          plan: string
+          provider?: string
+          provider_response?: Json
+          provider_token?: string | null
+          statut?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          cycle?: string
+          devise?: string
+          id?: string
+          montant?: number
+          paid_at?: string | null
+          plan?: string
+          provider?: string
+          provider_response?: Json
+          provider_token?: string | null
+          statut?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       activity_logs: {
         Row: {
           created_at: string
@@ -629,7 +677,7 @@ export type Database = {
       devis_statut: "brouillon" | "envoye" | "accepte" | "refuse" | "expire"
       facture_statut: "non_payee" | "partiellement_payee" | "payee" | "annulee"
       mode_paiement: "virement" | "wave" | "orange_money" | "especes" | "cheque"
-      plan_type: "gratuit" | "starter" | "pro" | "business"
+      plan_type: "gratuit" | "starter" | "pro" | "business" | "essentiel"
       produit_type: "produit" | "service"
     }
     CompositeTypes: {
@@ -769,7 +817,7 @@ export const Constants = {
       devis_statut: ["brouillon", "envoye", "accepte", "refuse", "expire"],
       facture_statut: ["non_payee", "partiellement_payee", "payee", "annulee"],
       mode_paiement: ["virement", "wave", "orange_money", "especes", "cheque"],
-      plan_type: ["gratuit", "starter", "pro", "business"],
+      plan_type: ["gratuit", "starter", "pro", "business", "essentiel"],
       produit_type: ["produit", "service"],
     },
   },
