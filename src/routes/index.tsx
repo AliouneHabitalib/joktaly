@@ -10,6 +10,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { InteractiveDemo } from "@/components/interactive-demo";
+import { MobileMockup } from "@/components/mobile-mockup";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 import {
@@ -192,8 +193,16 @@ function Index() {
               Explorez TERA-DEVIS sans créer de compte.
             </p>
           </div>
-          <div className="mt-10">
-            <InteractiveDemo />
+          <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center">
+            <div className="w-full flex-1">
+              <InteractiveDemo />
+            </div>
+            <div className="flex flex-col items-center">
+              <MobileMockup />
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                La même app dans votre poche
+              </p>
+            </div>
           </div>
           <div className="mx-auto mt-8 max-w-md text-center">
             <Link to="/register">
@@ -433,6 +442,7 @@ function Index() {
                 cta: "Commencer gratuitement",
                 variant: "outline" as const,
                 highlight: false,
+                note: "Gratuit à vie, sans limite de durée",
               },
               {
                 nom: "Starter",
@@ -442,6 +452,7 @@ function Index() {
                 cta: "Choisir Starter",
                 variant: "default" as const,
                 highlight: false,
+                note: null,
               },
               {
                 nom: "Essentiel",
@@ -451,6 +462,7 @@ function Index() {
                 cta: "Choisir Essentiel",
                 variant: "default" as const,
                 highlight: false,
+                note: null,
               },
               {
                 nom: "Pro",
@@ -460,6 +472,7 @@ function Index() {
                 cta: "Choisir Pro",
                 variant: "default" as const,
                 highlight: true,
+                note: null,
               },
               {
                 nom: "Business",
@@ -469,6 +482,7 @@ function Index() {
                 cta: "Choisir Business",
                 variant: "default" as const,
                 highlight: false,
+                note: null,
               },
             ].map((plan) => {
               const isFree = plan.base === 0;
@@ -495,6 +509,9 @@ function Index() {
                     Économisez 20% — facturé annuellement
                   </p>
                 )}
+                {plan.note && (
+                  <p className="mt-1 text-xs font-semibold text-primary">{plan.note}</p>
+                )}
                 <p className="mt-1 text-[11px] text-muted-foreground">
                   Sans engagement • Annulation à tout moment
                 </p>
@@ -512,7 +529,9 @@ function Index() {
                   variant={plan.variant}
                   asChild
                 >
-                  <Link to="/register">{plan.cta}</Link>
+                  <Link to="/register" search={{ plan: plan.nom.toLowerCase() }}>
+                    {plan.cta}
+                  </Link>
                 </Button>
               </div>
             );})}
@@ -532,7 +551,7 @@ function Index() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {[
               { icon: Lock, title: "Connexion sécurisée (SSL)", desc: "Vos échanges sont chiffrés de bout en bout." },
-              { icon: Server, title: "Hébergement européen", desc: "Infrastructure conforme RGPD avec sauvegardes quotidiennes." },
+              { icon: Server, title: "Données protégées où que vous soyez", desc: "Vos données sont hébergées et protégées selon les standards européens (RGPD), avec sauvegardes quotidiennes." },
               { icon: ShieldCheck, title: "Adapté au Sénégal", desc: "Mentions légales et fiscales prêtes pour vos documents." },
               { icon: CreditCard, title: "Paiements sécurisés", desc: "Wave, Orange Money et carte bancaire pris en charge." },
               { icon: HeadphonesIcon, title: "Support réactif", desc: "Une équipe qui vous répond sous 4h ouvrées." },
@@ -721,7 +740,7 @@ function InvoiceMockup() {
               <span className="font-bold text-slate-900">TERA-DEVIS</span>
             </div>
             <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">
-              DEV-2026-001
+              DEV-2026-042
             </span>
           </div>
           <div className="mt-4">
@@ -737,9 +756,15 @@ function InvoiceMockup() {
               </span>
             </div>
             <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Maintenance mensuelle</span>
+              <span className="text-slate-700">Maintenance mensuelle × 3</span>
               <span className="whitespace-nowrap font-medium text-slate-900">
-                25 000 FCFA
+                75 000 FCFA
+              </span>
+            </div>
+            <div className="flex items-start justify-between gap-3 py-2">
+              <span className="text-slate-700">Formation utilisateurs</span>
+              <span className="whitespace-nowrap font-medium text-slate-900">
+                35 000 FCFA
               </span>
             </div>
           </div>
@@ -747,7 +772,7 @@ function InvoiceMockup() {
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Total
             </span>
-            <span className="text-base font-bold text-slate-900">175 000 FCFA</span>
+            <span className="text-base font-bold text-slate-900">260 000 FCFA</span>
           </div>
           <div className="mt-4 flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
