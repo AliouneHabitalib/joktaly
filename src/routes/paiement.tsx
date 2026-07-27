@@ -26,9 +26,9 @@ import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 export const Route = createFileRoute("/paiement")({
   component: PaiementPage,
   validateSearch: (search: Record<string, unknown>) => ({
-    plan: typeof search.plan === "string" ? search.plan : undefined,
-    cycle: search.cycle === "yearly" ? ("yearly" as const) : ("monthly" as const),
-    statut: typeof search.statut === "string" ? search.statut : undefined,
+    plan: (typeof search.plan === "string" ? search.plan : undefined) as string | undefined,
+    cycle: (search.cycle === "yearly" ? "yearly" : "monthly") as "monthly" | "yearly",
+    statut: (typeof search.statut === "string" ? search.statut : undefined) as string | undefined,
   }),
   head: () => ({
     meta: [

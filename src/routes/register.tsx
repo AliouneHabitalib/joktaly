@@ -11,8 +11,8 @@ import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
   validateSearch: (search: Record<string, unknown>) => ({
-    plan: typeof search.plan === "string" ? search.plan : undefined,
-    cycle: search.cycle === "yearly" ? ("yearly" as const) : undefined,
+    plan: (typeof search.plan === "string" ? search.plan : undefined) as string | undefined,
+    cycle: (search.cycle === "yearly" ? "yearly" : undefined) as "yearly" | undefined,
   }),
   head: () => ({
     meta: [
@@ -92,7 +92,7 @@ function RegisterPage() {
     if (errEnt) return toast.error(errEnt.message);
     toast.success("Compte créé avec succès");
     if (isPaidPlan(normalizePlan(plan))) {
-      navigate({ to: "/paiement", search: { plan: normalizePlan(plan)!, cycle: cycle ?? "monthly" } });
+      navigate({ to: "/paiement", search: { plan: normalizePlan(plan)!, cycle: cycle ?? "monthly", statut: undefined } });
       return;
     }
     navigate({ to: "/dashboard" });
