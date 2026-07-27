@@ -529,7 +529,7 @@ function Index() {
                   variant={plan.variant}
                   asChild
                 >
-                  <Link to="/register" search={{ plan: plan.nom.toLowerCase() }}>
+                  <Link to="/register" search={{ plan: plan.nom.toLowerCase(), cycle: billing === "yearly" ? "yearly" : undefined }}>
                     {plan.cta}
                   </Link>
                 </Button>
