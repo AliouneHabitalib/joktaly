@@ -433,6 +433,7 @@ function Index() {
                 cta: "Commencer gratuitement",
                 variant: "outline" as const,
                 highlight: false,
+                note: "Gratuit à vie, sans limite de durée",
               },
               {
                 nom: "Starter",
@@ -442,6 +443,7 @@ function Index() {
                 cta: "Choisir Starter",
                 variant: "default" as const,
                 highlight: false,
+                note: null,
               },
               {
                 nom: "Essentiel",
@@ -451,6 +453,7 @@ function Index() {
                 cta: "Choisir Essentiel",
                 variant: "default" as const,
                 highlight: false,
+                note: null,
               },
               {
                 nom: "Pro",
@@ -460,6 +463,7 @@ function Index() {
                 cta: "Choisir Pro",
                 variant: "default" as const,
                 highlight: true,
+                note: null,
               },
               {
                 nom: "Business",
@@ -469,6 +473,7 @@ function Index() {
                 cta: "Choisir Business",
                 variant: "default" as const,
                 highlight: false,
+                note: null,
               },
             ].map((plan) => {
               const isFree = plan.base === 0;
@@ -495,6 +500,9 @@ function Index() {
                     Économisez 20% — facturé annuellement
                   </p>
                 )}
+                {plan.note && (
+                  <p className="mt-1 text-xs font-semibold text-primary">{plan.note}</p>
+                )}
                 <p className="mt-1 text-[11px] text-muted-foreground">
                   Sans engagement • Annulation à tout moment
                 </p>
@@ -512,7 +520,9 @@ function Index() {
                   variant={plan.variant}
                   asChild
                 >
-                  <Link to="/register">{plan.cta}</Link>
+                  <Link to="/register" search={{ plan: plan.nom.toLowerCase() }}>
+                    {plan.cta}
+                  </Link>
                 </Button>
               </div>
             );})}
@@ -532,7 +542,7 @@ function Index() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {[
               { icon: Lock, title: "Connexion sécurisée (SSL)", desc: "Vos échanges sont chiffrés de bout en bout." },
-              { icon: Server, title: "Hébergement européen", desc: "Infrastructure conforme RGPD avec sauvegardes quotidiennes." },
+              { icon: Server, title: "Données protégées où que vous soyez", desc: "Vos données sont hébergées et protégées selon les standards européens (RGPD), avec sauvegardes quotidiennes." },
               { icon: ShieldCheck, title: "Adapté au Sénégal", desc: "Mentions légales et fiscales prêtes pour vos documents." },
               { icon: CreditCard, title: "Paiements sécurisés", desc: "Wave, Orange Money et carte bancaire pris en charge." },
               { icon: HeadphonesIcon, title: "Support réactif", desc: "Une équipe qui vous répond sous 4h ouvrées." },
