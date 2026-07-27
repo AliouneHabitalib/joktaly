@@ -1,4 +1,4 @@
-export type PlanType = "gratuit" | "starter" | "pro" | "business";
+export type PlanType = "gratuit" | "starter" | "essentiel" | "pro" | "business";
 
 export interface PlanConfig {
   id: PlanType;
@@ -62,6 +62,29 @@ export const PLANS: Record<PlanType, PlanConfig> = {
       "Produits et services illimités",
       "Conversion devis en facture",
       "Export PDF professionnel",
+      "Support par email",
+    ],
+  },
+  essentiel: {
+    id: "essentiel",
+    nom: "Essentiel",
+    prix_fcfa: 6000,
+    prix_usd: 10,
+    limites: {
+      devis_par_mois: 20,
+      factures_par_mois: 10,
+      clients_max: 50,
+      utilisateurs: 1,
+      statistiques_avancees: false,
+      rappels_auto: true,
+      api_access: false,
+    },
+    features: [
+      "20 devis par mois",
+      "10 factures par mois",
+      "50 clients",
+      "Rappels automatiques",
+      "Modèles personnalisés",
       "Support par email",
     ],
   },

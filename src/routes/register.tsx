@@ -5,12 +5,14 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { isPaidPlan, normalizePlan } from "@/lib/pricing";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
   validateSearch: (search: Record<string, unknown>) => ({
-    plan: typeof search.plan === "string" ? search.plan : undefined,
+    plan: (typeof search.plan === "string" ? search.plan : undefined) as string | undefined,
+    cycle: (search.cycle === "yearly" ? "yearly" : "monthly") as "monthly" | "yearly" | undefined,
   }),
   head: () => ({
     meta: [
@@ -52,7 +54,7 @@ export const Route = createFileRoute("/register")({
 
 function RegisterPage() {
   const navigate = useNavigate();
-  const { plan } = Route.useSearch();
+  const { plan, cycle } = Route.useSearch();
   const planLabel = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : null;
   const [form, setForm] = useState({
     nom: "",
@@ -89,6 +91,10 @@ function RegisterPage() {
     setLoading(false);
     if (errEnt) return toast.error(errEnt.message);
     toast.success("Compte créé avec succès");
+    if (isPaidPlan(normalizePlan(plan))) {
+      navigate({ to: "/paiement", search: { plan: normalizePlan(plan)!, cycle: cycle ?? "monthly", statut: undefined } });
+      return;
+    }
     navigate({ to: "/dashboard" });
   };
 

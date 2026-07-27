@@ -99,7 +99,7 @@ function Index() {
               className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-md"
               asChild
             >
-              <Link to="/register">Essayer gratuitement</Link>
+              <Link to="/register" search={{ plan: undefined, cycle: undefined }}>Essayer gratuitement</Link>
             </Button>
           </div>
         </div>
@@ -126,7 +126,7 @@ function Index() {
                 className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
                 asChild
               >
-                <Link to="/register">
+                <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
                   Créer mon premier devis gratuit <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -205,7 +205,7 @@ function Index() {
             </div>
           </div>
           <div className="mx-auto mt-8 max-w-md text-center">
-            <Link to="/register">
+            <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
               <Button
                 size="lg"
                 className="w-full text-white hover:opacity-90"
@@ -529,7 +529,7 @@ function Index() {
                   variant={plan.variant}
                   asChild
                 >
-                  <Link to="/register" search={{ plan: plan.nom.toLowerCase() }}>
+                  <Link to="/register" search={{ plan: plan.nom.toLowerCase(), cycle: billing === "yearly" ? "yearly" : undefined }}>
                     {plan.cta}
                   </Link>
                 </Button>
@@ -580,7 +580,7 @@ function Index() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button size="lg" asChild>
-              <Link to="/register">
+              <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
                 Essayer gratuitement <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
@@ -709,7 +709,7 @@ function Index() {
                 className="mt-5 w-full bg-accent text-accent-foreground hover:bg-accent/90"
                 asChild
               >
-                <Link to="/register">Recevoir mes modèles gratuits</Link>
+                <Link to="/register" search={{ plan: undefined, cycle: undefined }}>Recevoir mes modèles gratuits</Link>
               </Button>
               <button
                 onClick={() => setShowExitPopup(false)}
