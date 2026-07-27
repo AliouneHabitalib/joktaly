@@ -36,13 +36,6 @@ export const getSubscriptionStatus = createServerFn({ method: "GET" })
     };
   });
 
-export const startCheckout = createServerFn({ method: "POST" })
-  .middleware([requireSupabaseAuth])
-  .inputValidator((data: { plan: string; cycle: string }) => data)
-  .handler(async ({ data, context }) => {
-    return startCheckoutImpl(data, context);
-  });
-
 /** Enregistre l'intention d'abonnement payant (bloque l'accès au dashboard). */
 export const selectPaidPlan = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
@@ -96,7 +89,7 @@ export const selectPaidPlan = createServerFn({ method: "POST" })
     return { ok: true as const, alreadyActive: false as const };
   });
 
-const _startCheckoutLegacy = createServerFn({ method: "POST" })
+export const startCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .inputValidator((data: { plan: string; cycle: string }) => data)
   .handler(async ({ data, context }) => {
