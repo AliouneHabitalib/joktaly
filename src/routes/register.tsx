@@ -9,6 +9,9 @@ import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
+  validateSearch: (search: Record<string, unknown>) => ({
+    plan: typeof search.plan === "string" ? search.plan : undefined,
+  }),
   head: () => ({
     meta: [
       { title: "Créer un compte — TERA-DEVIS" },
@@ -49,6 +52,8 @@ export const Route = createFileRoute("/register")({
 
 function RegisterPage() {
   const navigate = useNavigate();
+  const { plan } = Route.useSearch();
+  const planLabel = plan ? plan.charAt(0).toUpperCase() + plan.slice(1) : null;
   const [form, setForm] = useState({
     nom: "",
     email: "",
@@ -99,6 +104,11 @@ function RegisterPage() {
           </Link>
           <h1 className="mt-4 text-2xl font-bold">Créer un compte</h1>
           <p className="text-sm text-muted-foreground">Commencez gratuitement, sans carte bancaire</p>
+          {planLabel && (
+            <p className="mt-3 inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              Plan sélectionné : {planLabel}
+            </p>
+          )}
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
