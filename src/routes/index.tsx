@@ -192,8 +192,16 @@ function Index() {
               Explorez TERA-DEVIS sans créer de compte.
             </p>
           </div>
-          <div className="mt-10">
-            <InteractiveDemo />
+          <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center">
+            <div className="w-full flex-1">
+              <InteractiveDemo />
+            </div>
+            <div className="flex flex-col items-center">
+              <MobileMockup />
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                La même app dans votre poche
+              </p>
+            </div>
           </div>
           <div className="mx-auto mt-8 max-w-md text-center">
             <Link to="/register">
