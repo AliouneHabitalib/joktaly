@@ -721,7 +721,7 @@ function InvoiceMockup() {
               <span className="font-bold text-slate-900">TERA-DEVIS</span>
             </div>
             <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">
-              DEV-2026-001
+              DEV-2026-042
             </span>
           </div>
           <div className="mt-4">
@@ -737,9 +737,15 @@ function InvoiceMockup() {
               </span>
             </div>
             <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Maintenance mensuelle</span>
+              <span className="text-slate-700">Maintenance mensuelle × 3</span>
               <span className="whitespace-nowrap font-medium text-slate-900">
-                25 000 FCFA
+                75 000 FCFA
+              </span>
+            </div>
+            <div className="flex items-start justify-between gap-3 py-2">
+              <span className="text-slate-700">Formation utilisateurs</span>
+              <span className="whitespace-nowrap font-medium text-slate-900">
+                35 000 FCFA
               </span>
             </div>
           </div>
@@ -747,7 +753,7 @@ function InvoiceMockup() {
             <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
               Total
             </span>
-            <span className="text-base font-bold text-slate-900">175 000 FCFA</span>
+            <span className="text-base font-bold text-slate-900">260 000 FCFA</span>
           </div>
           <div className="mt-4 flex items-center gap-2">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
