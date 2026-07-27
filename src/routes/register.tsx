@@ -12,7 +12,7 @@ export const Route = createFileRoute("/register")({
   component: RegisterPage,
   validateSearch: (search: Record<string, unknown>) => ({
     plan: (typeof search.plan === "string" ? search.plan : undefined) as string | undefined,
-    cycle: (search.cycle === "yearly" ? "yearly" : undefined) as "yearly" | undefined,
+    cycle: (search.cycle === "yearly" ? "yearly" : "monthly") as "monthly" | "yearly" | undefined,
   }),
   head: () => ({
     meta: [

@@ -83,7 +83,7 @@ function LoginPage() {
         </form>
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Pas encore de compte ?{" "}
-          <Link to="/register" className="font-medium text-primary hover:underline">Créer un compte</Link>
+          <Link to="/register" search={{ plan: undefined, cycle: undefined }} className="font-medium text-primary hover:underline">Créer un compte</Link>
         </p>
       </div>
     </div>
