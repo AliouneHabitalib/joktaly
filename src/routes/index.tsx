@@ -500,12 +500,16 @@ function Index() {
                   </span>
                 )}
                 <h3 className="text-lg font-semibold">{plan.nom}</h3>
-                <div className="mt-2 flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">{display.toLocaleString("fr-FR")}</span>
-                  <span className="text-sm text-muted-foreground">FCFA / mois</span>
+                <div className="mt-3 flex h-12 items-end gap-1.5 sm:h-14">
+                  <span className="text-[1.65rem] font-bold leading-none tracking-tight tabular-nums sm:text-3xl">
+                    {display.toLocaleString("fr-FR")}
+                  </span>
+                  <span className="mb-0.5 whitespace-nowrap text-sm text-muted-foreground">
+                    FCFA / mois
+                  </span>
                 </div>
                 {!isFree && billing === "yearly" && (
-                  <p className="mt-1 text-xs text-accent font-medium">
+                  <p className="mt-1 text-xs font-medium text-accent">
                     Économisez 20% — facturé annuellement
                   </p>
                 )}
