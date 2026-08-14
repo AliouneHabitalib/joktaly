@@ -682,17 +682,8 @@ function Index() {
         </div>
       </footer>
 
-      {/* WhatsApp chat widget */}
-      <a
-        href="https://wa.me/221772292392?text=Bonjour%2C%20j'ai%20une%20question%20sur%20TERA-DEVIS"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Discuter sur WhatsApp"
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105"
-      >
-        <MessageCircle className="h-5 w-5" />
-        <span className="hidden sm:inline">Une question ?</span>
-      </a>
+      {/* Assistant IA en ligne */}
+      <AiChatWidget />
 
       {/* Exit intent popup */}
       {showExitPopup && (
