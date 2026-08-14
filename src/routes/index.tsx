@@ -110,20 +110,27 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-        <div className="container mx-auto grid gap-10 px-4 py-14 text-white sm:py-20 md:grid-cols-2 md:items-center md:gap-12 md:py-24">
+        <div
+          className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="container relative mx-auto grid gap-12 px-4 py-14 text-white sm:py-20 md:grid-cols-2 md:items-center md:py-24">
           <div className="text-center md:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur sm:text-sm">
               <Check className="h-3.5 w-3.5 text-accent" />
-              <span>Rejoignez les premiers entrepreneurs qui facturent plus vite avec TERA-DEVIS</span>
+              <span>Fait à Dakar, pour les entrepreneurs d'Afrique francophone</span>
             </div>
-            <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-6xl">
-              Devis & factures pour les <span className="text-accent">PME africaines</span>
+            <h1 className="mt-5 text-[2rem] font-bold leading-[1.1] sm:text-5xl md:text-6xl">
+              Vous faites le travail.
+              <br />
+              <span className="text-accent">Nous faisons la paperasse.</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base text-white/90 sm:text-lg md:mx-0">
-              Créez vos devis et factures en quelques clics, envoyez-les par WhatsApp,
-              et suivez vos paiements. Conçu pour le Sénégal et l'Afrique francophone.
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg md:mx-0">
+              Aminata, couturière à Dakar, envoie son devis avant même que le client
+              ne quitte sa boutique. Devis, factures, relances : tout se fait depuis
+              votre téléphone, en français et en FCFA.
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3 sm:mt-8 md:justify-start">
+            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
               <Button
                 size="lg"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
@@ -152,14 +159,14 @@ function Index() {
               {["Wave", "Orange Money", "Free Money"].map((p) => (
                 <span
                   key={p}
-                  className="inline-flex items-center rounded-md bg-white/95 px-2.5 py-1 text-xs font-semibold text-slate-800 shadow-sm"
+                  className="inline-flex items-center rounded-md bg-card px-2.5 py-1 text-xs font-semibold text-card-foreground shadow-sm"
                 >
                   {p}
                 </span>
               ))}
             </div>
           </div>
-          <InvoiceMockup />
+          <HeroVisual />
         </div>
       </section>
 
