@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/accordion";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { MobileMockup } from "@/components/mobile-mockup";
+import { AiChatWidget } from "@/components/ai-chat-widget";
+import heroImage from "@/assets/hero-entrepreneur.jpg";
+import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 import {
@@ -31,7 +34,6 @@ import {
   Lock,
   HeadphonesIcon,
   Server,
-  MessageCircle,
   X,
   BadgeCheck,
   PlayCircle,
@@ -107,20 +109,27 @@ function Index() {
 
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ background: "var(--gradient-hero)" }}>
-        <div className="container mx-auto grid gap-10 px-4 py-14 text-white sm:py-20 md:grid-cols-2 md:items-center md:gap-12 md:py-24">
+        <div
+          className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div className="container relative mx-auto grid gap-12 px-4 py-14 text-white sm:py-20 md:grid-cols-2 md:items-center md:py-24">
           <div className="text-center md:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur sm:text-sm">
               <Check className="h-3.5 w-3.5 text-accent" />
-              <span>Rejoignez les premiers entrepreneurs qui facturent plus vite avec TERA-DEVIS</span>
+              <span>Fait à Dakar, pour les entrepreneurs d'Afrique francophone</span>
             </div>
-            <h1 className="mt-5 text-3xl font-bold leading-tight sm:text-4xl md:text-6xl">
-              Devis & factures pour les <span className="text-accent">PME africaines</span>
+            <h1 className="mt-5 text-[2rem] font-bold leading-[1.1] sm:text-5xl md:text-6xl">
+              Vous faites le travail.
+              <br />
+              <span className="text-accent">Nous faisons la paperasse.</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base text-white/90 sm:text-lg md:mx-0">
-              Créez vos devis et factures en quelques clics, envoyez-les par WhatsApp,
-              et suivez vos paiements. Conçu pour le Sénégal et l'Afrique francophone.
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg md:mx-0">
+              Aminata, couturière à Dakar, envoie son devis avant même que le client
+              ne quitte sa boutique. Devis, factures, relances : tout se fait depuis
+              votre téléphone, en français et en FCFA.
             </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-3 sm:mt-8 md:justify-start">
+            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
               <Button
                 size="lg"
                 className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
@@ -149,14 +158,14 @@ function Index() {
               {["Wave", "Orange Money", "Free Money"].map((p) => (
                 <span
                   key={p}
-                  className="inline-flex items-center rounded-md bg-white/95 px-2.5 py-1 text-xs font-semibold text-slate-800 shadow-sm"
+                  className="inline-flex items-center rounded-md bg-card px-2.5 py-1 text-xs font-semibold text-card-foreground shadow-sm"
                 >
                   {p}
                 </span>
               ))}
             </div>
           </div>
-          <InvoiceMockup />
+          <HeroVisual />
         </div>
       </section>
 
@@ -177,20 +186,18 @@ function Index() {
       </section>
 
       {/* Voir l'app en action — démo interactive */}
-      <section id="demo" className="py-20" style={{ backgroundColor: "#f8f9ff" }}>
+      <section id="demo" className="bg-muted/40 py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
-            <span
-              className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
-              style={{ backgroundColor: "#e0e4f7", color: "#1B2A6B" }}
-            >
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
               Démo interactive
             </span>
-            <h2 className="mt-3 text-3xl font-bold md:text-4xl" style={{ color: "#1B2A6B" }}>
-              Voir l'app en action
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+              Un vrai devis de chantier, du premier clic à l'envoi
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Explorez TERA-DEVIS sans créer de compte.
+              Exemple réel : rénovation de bureaux à Dakar, remise, TVA 18 % et suivi des
+              paiements. Cliquez, tout est interactif — sans créer de compte.
             </p>
           </div>
           <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center">
@@ -205,15 +212,11 @@ function Index() {
             </div>
           </div>
           <div className="mx-auto mt-8 max-w-md text-center">
-            <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
-              <Button
-                size="lg"
-                className="w-full text-white hover:opacity-90"
-                style={{ backgroundColor: "#1B2A6B" }}
-              >
-                Créer mon compte gratuitement →
-              </Button>
-            </Link>
+            <Button size="lg" className="w-full" asChild>
+              <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
+                Créer mon compte gratuitement <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
             <p className="mt-3 text-xs text-muted-foreground">
               Gratuit · Aucune carte requise · Prêt en 2 minutes
             </p>
@@ -345,8 +348,7 @@ function Index() {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-full font-semibold"
-                  style={{ backgroundColor: "#1B2A6B", color: "#C9A84C" }}
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary font-semibold text-secondary-foreground"
                   aria-hidden="true"
                 >
                   {t.initiales}
@@ -672,17 +674,8 @@ function Index() {
         </div>
       </footer>
 
-      {/* WhatsApp chat widget */}
-      <a
-        href="https://wa.me/221772292392?text=Bonjour%2C%20j'ai%20une%20question%20sur%20TERA-DEVIS"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Discuter sur WhatsApp"
-        className="fixed bottom-5 right-5 z-40 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 text-sm font-semibold text-white shadow-lg transition-transform hover:scale-105"
-      >
-        <MessageCircle className="h-5 w-5" />
-        <span className="hidden sm:inline">Une question ?</span>
-      </a>
+      {/* Assistant IA en ligne */}
+      <AiChatWidget />
 
       {/* Exit intent popup */}
       {showExitPopup && (
@@ -729,62 +722,45 @@ function Index() {
   );
 }
 
-function InvoiceMockup() {
+function HeroVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-sm md:max-w-md">
+    <div className="relative mx-auto w-full max-w-md md:max-w-lg">
       <div
-        className="pointer-events-none absolute -inset-4 rounded-3xl bg-accent/20 blur-2xl"
+        className="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-accent/20 blur-3xl"
         aria-hidden="true"
       />
-      <div className="relative rounded-[2rem] border border-white/20 bg-slate-900/60 p-3 shadow-2xl ring-1 ring-white/10 backdrop-blur">
-        <div className="rounded-[1.5rem] bg-white p-5 text-slate-800 shadow-xl sm:p-6">
-          <div className="flex items-center justify-between border-b pb-3">
-            <div className="flex items-center gap-2">
-              <img src={logoAsset.url} alt="Logo TERA-DEVIS — pied de page" className="h-7 w-7 object-contain" />
-              <span className="font-bold text-slate-900">TERA-DEVIS</span>
-            </div>
-            <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">
-              DEV-2026-042
-            </span>
+      <figure className="relative overflow-hidden rounded-[2rem] border border-white/20 shadow-2xl ring-1 ring-white/10">
+        <img
+          src={heroImage}
+          alt="Aminata, entrepreneure à Dakar, envoie un devis à sa cliente depuis son téléphone"
+          width={1280}
+          height={1280}
+          className="aspect-[4/5] w-full object-cover sm:aspect-square"
+        />
+        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-left text-xs text-white/90">
+          Aminata S. — Teranga Atelier, Dakar
+        </figcaption>
+      </figure>
+
+      {/* Carte devis flottante */}
+      <div className="absolute -bottom-8 -left-2 w-[15rem] rounded-2xl border bg-card p-3.5 text-card-foreground shadow-2xl sm:-left-8 sm:w-[17rem] sm:p-4">
+        <div className="flex items-center justify-between gap-2 border-b pb-2">
+          <div className="flex items-center gap-2">
+            <img src={logoAsset.url} alt="" className="h-6 w-6 object-contain" />
+            <span className="text-sm font-bold">TERA-DEVIS</span>
           </div>
-          <div className="mt-4">
-            <p className="text-[11px] uppercase tracking-wide text-slate-400">Client</p>
-            <p className="text-sm font-semibold text-slate-900">Entreprise Sow & Fils</p>
-            <p className="text-xs text-slate-500">Dakar, Sénégal</p>
-          </div>
-          <div className="mt-4 divide-y text-sm">
-            <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Conception site web</span>
-              <span className="whitespace-nowrap font-medium text-slate-900">
-                150 000 FCFA
-              </span>
-            </div>
-            <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Maintenance mensuelle × 3</span>
-              <span className="whitespace-nowrap font-medium text-slate-900">
-                75 000 FCFA
-              </span>
-            </div>
-            <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Formation utilisateurs</span>
-              <span className="whitespace-nowrap font-medium text-slate-900">
-                35 000 FCFA
-              </span>
-            </div>
-          </div>
-          <div className="mt-3 flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Total
-            </span>
-            <span className="text-base font-bold text-slate-900">260 000 FCFA</span>
-          </div>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-              <Send className="h-3 w-3" />
-              Envoyé par WhatsApp
-            </span>
-          </div>
+          <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+            {DEMO_DEVIS.numero}
+          </span>
         </div>
+        <p className="mt-2.5 truncate text-xs font-semibold">{DEMO_DEVIS.client}</p>
+        <div className="mt-2 flex items-center justify-between rounded-lg bg-primary/10 px-2.5 py-2 text-primary">
+          <span className="text-[10px] font-semibold uppercase tracking-wide">Total TTC</span>
+          <span className="text-sm font-bold tabular-nums">{fmtFcfa(DEMO_DEVIS.total)}</span>
+        </div>
+        <span className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-success/15 px-2.5 py-1 text-[11px] font-semibold text-success">
+          <Send className="h-3 w-3" /> Envoyé en 2 minutes
+        </span>
       </div>
     </div>
   );
