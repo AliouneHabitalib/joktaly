@@ -187,20 +187,18 @@ function Index() {
       </section>
 
       {/* Voir l'app en action — démo interactive */}
-      <section id="demo" className="py-20" style={{ backgroundColor: "#f8f9ff" }}>
+      <section id="demo" className="bg-muted/40 py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
-            <span
-              className="inline-block rounded-full px-3 py-1 text-xs font-semibold"
-              style={{ backgroundColor: "#e0e4f7", color: "#1B2A6B" }}
-            >
+            <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
               Démo interactive
             </span>
-            <h2 className="mt-3 text-3xl font-bold md:text-4xl" style={{ color: "#1B2A6B" }}>
-              Voir l'app en action
+            <h2 className="mt-3 text-3xl font-bold md:text-4xl">
+              Un vrai devis de chantier, du premier clic à l'envoi
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Explorez TERA-DEVIS sans créer de compte.
+              Exemple réel : rénovation de bureaux à Dakar, remise, TVA 18 % et suivi des
+              paiements. Cliquez, tout est interactif — sans créer de compte.
             </p>
           </div>
           <div className="mt-10 flex flex-col items-center gap-8 lg:flex-row lg:items-center lg:justify-center">
@@ -215,15 +213,11 @@ function Index() {
             </div>
           </div>
           <div className="mx-auto mt-8 max-w-md text-center">
-            <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
-              <Button
-                size="lg"
-                className="w-full text-white hover:opacity-90"
-                style={{ backgroundColor: "#1B2A6B" }}
-              >
-                Créer mon compte gratuitement →
-              </Button>
-            </Link>
+            <Button size="lg" className="w-full" asChild>
+              <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
+                Créer mon compte gratuitement <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
             <p className="mt-3 text-xs text-muted-foreground">
               Gratuit · Aucune carte requise · Prêt en 2 minutes
             </p>
