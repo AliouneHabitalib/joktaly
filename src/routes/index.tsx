@@ -739,62 +739,45 @@ function Index() {
   );
 }
 
-function InvoiceMockup() {
+function HeroVisual() {
   return (
-    <div className="relative mx-auto w-full max-w-sm md:max-w-md">
+    <div className="relative mx-auto w-full max-w-md md:max-w-lg">
       <div
-        className="pointer-events-none absolute -inset-4 rounded-3xl bg-accent/20 blur-2xl"
+        className="pointer-events-none absolute -inset-6 rounded-[2.5rem] bg-accent/20 blur-3xl"
         aria-hidden="true"
       />
-      <div className="relative rounded-[2rem] border border-white/20 bg-slate-900/60 p-3 shadow-2xl ring-1 ring-white/10 backdrop-blur">
-        <div className="rounded-[1.5rem] bg-white p-5 text-slate-800 shadow-xl sm:p-6">
-          <div className="flex items-center justify-between border-b pb-3">
-            <div className="flex items-center gap-2">
-              <img src={logoAsset.url} alt="Logo TERA-DEVIS — pied de page" className="h-7 w-7 object-contain" />
-              <span className="font-bold text-slate-900">TERA-DEVIS</span>
-            </div>
-            <span className="rounded-md bg-slate-100 px-2 py-1 text-xs font-mono text-slate-600">
-              DEV-2026-042
-            </span>
+      <figure className="relative overflow-hidden rounded-[2rem] border border-white/20 shadow-2xl ring-1 ring-white/10">
+        <img
+          src={heroImage}
+          alt="Aminata, entrepreneure à Dakar, envoie un devis à sa cliente depuis son téléphone"
+          width={1280}
+          height={1280}
+          className="aspect-[4/5] w-full object-cover sm:aspect-square"
+        />
+        <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-left text-xs text-white/90">
+          Aminata S. — Teranga Atelier, Dakar
+        </figcaption>
+      </figure>
+
+      {/* Carte devis flottante */}
+      <div className="absolute -bottom-8 -left-2 w-[15rem] rounded-2xl border bg-card p-3.5 text-card-foreground shadow-2xl sm:-left-8 sm:w-[17rem] sm:p-4">
+        <div className="flex items-center justify-between gap-2 border-b pb-2">
+          <div className="flex items-center gap-2">
+            <img src={logoAsset.url} alt="" className="h-6 w-6 object-contain" />
+            <span className="text-sm font-bold">TERA-DEVIS</span>
           </div>
-          <div className="mt-4">
-            <p className="text-[11px] uppercase tracking-wide text-slate-400">Client</p>
-            <p className="text-sm font-semibold text-slate-900">Entreprise Sow & Fils</p>
-            <p className="text-xs text-slate-500">Dakar, Sénégal</p>
-          </div>
-          <div className="mt-4 divide-y text-sm">
-            <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Conception site web</span>
-              <span className="whitespace-nowrap font-medium text-slate-900">
-                150 000 FCFA
-              </span>
-            </div>
-            <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Maintenance mensuelle × 3</span>
-              <span className="whitespace-nowrap font-medium text-slate-900">
-                75 000 FCFA
-              </span>
-            </div>
-            <div className="flex items-start justify-between gap-3 py-2">
-              <span className="text-slate-700">Formation utilisateurs</span>
-              <span className="whitespace-nowrap font-medium text-slate-900">
-                35 000 FCFA
-              </span>
-            </div>
-          </div>
-          <div className="mt-3 flex items-center justify-between rounded-lg bg-slate-50 px-3 py-2">
-            <span className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Total
-            </span>
-            <span className="text-base font-bold text-slate-900">260 000 FCFA</span>
-          </div>
-          <div className="mt-4 flex items-center gap-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-2.5 py-1 text-xs font-semibold text-emerald-700">
-              <Send className="h-3 w-3" />
-              Envoyé par WhatsApp
-            </span>
-          </div>
+          <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
+            {DEMO_DEVIS.numero}
+          </span>
         </div>
+        <p className="mt-2.5 truncate text-xs font-semibold">{DEMO_DEVIS.client}</p>
+        <div className="mt-2 flex items-center justify-between rounded-lg bg-primary/10 px-2.5 py-2 text-primary">
+          <span className="text-[10px] font-semibold uppercase tracking-wide">Total TTC</span>
+          <span className="text-sm font-bold tabular-nums">{fmtFcfa(DEMO_DEVIS.total)}</span>
+        </div>
+        <span className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-success/15 px-2.5 py-1 text-[11px] font-semibold text-success">
+          <Send className="h-3 w-3" /> Envoyé en 2 minutes
+        </span>
       </div>
     </div>
   );
