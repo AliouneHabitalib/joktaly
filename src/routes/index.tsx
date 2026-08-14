@@ -11,6 +11,9 @@ import {
 } from "@/components/ui/accordion";
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { MobileMockup } from "@/components/mobile-mockup";
+import { AiChatWidget } from "@/components/ai-chat-widget";
+import heroImage from "@/assets/hero-entrepreneur.jpg";
+import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 import {
