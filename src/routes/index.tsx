@@ -34,7 +34,6 @@ import {
   Lock,
   HeadphonesIcon,
   Server,
-  MessageCircle,
   X,
   BadgeCheck,
   PlayCircle,
