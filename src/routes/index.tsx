@@ -349,8 +349,7 @@ function Index() {
             >
               <div className="flex items-center gap-3">
                 <div
-                  className="flex h-12 w-12 items-center justify-center rounded-full font-semibold"
-                  style={{ backgroundColor: "#1B2A6B", color: "#C9A84C" }}
+                  className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary font-semibold text-secondary-foreground"
                   aria-hidden="true"
                 >
                   {t.initiales}
