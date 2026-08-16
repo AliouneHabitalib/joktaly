@@ -227,15 +227,15 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   // ============ TABLEAU DES LIGNES ============
   autoTable(pdf, {
     startY: oy + 2,
-    head: [["N°", "Description", "Qté", "Unité", "P.U. HT", "TVA", "Total TTC"]],
+    head: [["#", "Description", "Qté", "Unité", "P.U. HT", "TVA", "Total TTC"]],
     body: doc.lignes.map((l, i) => [
       String(i + 1),
       l.description,
       formatNumberQte(l.quantite),
       l.unite,
-      formatMontant(l.prix_unitaire, devise),
+      money(l.prix_unitaire, devise),
       doc.tva_active ? `${l.tva_taux}%` : "—",
-      formatMontant(l.total_ttc, devise),
+      money(l.total_ttc, devise),
     ]),
     theme: "grid",
     styles: {
@@ -258,7 +258,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
     },
     alternateRowStyles: { fillColor: [250, 251, 251] },
     columnStyles: {
-      0: { halign: "center", cellWidth: 9, textColor: muted },
+      0: { halign: "center", cellWidth: 11, textColor: muted },
       1: { cellWidth: "auto" },
       2: { halign: "right", cellWidth: 14 },
       3: { halign: "center", cellWidth: 18, textColor: muted },
@@ -276,11 +276,11 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   const labelX = pageW - margin - totalsW;
   const valueX = pageW - margin;
 
-  const rows: [string, string][] = [["Sous-total HT", formatMontant(doc.sous_total, devise)]];
+  const rows: [string, string][] = [["Sous-total HT", money(doc.sous_total, devise)]];
   if (doc.remise_montant > 0)
-    rows.push(["Remise", `- ${formatMontant(doc.remise_montant, devise)}`]);
+    rows.push(["Remise", `- ${money(doc.remise_montant, devise)}`]);
   if (doc.tva_active && doc.montant_tva > 0)
-    rows.push(["TVA", formatMontant(doc.montant_tva, devise)]);
+    rows.push(["TVA", money(doc.montant_tva, devise)]);
 
   const totalsH = rows.length * 6.5 + (doc.tva_active ? 0 : 5) + 20;
   if (ty + totalsH > pageH - 26) {
@@ -312,7 +312,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.setFontSize(10);
   pdf.text("TOTAL TTC", labelX, ty + 8.4);
   pdf.setFontSize(12);
-  pdf.text(formatMontant(doc.total_ttc, devise), valueX, ty + 8.6, { align: "right" });
+  pdf.text(money(doc.total_ttc, devise), valueX, ty + 8.6, { align: "right" });
   ty += 22;
 
   // ============ NOTES / CONDITIONS ============
@@ -363,6 +363,11 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   }
 
   return pdf;
+}
+
+function money(v: number, devise: string): string {
+  // Remplace les espaces insécables/fines par des espaces normaux (police PDF)
+  return formatMontant(v, devise).replace(/[\u202F\u00A0]/g, " ");
 }
 
 function formatNumberQte(n: number): string {
