@@ -55,7 +55,8 @@ const newLigne = (): LigneDraft => ({
 
 function FactureEditorPage() {
   const { id } = Route.useParams();
-  const isNew = id === "new";
+  const isNew = id === "new" || id === "nouvelle" || id === "nouveau";
+  const isValidId = isNew || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   const { user } = useAuth();
   const { data: entreprise } = useEntreprise(user?.id);
   const qc = useQueryClient();
@@ -109,9 +110,10 @@ function FactureEditorPage() {
     },
   });
 
-  const { data: existing, isLoading: loadingExisting } = useQuery({
+  const { data: existing, isLoading: loadingExisting, error: existingError } = useQuery({
     queryKey: ["facture", id],
-    enabled: !isNew,
+    enabled: !isNew && isValidId,
+    retry: false,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("factures")
@@ -125,7 +127,7 @@ function FactureEditorPage() {
 
   const { data: paiements = [], refetch: refetchPaiements } = useQuery({
     queryKey: ["paiements", id],
-    enabled: !isNew,
+    enabled: !isNew && isValidId,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("paiements")
@@ -329,6 +331,25 @@ function FactureEditorPage() {
     },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  if (!isNew && (!isValidId || existingError)) {
+    return (
+      <div className="mx-auto max-w-xl rounded-2xl border bg-card p-8 text-center shadow-[var(--shadow-card)]">
+        <h1 className="text-xl font-semibold">Facture introuvable</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Cette facture n'existe plus ou le lien est incorrect.
+        </p>
+        <div className="mt-6 flex justify-center gap-2">
+          <Button asChild>
+            <Link to="/factures">Retour aux factures</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to="/factures/$id" params={{ id: "new" }}>Nouvelle facture</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   if (!isNew && loadingExisting) {
     return <div className="text-muted-foreground">Chargement…</div>;
