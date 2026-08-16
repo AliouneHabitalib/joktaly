@@ -58,8 +58,8 @@ export function InteractiveDemo() {
               }`}
             >
               <Icon className={`h-4 w-4 shrink-0 transition-transform duration-200 ${active ? "scale-110" : ""}`} />
-              <span className="hidden xs:inline sm:inline">{label}</span>
-              <span className="sr-only">{label}</span>
+              <span className="hidden sm:inline">{label}</span>
+              <span className="text-[11px] sm:hidden">{label}</span>
               {active && (
                 <span className="absolute inset-x-2 bottom-0 h-0.5 animate-scale-in rounded-full bg-primary" />
               )}
