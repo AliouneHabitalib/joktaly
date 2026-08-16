@@ -247,6 +247,25 @@ function DevisEditorPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  if (!isNew && (!isValidId || existingError)) {
+    return (
+      <div className="mx-auto max-w-xl rounded-2xl border bg-card p-8 text-center shadow-[var(--shadow-card)]">
+        <h1 className="text-xl font-semibold">Devis introuvable</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Ce devis n'existe plus ou le lien est incorrect.
+        </p>
+        <div className="mt-6 flex justify-center gap-2">
+          <Button asChild>
+            <Link to="/devis">Retour aux devis</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to="/devis/$id" params={{ id: "new" }}>Nouveau devis</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (!isNew && loadingExisting) {
     return <div className="text-muted-foreground">Chargement…</div>;
   }
