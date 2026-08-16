@@ -55,7 +55,8 @@ const newLigne = (): LigneDraft => ({
 
 function FactureEditorPage() {
   const { id } = Route.useParams();
-  const isNew = id === "new";
+  const isNew = id === "new" || id === "nouvelle" || id === "nouveau";
+  const isValidId = isNew || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   const { user } = useAuth();
   const { data: entreprise } = useEntreprise(user?.id);
   const qc = useQueryClient();
@@ -109,9 +110,10 @@ function FactureEditorPage() {
     },
   });
 
-  const { data: existing, isLoading: loadingExisting } = useQuery({
+  const { data: existing, isLoading: loadingExisting, error: existingError } = useQuery({
     queryKey: ["facture", id],
-    enabled: !isNew,
+    enabled: !isNew && isValidId,
+    retry: false,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("factures")
@@ -125,7 +127,7 @@ function FactureEditorPage() {
 
   const { data: paiements = [], refetch: refetchPaiements } = useQuery({
     queryKey: ["paiements", id],
-    enabled: !isNew,
+    enabled: !isNew && isValidId,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("paiements")
