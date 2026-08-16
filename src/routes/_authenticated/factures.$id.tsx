@@ -332,6 +332,25 @@ function FactureEditorPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  if (!isNew && (!isValidId || existingError)) {
+    return (
+      <div className="mx-auto max-w-xl rounded-2xl border bg-card p-8 text-center shadow-[var(--shadow-card)]">
+        <h1 className="text-xl font-semibold">Facture introuvable</h1>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Cette facture n'existe plus ou le lien est incorrect.
+        </p>
+        <div className="mt-6 flex justify-center gap-2">
+          <Button asChild>
+            <Link to="/factures">Retour aux factures</Link>
+          </Button>
+          <Button variant="outline" asChild>
+            <Link to="/factures/$id" params={{ id: "new" }}>Nouvelle facture</Link>
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   if (!isNew && loadingExisting) {
     return <div className="text-muted-foreground">Chargement…</div>;
   }
