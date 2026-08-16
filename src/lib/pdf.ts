@@ -312,7 +312,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.setFontSize(10);
   pdf.text("TOTAL TTC", labelX, ty + 8.4);
   pdf.setFontSize(12);
-  pdf.text(money(doc.total_ttc, devise), valueX, ty + 8.6, { align: "right" });
+  pdf.text(money(doc.total_ttc, devise), valueX - 4, ty + 8.6, { align: "right" });
   ty += 22;
 
   // ============ NOTES / CONDITIONS ============
