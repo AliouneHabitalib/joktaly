@@ -39,7 +39,8 @@ const newLigne = (): LigneDraft => ({
 
 function DevisEditorPage() {
   const { id } = Route.useParams();
-  const isNew = id === "new";
+  const isNew = id === "new" || id === "nouveau";
+  const isValidId = isNew || /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id);
   const { user } = useAuth();
   const { data: entreprise } = useEntreprise(user?.id);
   const qc = useQueryClient();
@@ -88,9 +89,10 @@ function DevisEditorPage() {
   });
 
   // Load existing devis
-  const { data: existing, isLoading: loadingExisting } = useQuery({
+  const { data: existing, isLoading: loadingExisting, error: existingError } = useQuery({
     queryKey: ["devis", id],
-    enabled: !isNew,
+    enabled: !isNew && isValidId,
+    retry: false,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("devis")
