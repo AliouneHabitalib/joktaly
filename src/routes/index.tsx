@@ -502,8 +502,8 @@ function Index() {
                   </span>
                 )}
                 <h3 className="text-lg font-semibold">{plan.nom}</h3>
-                <div className="mt-3 flex h-12 items-end gap-1.5 sm:h-14">
-                  <span className="text-[1.65rem] font-bold leading-none tracking-tight tabular-nums sm:text-3xl">
+                <div className="mt-3 flex h-10 items-end gap-1.5 sm:h-11">
+                  <span className="text-[1.5rem] font-bold leading-none tracking-tight tabular-nums whitespace-nowrap sm:text-[1.65rem]">
                     {display.toLocaleString("fr-FR")}
                   </span>
                   <span className="mb-0.5 whitespace-nowrap text-sm text-muted-foreground">
