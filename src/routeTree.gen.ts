@@ -16,6 +16,7 @@ import { Route as PaiementRouteImport } from './routes/paiement'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
+import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/devis'
 import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticated/factures'
@@ -23,6 +24,7 @@ import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
 import { Route as AuthenticatedClientsIndexRouteImport } from './routes/_authenticated/clients.index'
+import { Route as AuthenticatedClientsIdRouteImport } from './routes/_authenticated/clients.$id'
 import { Route as AuthenticatedDevisIndexRouteImport } from './routes/_authenticated/devis.index'
 import { Route as AuthenticatedDevisIdRouteImport } from './routes/_authenticated/devis.$id'
 import { Route as AuthenticatedFacturesIndexRouteImport } from './routes/_authenticated/factures.index'
@@ -66,6 +68,11 @@ const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
   path: '/aide',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedClientsRoute = AuthenticatedClientsRouteImport.update({
+  id: '/clients',
+  path: '/clients',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -100,10 +107,15 @@ const AuthenticatedAdminJournalRoute =
   } as any)
 const AuthenticatedClientsIndexRoute =
   AuthenticatedClientsIndexRouteImport.update({
-    id: '/clients/',
-    path: '/clients/',
-    getParentRoute: () => AuthenticatedRoute,
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedClientsRoute,
   } as any)
+const AuthenticatedClientsIdRoute = AuthenticatedClientsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedClientsRoute,
+} as any)
 const AuthenticatedDevisIndexRoute = AuthenticatedDevisIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -156,12 +168,14 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/aide': typeof AuthenticatedAideRoute
+  '/clients': typeof AuthenticatedClientsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/devis': typeof AuthenticatedDevisRouteWithChildren
   '/factures': typeof AuthenticatedFacturesRouteWithChildren
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
+  '/clients/$id': typeof AuthenticatedClientsIdRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
   '/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
@@ -183,6 +197,7 @@ export interface FileRoutesByTo {
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
+  '/clients/$id': typeof AuthenticatedClientsIdRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
   '/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
@@ -202,12 +217,14 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/aide': typeof AuthenticatedAideRoute
+  '/_authenticated/clients': typeof AuthenticatedClientsRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/devis': typeof AuthenticatedDevisRouteWithChildren
   '/_authenticated/factures': typeof AuthenticatedFacturesRouteWithChildren
   '/_authenticated/produits': typeof AuthenticatedProduitsRoute
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
   '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
+  '/_authenticated/clients/$id': typeof AuthenticatedClientsIdRoute
   '/_authenticated/devis/$id': typeof AuthenticatedDevisIdRoute
   '/_authenticated/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/_authenticated/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
@@ -227,12 +244,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/sitemap.xml'
     | '/aide'
+    | '/clients'
     | '/dashboard'
     | '/devis'
     | '/factures'
     | '/produits'
     | '/statistiques'
     | '/admin/journal'
+    | '/clients/$id'
     | '/devis/$id'
     | '/factures/$id'
     | '/parametres/entreprise'
@@ -254,6 +273,7 @@ export interface FileRouteTypes {
     | '/produits'
     | '/statistiques'
     | '/admin/journal'
+    | '/clients/$id'
     | '/devis/$id'
     | '/factures/$id'
     | '/parametres/entreprise'
@@ -272,12 +292,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/sitemap.xml'
     | '/_authenticated/aide'
+    | '/_authenticated/clients'
     | '/_authenticated/dashboard'
     | '/_authenticated/devis'
     | '/_authenticated/factures'
     | '/_authenticated/produits'
     | '/_authenticated/statistiques'
     | '/_authenticated/admin/journal'
+    | '/_authenticated/clients/$id'
     | '/_authenticated/devis/$id'
     | '/_authenticated/factures/$id'
     | '/_authenticated/parametres/entreprise'
@@ -352,6 +374,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAideRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/clients': {
+      id: '/_authenticated/clients'
+      path: '/clients'
+      fullPath: '/clients'
+      preLoaderRoute: typeof AuthenticatedClientsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -396,10 +425,17 @@ declare module '@tanstack/react-router' {
     }
     '/_authenticated/clients/': {
       id: '/_authenticated/clients/'
-      path: '/clients'
+      path: '/'
       fullPath: '/clients/'
       preLoaderRoute: typeof AuthenticatedClientsIndexRouteImport
-      parentRoute: typeof AuthenticatedRoute
+      parentRoute: typeof AuthenticatedClientsRoute
+    }
+    '/_authenticated/clients/$id': {
+      id: '/_authenticated/clients/$id'
+      path: '/$id'
+      fullPath: '/clients/$id'
+      preLoaderRoute: typeof AuthenticatedClientsIdRouteImport
+      parentRoute: typeof AuthenticatedClientsRoute
     }
     '/_authenticated/devis/': {
       id: '/_authenticated/devis/'
@@ -460,6 +496,19 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedClientsRouteChildren {
+  AuthenticatedClientsIdRoute: typeof AuthenticatedClientsIdRoute
+  AuthenticatedClientsIndexRoute: typeof AuthenticatedClientsIndexRoute
+}
+
+const AuthenticatedClientsRouteChildren: AuthenticatedClientsRouteChildren = {
+  AuthenticatedClientsIdRoute: AuthenticatedClientsIdRoute,
+  AuthenticatedClientsIndexRoute: AuthenticatedClientsIndexRoute,
+}
+
+const AuthenticatedClientsRouteWithChildren =
+  AuthenticatedClientsRoute._addFileChildren(AuthenticatedClientsRouteChildren)
+
 interface AuthenticatedDevisRouteChildren {
   AuthenticatedDevisIdRoute: typeof AuthenticatedDevisIdRoute
   AuthenticatedDevisIndexRoute: typeof AuthenticatedDevisIndexRoute
@@ -490,6 +539,7 @@ const AuthenticatedFacturesRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAideRoute: typeof AuthenticatedAideRoute
+  AuthenticatedClientsRoute: typeof AuthenticatedClientsRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDevisRoute: typeof AuthenticatedDevisRouteWithChildren
   AuthenticatedFacturesRoute: typeof AuthenticatedFacturesRouteWithChildren
@@ -497,11 +547,11 @@ interface AuthenticatedRouteChildren {
   AuthenticatedStatistiquesRoute: typeof AuthenticatedStatistiquesRoute
   AuthenticatedAdminJournalRoute: typeof AuthenticatedAdminJournalRoute
   AuthenticatedParametresEntrepriseRoute: typeof AuthenticatedParametresEntrepriseRoute
-  AuthenticatedClientsIndexRoute: typeof AuthenticatedClientsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAideRoute: AuthenticatedAideRoute,
+  AuthenticatedClientsRoute: AuthenticatedClientsRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDevisRoute: AuthenticatedDevisRouteWithChildren,
   AuthenticatedFacturesRoute: AuthenticatedFacturesRouteWithChildren,
@@ -510,7 +560,6 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminJournalRoute: AuthenticatedAdminJournalRoute,
   AuthenticatedParametresEntrepriseRoute:
     AuthenticatedParametresEntrepriseRoute,
-  AuthenticatedClientsIndexRoute: AuthenticatedClientsIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
