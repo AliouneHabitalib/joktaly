@@ -30,7 +30,7 @@ import { Plus, Search, Pencil, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant } from "@/lib/format";
 
-export const Route = createFileRoute("/_authenticated/clients")({
+export const Route = createFileRoute("/_authenticated/clients/")({
   component: ClientsPage,
 });
 

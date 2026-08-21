@@ -16,13 +16,13 @@ import { Route as PaiementRouteImport } from './routes/paiement'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
-import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/devis'
 import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticated/factures'
 import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticated/produits'
 import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
+import { Route as AuthenticatedClientsIndexRouteImport } from './routes/_authenticated/clients.index'
 import { Route as AuthenticatedDevisIndexRouteImport } from './routes/_authenticated/devis.index'
 import { Route as AuthenticatedDevisIdRouteImport } from './routes/_authenticated/devis.$id'
 import { Route as AuthenticatedFacturesIndexRouteImport } from './routes/_authenticated/factures.index'
@@ -66,11 +66,6 @@ const AuthenticatedAideRoute = AuthenticatedAideRouteImport.update({
   path: '/aide',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
-const AuthenticatedClientsRoute = AuthenticatedClientsRouteImport.update({
-  id: '/clients',
-  path: '/clients',
-  getParentRoute: () => AuthenticatedRoute,
-} as any)
 const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -101,6 +96,12 @@ const AuthenticatedAdminJournalRoute =
   AuthenticatedAdminJournalRouteImport.update({
     id: '/admin/journal',
     path: '/admin/journal',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
+const AuthenticatedClientsIndexRoute =
+  AuthenticatedClientsIndexRouteImport.update({
+    id: '/clients/',
+    path: '/clients/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
 const AuthenticatedDevisIndexRoute = AuthenticatedDevisIndexRouteImport.update({
@@ -155,7 +156,6 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/aide': typeof AuthenticatedAideRoute
-  '/clients': typeof AuthenticatedClientsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/devis': typeof AuthenticatedDevisRouteWithChildren
   '/factures': typeof AuthenticatedFacturesRouteWithChildren
@@ -166,6 +166,7 @@ export interface FileRoutesByFullPath {
   '/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
   '/print/devis/$id': typeof PrintDevisIdRoute
+  '/clients/': typeof AuthenticatedClientsIndexRoute
   '/devis/': typeof AuthenticatedDevisIndexRoute
   '/factures/': typeof AuthenticatedFacturesIndexRoute
   '/api/public/hooks/paydunya-ipn': typeof ApiPublicHooksPaydunyaIpnRoute
@@ -178,7 +179,6 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/aide': typeof AuthenticatedAideRoute
-  '/clients': typeof AuthenticatedClientsRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
@@ -187,6 +187,7 @@ export interface FileRoutesByTo {
   '/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
   '/print/devis/$id': typeof PrintDevisIdRoute
+  '/clients': typeof AuthenticatedClientsIndexRoute
   '/devis': typeof AuthenticatedDevisIndexRoute
   '/factures': typeof AuthenticatedFacturesIndexRoute
   '/api/public/hooks/paydunya-ipn': typeof ApiPublicHooksPaydunyaIpnRoute
@@ -201,7 +202,6 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/aide': typeof AuthenticatedAideRoute
-  '/_authenticated/clients': typeof AuthenticatedClientsRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/devis': typeof AuthenticatedDevisRouteWithChildren
   '/_authenticated/factures': typeof AuthenticatedFacturesRouteWithChildren
@@ -212,6 +212,7 @@ export interface FileRoutesById {
   '/_authenticated/factures/$id': typeof AuthenticatedFacturesIdRoute
   '/_authenticated/parametres/entreprise': typeof AuthenticatedParametresEntrepriseRoute
   '/print/devis/$id': typeof PrintDevisIdRoute
+  '/_authenticated/clients/': typeof AuthenticatedClientsIndexRoute
   '/_authenticated/devis/': typeof AuthenticatedDevisIndexRoute
   '/_authenticated/factures/': typeof AuthenticatedFacturesIndexRoute
   '/api/public/hooks/paydunya-ipn': typeof ApiPublicHooksPaydunyaIpnRoute
@@ -226,7 +227,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/sitemap.xml'
     | '/aide'
-    | '/clients'
     | '/dashboard'
     | '/devis'
     | '/factures'
@@ -237,6 +237,7 @@ export interface FileRouteTypes {
     | '/factures/$id'
     | '/parametres/entreprise'
     | '/print/devis/$id'
+    | '/clients/'
     | '/devis/'
     | '/factures/'
     | '/api/public/hooks/paydunya-ipn'
@@ -249,7 +250,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/sitemap.xml'
     | '/aide'
-    | '/clients'
     | '/dashboard'
     | '/produits'
     | '/statistiques'
@@ -258,6 +258,7 @@ export interface FileRouteTypes {
     | '/factures/$id'
     | '/parametres/entreprise'
     | '/print/devis/$id'
+    | '/clients'
     | '/devis'
     | '/factures'
     | '/api/public/hooks/paydunya-ipn'
@@ -271,7 +272,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/sitemap.xml'
     | '/_authenticated/aide'
-    | '/_authenticated/clients'
     | '/_authenticated/dashboard'
     | '/_authenticated/devis'
     | '/_authenticated/factures'
@@ -282,6 +282,7 @@ export interface FileRouteTypes {
     | '/_authenticated/factures/$id'
     | '/_authenticated/parametres/entreprise'
     | '/print/devis/$id'
+    | '/_authenticated/clients/'
     | '/_authenticated/devis/'
     | '/_authenticated/factures/'
     | '/api/public/hooks/paydunya-ipn'
@@ -351,13 +352,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAideRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/clients': {
-      id: '/_authenticated/clients'
-      path: '/clients'
-      fullPath: '/clients'
-      preLoaderRoute: typeof AuthenticatedClientsRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/dashboard': {
       id: '/_authenticated/dashboard'
       path: '/dashboard'
@@ -398,6 +392,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/journal'
       fullPath: '/admin/journal'
       preLoaderRoute: typeof AuthenticatedAdminJournalRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/clients/': {
+      id: '/_authenticated/clients/'
+      path: '/clients'
+      fullPath: '/clients/'
+      preLoaderRoute: typeof AuthenticatedClientsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/devis/': {
@@ -489,7 +490,6 @@ const AuthenticatedFacturesRouteWithChildren =
 
 interface AuthenticatedRouteChildren {
   AuthenticatedAideRoute: typeof AuthenticatedAideRoute
-  AuthenticatedClientsRoute: typeof AuthenticatedClientsRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDevisRoute: typeof AuthenticatedDevisRouteWithChildren
   AuthenticatedFacturesRoute: typeof AuthenticatedFacturesRouteWithChildren
@@ -497,11 +497,11 @@ interface AuthenticatedRouteChildren {
   AuthenticatedStatistiquesRoute: typeof AuthenticatedStatistiquesRoute
   AuthenticatedAdminJournalRoute: typeof AuthenticatedAdminJournalRoute
   AuthenticatedParametresEntrepriseRoute: typeof AuthenticatedParametresEntrepriseRoute
+  AuthenticatedClientsIndexRoute: typeof AuthenticatedClientsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAideRoute: AuthenticatedAideRoute,
-  AuthenticatedClientsRoute: AuthenticatedClientsRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDevisRoute: AuthenticatedDevisRouteWithChildren,
   AuthenticatedFacturesRoute: AuthenticatedFacturesRouteWithChildren,
@@ -510,6 +510,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAdminJournalRoute: AuthenticatedAdminJournalRoute,
   AuthenticatedParametresEntrepriseRoute:
     AuthenticatedParametresEntrepriseRoute,
+  AuthenticatedClientsIndexRoute: AuthenticatedClientsIndexRoute,
 }
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
