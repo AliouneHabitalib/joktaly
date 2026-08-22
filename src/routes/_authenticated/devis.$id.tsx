@@ -16,13 +16,26 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
-import { Plus, Trash2, ArrowLeft, Save, Download } from "lucide-react";
+import { Plus, Trash2, ArrowLeft, Save, Download, MessageCircle, FileCheck2 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, addDays, toDateInput } from "@/lib/format";
 import { calculerTotaux, type LigneDraft } from "@/lib/devis-facture-shared";
 import { buildPdfDoc } from "@/lib/devis-facture-shared";
 import { downloadPdf } from "@/lib/pdf";
 import { getEntrepriseExtras } from "@/lib/entreprise-extras";
+import { buildDocumentMessage } from "@/lib/whatsapp";
+import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
+import { convertDevisToFacture } from "@/lib/convert-devis";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 export const Route = createFileRoute("/_authenticated/devis/$id")({
   component: DevisEditorPage,
@@ -288,15 +301,23 @@ function DevisEditorPage() {
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {!isNew && (
-            <Button
-              variant="outline"
-              onClick={() => save.mutate({ thenDownload: true })}
-              disabled={save.isPending}
-            >
-              <Download className="mr-1 h-4 w-4" /> Enregistrer + PDF
-            </Button>
+            <>
+              <Button
+                variant="outline"
+                onClick={() => save.mutate({ thenDownload: true })}
+                disabled={save.isPending}
+              >
+                <Download className="mr-1 h-4 w-4" /> Enregistrer + PDF
+              </Button>
+              <Button variant="outline" onClick={openWhatsapp}>
+                <MessageCircle className="mr-1 h-4 w-4" /> WhatsApp
+              </Button>
+              <Button variant="outline" onClick={() => setConvertOpen(true)}>
+                <FileCheck2 className="mr-1 h-4 w-4" /> Convertir en facture
+              </Button>
+            </>
           )}
           <Button onClick={() => save.mutate({})} disabled={save.isPending}>
             <Save className="mr-1 h-4 w-4" />

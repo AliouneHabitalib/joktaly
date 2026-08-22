@@ -45,6 +45,10 @@ import { toast } from "sonner";
 import { formatMontant, formatDate } from "@/lib/format";
 import { downloadPdf } from "@/lib/pdf";
 import { buildPdfDoc } from "@/lib/devis-facture-shared";
+import { buildDocumentMessage } from "@/lib/whatsapp";
+import { convertDevisToFacture } from "@/lib/convert-devis";
+import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/devis/")({
   component: DevisListPage,
@@ -88,6 +92,8 @@ function DevisListPage() {
   const [statut, setStatut] = useState<string>("all");
   const [toDelete, setToDelete] = useState<DevisRow | null>(null);
   const [converting, setConverting] = useState<DevisRow | null>(null);
+  const [waPayload, setWaPayload] = useState<WhatsappSharePayload | null>(null);
+
 
   const { data: devis = [], isLoading } = useQuery({
     queryKey: ["devis", entreprise?.id],
@@ -150,79 +156,29 @@ function DevisListPage() {
       .select("whatsapp, telephone, nom, prenom")
       .eq("id", d.client_id)
       .single();
-    const phoneRaw = client?.whatsapp || client?.telephone;
-    if (!phoneRaw) {
-      toast.error("Aucun numéro WhatsApp/téléphone pour ce client");
-      return;
-    }
-    const phone = phoneRaw.replace(/\D/g, "");
-    const greeting = `Bonjour ${client?.prenom ?? client?.nom ?? ""}`.trim();
-    const msg = `${greeting},\n\nVeuillez trouver ci-joint le devis ${d.numero} d'un montant de ${formatMontant(d.total_ttc, entreprise.devise ?? "FCFA")}.\n\nCordialement,\n${entreprise.nom}`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+    setWaPayload({
+      phone: client?.whatsapp || client?.telephone || "",
+      title: `Envoyer le devis ${d.numero}`,
+      message: buildDocumentMessage({
+        type: "devis",
+        numero: d.numero,
+        montant: Number(d.total_ttc),
+        devise: entreprise.devise,
+        clientNom: client?.prenom || client?.nom || null,
+        entrepriseNom: entreprise.nom,
+      }),
+    });
   };
 
   const handleConvert = async (d: DevisRow) => {
     if (!entreprise) return;
     try {
-      // Fetch devis + lignes
-      const { data: full, error: e1 } = await supabase
-        .from("devis")
-        .select("*, devis_lignes(*)")
-        .eq("id", d.id)
-        .single();
-      if (e1 || !full) throw e1 ?? new Error("Devis introuvable");
-
-      // Generate numero
-      const { data: numero, error: nerr } = await supabase.rpc("next_facture_numero", {
-        _entreprise_id: entreprise.id,
-      });
-      if (nerr) throw nerr;
-
-      const { data: facture, error: e2 } = await supabase
-        .from("factures")
-        .insert({
-          entreprise_id: entreprise.id,
-          client_id: full.client_id,
-          devis_id: full.id,
-          numero: numero as string,
-          titre: full.titre,
-          objet: full.objet,
-          tva_active: full.tva_active,
-          tva_taux: full.tva_taux,
-          remise_pourcent: full.remise_pourcent,
-          remise_montant: full.remise_montant,
-          sous_total: full.sous_total,
-          montant_tva: full.montant_tva,
-          total_ttc: full.total_ttc,
-          notes: full.notes,
-          conditions_paiement: full.conditions_paiement,
-        })
-        .select()
-        .single();
-      if (e2) throw e2;
-
-      const lignes = (full.devis_lignes ?? []).map((l: any) => ({
-        facture_id: facture.id,
-        description: l.description,
-        quantite: l.quantite,
-        unite: l.unite,
-        prix_unitaire: l.prix_unitaire,
-        tva_taux: l.tva_taux,
-        total_ht: l.total_ht,
-        total_ttc: l.total_ttc,
-        ordre: l.ordre,
-      }));
-      if (lignes.length) {
-        const { error: e3 } = await supabase.from("factures_lignes").insert(lignes);
-        if (e3) throw e3;
-      }
-
-      // Mark devis as accepte
-      await supabase.from("devis").update({ statut: "accepte" }).eq("id", d.id);
-
+      const { factureId, numero } = await convertDevisToFacture(d.id, entreprise.id);
       toast.success(`Facture ${numero} créée`);
+      qc.invalidateQueries({ queryKey: ["devis"] });
+      qc.invalidateQueries({ queryKey: ["factures"] });
       setConverting(null);
-      navigate({ to: "/factures" });
+      navigate({ to: "/factures/$id", params: { id: factureId } });
     } catch (e) {
       toast.error((e as Error).message);
       setConverting(null);
@@ -271,9 +227,7 @@ function DevisListPage() {
       </div>
 
       {isLoading ? (
-        <div className="rounded-2xl border bg-card p-8 text-center text-muted-foreground">
-          Chargement…
-        </div>
+        <ListSkeleton />
       ) : filtered.length === 0 ? (
         <div className="rounded-2xl border bg-card p-12 text-center">
           <FileText className="mx-auto h-12 w-12 text-muted-foreground/40" />
@@ -418,6 +372,22 @@ function DevisListPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <WhatsappShareDialog payload={waPayload} onOpenChange={(o) => !o && setWaPayload(null)} />
+    </div>
+  );
+}
+
+export function ListSkeleton() {
+  return (
+    <div className="space-y-2 rounded-2xl border bg-card p-4 shadow-[var(--shadow-card)]">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3">
+          <Skeleton className="h-10 flex-1" />
+          <Skeleton className="hidden h-10 w-32 sm:block" />
+          <Skeleton className="h-10 w-24" />
+        </div>
+      ))}
     </div>
   );
 }
