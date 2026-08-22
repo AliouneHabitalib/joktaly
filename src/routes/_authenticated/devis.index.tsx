@@ -91,6 +91,8 @@ function DevisListPage() {
   const [statut, setStatut] = useState<string>("all");
   const [toDelete, setToDelete] = useState<DevisRow | null>(null);
   const [converting, setConverting] = useState<DevisRow | null>(null);
+  const [waPayload, setWaPayload] = useState<WhatsappSharePayload | null>(null);
+
 
   const { data: devis = [], isLoading } = useQuery({
     queryKey: ["devis", entreprise?.id],
@@ -153,15 +155,18 @@ function DevisListPage() {
       .select("whatsapp, telephone, nom, prenom")
       .eq("id", d.client_id)
       .single();
-    const phoneRaw = client?.whatsapp || client?.telephone;
-    if (!phoneRaw) {
-      toast.error("Aucun numéro WhatsApp/téléphone pour ce client");
-      return;
-    }
-    const phone = phoneRaw.replace(/\D/g, "");
-    const greeting = `Bonjour ${client?.prenom ?? client?.nom ?? ""}`.trim();
-    const msg = `${greeting},\n\nVeuillez trouver ci-joint le devis ${d.numero} d'un montant de ${formatMontant(d.total_ttc, entreprise.devise ?? "FCFA")}.\n\nCordialement,\n${entreprise.nom}`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+    setWaPayload({
+      phone: client?.whatsapp || client?.telephone || "",
+      title: `Envoyer le devis ${d.numero}`,
+      message: buildDocumentMessage({
+        type: "devis",
+        numero: d.numero,
+        montant: Number(d.total_ttc),
+        devise: entreprise.devise,
+        clientNom: client?.prenom || client?.nom || null,
+        entrepriseNom: entreprise.nom,
+      }),
+    });
   };
 
   const handleConvert = async (d: DevisRow) => {
