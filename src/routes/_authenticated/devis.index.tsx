@@ -46,6 +46,7 @@ import { formatMontant, formatDate } from "@/lib/format";
 import { downloadPdf } from "@/lib/pdf";
 import { buildPdfDoc } from "@/lib/devis-facture-shared";
 import { buildDocumentMessage } from "@/lib/whatsapp";
+import { convertDevisToFacture } from "@/lib/convert-devis";
 import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 
