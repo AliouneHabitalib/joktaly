@@ -279,9 +279,7 @@ function DevisListPage() {
       </div>
 
       {isLoading ? (
-        <div className="rounded-2xl border bg-card p-8 text-center text-muted-foreground">
-          Chargement…
-        </div>
+        <ListSkeleton />
       ) : filtered.length === 0 ? (
         <div className="rounded-2xl border bg-card p-12 text-center">
           <FileText className="mx-auto h-12 w-12 text-muted-foreground/40" />
