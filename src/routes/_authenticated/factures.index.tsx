@@ -89,6 +89,7 @@ function FacturesListPage() {
   const [search, setSearch] = useState("");
   const [statut, setStatut] = useState<string>("all");
   const [toDelete, setToDelete] = useState<FactureRow | null>(null);
+  const [waPayload, setWaPayload] = useState<WhatsappSharePayload | null>(null);
 
   const { data: factures = [], isLoading } = useQuery({
     queryKey: ["factures", entreprise?.id],
@@ -162,21 +163,19 @@ function FacturesListPage() {
       .select("whatsapp, telephone, nom, prenom")
       .eq("id", f.client_id)
       .single();
-    const phoneRaw = client?.whatsapp || client?.telephone;
-    if (!phoneRaw) {
-      toast.error("Aucun numéro WhatsApp/téléphone pour ce client");
-      return;
-    }
-    const phone = phoneRaw.replace(/\D/g, "");
-    const reste = Number(f.total_ttc) - Number(f.montant_paye);
-    const greeting = `Bonjour ${client?.prenom ?? client?.nom ?? ""}`.trim();
-    const msg =
-      `${greeting},\n\nVoici la facture ${f.numero} d'un montant de ${formatMontant(f.total_ttc, entreprise.devise ?? "FCFA")}.` +
-      (reste > 0 && reste < f.total_ttc
-        ? `\nReste à payer : ${formatMontant(reste, entreprise.devise ?? "FCFA")}.`
-        : "") +
-      `\n\nMerci pour votre confiance,\n${entreprise.nom}`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+    setWaPayload({
+      phone: client?.whatsapp || client?.telephone || "",
+      title: `Envoyer la facture ${f.numero}`,
+      message: buildDocumentMessage({
+        type: "facture",
+        numero: f.numero,
+        montant: Number(f.total_ttc),
+        reste: Number(f.total_ttc) - Number(f.montant_paye),
+        devise: entreprise.devise,
+        clientNom: client?.prenom || client?.nom || null,
+        entrepriseNom: entreprise.nom,
+      }),
+    });
   };
 
   return (
