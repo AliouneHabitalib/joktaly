@@ -424,6 +424,22 @@ function DevisListPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      <WhatsappShareDialog payload={waPayload} onOpenChange={(o) => !o && setWaPayload(null)} />
+    </div>
+  );
+}
+
+export function ListSkeleton() {
+  return (
+    <div className="space-y-2 rounded-2xl border bg-card p-4 shadow-[var(--shadow-card)]">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3">
+          <Skeleton className="h-10 flex-1" />
+          <Skeleton className="hidden h-10 w-32 sm:block" />
+          <Skeleton className="h-10 w-24" />
+        </div>
+      ))}
     </div>
   );
 }
