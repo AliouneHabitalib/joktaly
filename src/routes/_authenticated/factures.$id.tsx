@@ -24,10 +24,13 @@ import {
   Download,
   Wallet,
   Mail,
+  MessageCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate, addDays, toDateInput } from "@/lib/format";
 import { calculerTotaux, buildPdfDoc, type LigneDraft } from "@/lib/devis-facture-shared";
+import { buildDocumentMessage } from "@/lib/whatsapp";
+import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
 import { downloadPdf } from "@/lib/pdf";
 
 export const Route = createFileRoute("/_authenticated/factures/$id")({
