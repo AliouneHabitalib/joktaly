@@ -180,6 +180,35 @@ function FactureEditorPage() {
   );
   const reste = (existing ? Number(existing.total_ttc) : totaux.total_ttc) - totalPaye;
 
+  const [waPayload, setWaPayload] = useState<WhatsappSharePayload | null>(null);
+
+  const openWhatsapp = async () => {
+    if (!entreprise || !clientId) {
+      toast.error("Sélectionnez un client");
+      return;
+    }
+    const { data: client } = await supabase
+      .from("clients")
+      .select("nom, prenom, telephone, whatsapp")
+      .eq("id", clientId)
+      .single();
+    setWaPayload({
+      phone: client?.whatsapp || client?.telephone || "",
+      title: `Envoyer la facture ${(existing as any)?.numero ?? ""}`.trim(),
+      message: buildDocumentMessage({
+        type: "facture",
+        numero: (existing as any)?.numero ?? "",
+        montant: existing ? Number((existing as any).total_ttc) : totaux.total_ttc,
+        reste,
+        devise: entreprise.devise,
+        clientNom: client?.prenom || client?.nom || null,
+        entrepriseNom: entreprise.nom,
+      }),
+    });
+  };
+
+
+
   const updateLigne = (idx: number, patch: Partial<LigneDraft>) => {
     setLignes((prev) => prev.map((l, i) => (i === idx ? { ...l, ...patch } : l)));
   };
