@@ -837,6 +837,7 @@ function FactureEditorPage() {
           )}
         </div>
       )}
+      <WhatsappShareDialog payload={waPayload} onOpenChange={(o) => !o && setWaPayload(null)} />
     </div>
   );
 }
