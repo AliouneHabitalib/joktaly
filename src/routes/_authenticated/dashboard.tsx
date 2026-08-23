@@ -48,24 +48,28 @@ function DashboardPage() {
       const devisAcceptes = devis.filter((d) => d.statut === "accepte").length;
       const tauxConversion = devis.length > 0 ? Math.round((devisAcceptes / devis.length) * 100) : 0;
 
-      // CA des 6 derniers mois (basé sur date_emission, factures payées)
-      const months: { key: string; label: string; ca: number }[] = [];
+      // Facturé vs encaissé sur les 6 derniers mois (basé sur date_emission)
+      const months: { key: string; label: string; ca: number; facture: number }[] = [];
       const now = new Date();
       for (let i = 5; i >= 0; i--) {
         const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
         const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-        months.push({ key, label: d.toLocaleDateString("fr-FR", { month: "short" }), ca: 0 });
+        months.push({ key, label: d.toLocaleDateString("fr-FR", { month: "short" }), ca: 0, facture: 0 });
       }
-      for (const f of factures) {
-        if (f.statut !== "payee") continue;
+      for (const f of actives) {
         const d = new Date(f.date_emission);
         const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
         const m = months.find((x) => x.key === key);
-        if (m) m.ca += Number(f.total_ttc);
+        if (!m) continue;
+        m.facture += Number(f.total_ttc);
+        m.ca += Number(f.montant_paye);
       }
 
       return {
         ca,
+        totalFacture,
+        encaisse,
+        tauxRecouvrement,
         impayesNombre: impayes.length,
         impayesMontant,
         overdueCount: overdue.length,
