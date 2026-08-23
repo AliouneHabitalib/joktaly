@@ -36,6 +36,10 @@ function DashboardPage() {
       const factures = facturesRes.data ?? [];
       const devis = devisRes.data ?? [];
       const ca = factures.filter((f) => f.statut === "payee").reduce((s, f) => s + Number(f.total_ttc), 0);
+      const actives = factures.filter((f) => f.statut !== "annulee");
+      const totalFacture = actives.reduce((s, f) => s + Number(f.total_ttc), 0);
+      const encaisse = actives.reduce((s, f) => s + Number(f.montant_paye), 0);
+      const tauxRecouvrement = totalFacture > 0 ? Math.round((encaisse / totalFacture) * 100) : 0;
       const impayes = factures.filter((f) => f.statut !== "payee" && f.statut !== "annulee");
       const impayesMontant = impayes.reduce((s, f) => s + (Number(f.total_ttc) - Number(f.montant_paye)), 0);
       const today = new Date(); today.setHours(0,0,0,0);
