@@ -132,8 +132,8 @@ function DashboardPage() {
         <div className="rounded-2xl border bg-card p-5 shadow-[var(--shadow-card)] lg:col-span-2">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-semibold">Chiffre d'affaires — 6 derniers mois</h2>
-              <p className="text-xs text-muted-foreground">Basé sur les factures encaissées</p>
+              <h2 className="text-sm font-semibold">Facturé vs encaissé — 6 derniers mois</h2>
+              <p className="text-xs text-muted-foreground">Montants facturés et paiements reçus</p>
             </div>
             <Button size="sm" variant="ghost" asChild><Link to="/statistiques">Détails <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link></Button>
           </div>
@@ -145,14 +145,19 @@ function DashboardPage() {
                     <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
                     <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
                   </linearGradient>
+                  <linearGradient id="factureGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
+                  </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis dataKey="label" tickLine={false} axisLine={false} stroke="var(--muted-foreground)" fontSize={12} />
                 <YAxis tickLine={false} axisLine={false} stroke="var(--muted-foreground)" fontSize={12} tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
                 <Tooltip
                   contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }}
-                  formatter={(v: number) => [formatMontant(v, entreprise?.devise), "CA"]}
+                  formatter={(v: number, name) => [formatMontant(v, entreprise?.devise), name === "ca" ? "Encaissé" : "Facturé"]}
                 />
+                <Area type="monotone" dataKey="facture" stroke="var(--accent)" strokeWidth={2} fill="url(#factureGradient)" />
                 <Area type="monotone" dataKey="ca" stroke="var(--primary)" strokeWidth={2} fill="url(#caGradient)" />
               </AreaChart>
             </ResponsiveContainer>
