@@ -405,7 +405,7 @@ function FactureEditorPage() {
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {!isNew && (
             <>
               <Button
@@ -421,6 +421,9 @@ function FactureEditorPage() {
                 disabled={save.isPending}
               >
                 <Mail className="mr-1 h-4 w-4" /> Envoyer par email
+              </Button>
+              <Button variant="outline" onClick={openWhatsapp}>
+                <MessageCircle className="mr-1 h-4 w-4" /> WhatsApp
               </Button>
             </>
           )}
