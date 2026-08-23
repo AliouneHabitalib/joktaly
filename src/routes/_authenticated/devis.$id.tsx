@@ -617,6 +617,26 @@ function DevisEditorPage() {
           </div>
         </div>
       </div>
+
+      <WhatsappShareDialog payload={waPayload} onOpenChange={(o) => !o && setWaPayload(null)} />
+
+      <AlertDialog open={convertOpen} onOpenChange={setConvertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Convertir en facture ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Une facture sera créée avec les mêmes lignes et montants. Le devis sera marqué comme
+              « Accepté ». Enregistrez vos modifications avant de convertir.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConvert} disabled={converting}>
+              {converting ? "Conversion…" : "Convertir"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
