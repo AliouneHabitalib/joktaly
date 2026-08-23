@@ -119,8 +119,10 @@ function DashboardPage() {
         </div>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <KpiCard icon={TrendingUp} label="Chiffre d'affaires" value={formatMontant(stats?.ca ?? 0, entreprise?.devise)} tone="primary" />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <KpiCard icon={TrendingUp} label="Chiffre d'affaires" value={formatMontant(stats?.ca ?? 0, entreprise?.devise)} sub="Factures payées" tone="primary" />
+        <KpiCard icon={Receipt} label="Total facturé" value={formatMontant(stats?.totalFacture ?? 0, entreprise?.devise)} sub="Hors factures annulées" />
+        <KpiCard icon={Wallet} label="Encaissé" value={formatMontant(stats?.encaisse ?? 0, entreprise?.devise)} sub={`Recouvrement ${stats?.tauxRecouvrement ?? 0}%`} tone="primary" />
         <KpiCard icon={Receipt} label="Factures impayées" value={`${stats?.impayesNombre ?? 0}`} sub={formatMontant(stats?.impayesMontant ?? 0, entreprise?.devise)} tone="warning" />
         <KpiCard icon={FileText} label="Devis en attente" value={`${stats?.devisEnAttente ?? 0}`} sub={`Conversion ${stats?.tauxConversion ?? 0}%`} />
         <KpiCard icon={Users} label="Clients" value={`${stats?.clientsCount ?? 0}`} />
