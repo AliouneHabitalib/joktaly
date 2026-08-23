@@ -24,10 +24,13 @@ import {
   Download,
   Wallet,
   Mail,
+  MessageCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate, addDays, toDateInput } from "@/lib/format";
 import { calculerTotaux, buildPdfDoc, type LigneDraft } from "@/lib/devis-facture-shared";
+import { buildDocumentMessage } from "@/lib/whatsapp";
+import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
 import { downloadPdf } from "@/lib/pdf";
 
 export const Route = createFileRoute("/_authenticated/factures/$id")({
@@ -176,6 +179,35 @@ function FactureEditorPage() {
     [paiements],
   );
   const reste = (existing ? Number(existing.total_ttc) : totaux.total_ttc) - totalPaye;
+
+  const [waPayload, setWaPayload] = useState<WhatsappSharePayload | null>(null);
+
+  const openWhatsapp = async () => {
+    if (!entreprise || !clientId) {
+      toast.error("Sélectionnez un client");
+      return;
+    }
+    const { data: client } = await supabase
+      .from("clients")
+      .select("nom, prenom, telephone, whatsapp")
+      .eq("id", clientId)
+      .single();
+    setWaPayload({
+      phone: client?.whatsapp || client?.telephone || "",
+      title: `Envoyer la facture ${(existing as any)?.numero ?? ""}`.trim(),
+      message: buildDocumentMessage({
+        type: "facture",
+        numero: (existing as any)?.numero ?? "",
+        montant: existing ? Number((existing as any).total_ttc) : totaux.total_ttc,
+        reste,
+        devise: entreprise.devise,
+        clientNom: client?.prenom || client?.nom || null,
+        entrepriseNom: entreprise.nom,
+      }),
+    });
+  };
+
+
 
   const updateLigne = (idx: number, patch: Partial<LigneDraft>) => {
     setLignes((prev) => prev.map((l, i) => (i === idx ? { ...l, ...patch } : l)));
@@ -373,7 +405,7 @@ function FactureEditorPage() {
             </p>
           </div>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {!isNew && (
             <>
               <Button
@@ -389,6 +421,9 @@ function FactureEditorPage() {
                 disabled={save.isPending}
               >
                 <Mail className="mr-1 h-4 w-4" /> Envoyer par email
+              </Button>
+              <Button variant="outline" onClick={openWhatsapp}>
+                <MessageCircle className="mr-1 h-4 w-4" /> WhatsApp
               </Button>
             </>
           )}
@@ -802,6 +837,7 @@ function FactureEditorPage() {
           )}
         </div>
       )}
+      <WhatsappShareDialog payload={waPayload} onOpenChange={(o) => !o && setWaPayload(null)} />
     </div>
   );
 }

@@ -157,6 +157,52 @@ function DevisEditorPage() {
     [lignes, tvaActive, remisePourcent],
   );
 
+  const [waPayload, setWaPayload] = useState<WhatsappSharePayload | null>(null);
+  const [convertOpen, setConvertOpen] = useState(false);
+  const [converting, setConverting] = useState(false);
+
+  const openWhatsapp = async () => {
+    if (!entreprise || !clientId) {
+      toast.error("Sélectionnez un client");
+      return;
+    }
+    const { data: client } = await supabase
+      .from("clients")
+      .select("nom, prenom, telephone, whatsapp")
+      .eq("id", clientId)
+      .single();
+    setWaPayload({
+      phone: client?.whatsapp || client?.telephone || "",
+      title: `Envoyer le devis ${existing?.numero ?? ""}`.trim(),
+      message: buildDocumentMessage({
+        type: "devis",
+        numero: existing?.numero ?? "",
+        montant: totaux.total_ttc,
+        devise: entreprise.devise,
+        clientNom: client?.prenom || client?.nom || null,
+        entrepriseNom: entreprise.nom,
+      }),
+    });
+  };
+
+  const handleConvert = async () => {
+    if (!entreprise?.id) return;
+    setConverting(true);
+    try {
+      const { factureId, numero } = await convertDevisToFacture(id, entreprise.id);
+      toast.success(`Facture ${numero} créée`);
+      qc.invalidateQueries({ queryKey: ["factures"] });
+      setConvertOpen(false);
+      navigate({ to: "/factures/$id", params: { id: factureId } });
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setConverting(false);
+    }
+  };
+
+
+
   const updateLigne = (idx: number, patch: Partial<LigneDraft>) => {
     setLignes((prev) => prev.map((l, i) => (i === idx ? { ...l, ...patch } : l)));
   };
@@ -571,6 +617,26 @@ function DevisEditorPage() {
           </div>
         </div>
       </div>
+
+      <WhatsappShareDialog payload={waPayload} onOpenChange={(o) => !o && setWaPayload(null)} />
+
+      <AlertDialog open={convertOpen} onOpenChange={setConvertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Convertir en facture ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Une facture sera créée avec les mêmes lignes et montants. Le devis sera marqué comme
+              « Accepté ». Enregistrez vos modifications avant de convertir.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConvert} disabled={converting}>
+              {converting ? "Conversion…" : "Convertir"}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

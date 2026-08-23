@@ -9,7 +9,7 @@ import { formatMontant, formatDate } from "@/lib/format";
 import { PLANS } from "@/lib/plans";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { FileText, Receipt, Users, TrendingUp, Plus, AlertTriangle, ArrowRight } from "lucide-react";
+import { FileText, Receipt, Users, TrendingUp, Plus, AlertTriangle, ArrowRight, Wallet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
@@ -36,6 +36,10 @@ function DashboardPage() {
       const factures = facturesRes.data ?? [];
       const devis = devisRes.data ?? [];
       const ca = factures.filter((f) => f.statut === "payee").reduce((s, f) => s + Number(f.total_ttc), 0);
+      const actives = factures.filter((f) => f.statut !== "annulee");
+      const totalFacture = actives.reduce((s, f) => s + Number(f.total_ttc), 0);
+      const encaisse = actives.reduce((s, f) => s + Number(f.montant_paye), 0);
+      const tauxRecouvrement = totalFacture > 0 ? Math.round((encaisse / totalFacture) * 100) : 0;
       const impayes = factures.filter((f) => f.statut !== "payee" && f.statut !== "annulee");
       const impayesMontant = impayes.reduce((s, f) => s + (Number(f.total_ttc) - Number(f.montant_paye)), 0);
       const today = new Date(); today.setHours(0,0,0,0);
@@ -44,24 +48,28 @@ function DashboardPage() {
       const devisAcceptes = devis.filter((d) => d.statut === "accepte").length;
       const tauxConversion = devis.length > 0 ? Math.round((devisAcceptes / devis.length) * 100) : 0;
 
-      // CA des 6 derniers mois (basé sur date_emission, factures payées)
-      const months: { key: string; label: string; ca: number }[] = [];
+      // Facturé vs encaissé sur les 6 derniers mois (basé sur date_emission)
+      const months: { key: string; label: string; ca: number; facture: number }[] = [];
       const now = new Date();
       for (let i = 5; i >= 0; i--) {
         const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
         const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
-        months.push({ key, label: d.toLocaleDateString("fr-FR", { month: "short" }), ca: 0 });
+        months.push({ key, label: d.toLocaleDateString("fr-FR", { month: "short" }), ca: 0, facture: 0 });
       }
-      for (const f of factures) {
-        if (f.statut !== "payee") continue;
+      for (const f of actives) {
         const d = new Date(f.date_emission);
         const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
         const m = months.find((x) => x.key === key);
-        if (m) m.ca += Number(f.total_ttc);
+        if (!m) continue;
+        m.facture += Number(f.total_ttc);
+        m.ca += Number(f.montant_paye);
       }
 
       return {
         ca,
+        totalFacture,
+        encaisse,
+        tauxRecouvrement,
         impayesNombre: impayes.length,
         impayesMontant,
         overdueCount: overdue.length,
@@ -111,8 +119,10 @@ function DashboardPage() {
         </div>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <KpiCard icon={TrendingUp} label="Chiffre d'affaires" value={formatMontant(stats?.ca ?? 0, entreprise?.devise)} tone="primary" />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
+        <KpiCard icon={TrendingUp} label="Chiffre d'affaires" value={formatMontant(stats?.ca ?? 0, entreprise?.devise)} sub="Factures payées" tone="primary" />
+        <KpiCard icon={Receipt} label="Total facturé" value={formatMontant(stats?.totalFacture ?? 0, entreprise?.devise)} sub="Hors factures annulées" />
+        <KpiCard icon={Wallet} label="Encaissé" value={formatMontant(stats?.encaisse ?? 0, entreprise?.devise)} sub={`Recouvrement ${stats?.tauxRecouvrement ?? 0}%`} tone="primary" />
         <KpiCard icon={Receipt} label="Factures impayées" value={`${stats?.impayesNombre ?? 0}`} sub={formatMontant(stats?.impayesMontant ?? 0, entreprise?.devise)} tone="warning" />
         <KpiCard icon={FileText} label="Devis en attente" value={`${stats?.devisEnAttente ?? 0}`} sub={`Conversion ${stats?.tauxConversion ?? 0}%`} />
         <KpiCard icon={Users} label="Clients" value={`${stats?.clientsCount ?? 0}`} />
@@ -122,8 +132,8 @@ function DashboardPage() {
         <div className="rounded-2xl border bg-card p-5 shadow-[var(--shadow-card)] lg:col-span-2">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-semibold">Chiffre d'affaires — 6 derniers mois</h2>
-              <p className="text-xs text-muted-foreground">Basé sur les factures encaissées</p>
+              <h2 className="text-sm font-semibold">Facturé vs encaissé — 6 derniers mois</h2>
+              <p className="text-xs text-muted-foreground">Montants facturés et paiements reçus</p>
             </div>
             <Button size="sm" variant="ghost" asChild><Link to="/statistiques">Détails <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link></Button>
           </div>
@@ -135,14 +145,19 @@ function DashboardPage() {
                     <stop offset="0%" stopColor="var(--primary)" stopOpacity={0.4} />
                     <stop offset="100%" stopColor="var(--primary)" stopOpacity={0} />
                   </linearGradient>
+                  <linearGradient id="factureGradient" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="var(--accent)" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="var(--accent)" stopOpacity={0} />
+                  </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
                 <XAxis dataKey="label" tickLine={false} axisLine={false} stroke="var(--muted-foreground)" fontSize={12} />
                 <YAxis tickLine={false} axisLine={false} stroke="var(--muted-foreground)" fontSize={12} tickFormatter={(v) => `${Math.round(v / 1000)}k`} />
                 <Tooltip
                   contentStyle={{ background: "var(--popover)", border: "1px solid var(--border)", borderRadius: 8, fontSize: 12 }}
-                  formatter={(v: number) => [formatMontant(v, entreprise?.devise), "CA"]}
+                  formatter={(v: number, name) => [formatMontant(v, entreprise?.devise), name === "ca" ? "Encaissé" : "Facturé"]}
                 />
+                <Area type="monotone" dataKey="facture" stroke="var(--accent)" strokeWidth={2} fill="url(#factureGradient)" />
                 <Area type="monotone" dataKey="ca" stroke="var(--primary)" strokeWidth={2} fill="url(#caGradient)" />
               </AreaChart>
             </ResponsiveContainer>
