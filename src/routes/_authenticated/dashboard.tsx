@@ -9,7 +9,7 @@ import { formatMontant, formatDate } from "@/lib/format";
 import { PLANS } from "@/lib/plans";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { FileText, Receipt, Users, TrendingUp, Plus, AlertTriangle, ArrowRight } from "lucide-react";
+import { FileText, Receipt, Users, TrendingUp, Plus, AlertTriangle, ArrowRight, Wallet } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
