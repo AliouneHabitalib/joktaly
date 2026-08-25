@@ -1,11 +1,13 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { isPaidPlan, normalizePlan } from "@/lib/pricing";
+import { GoogleAuthButton } from "@/components/google-auth-button";
+import { useAuth } from "@/hooks/use-auth";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
 export const Route = createFileRoute("/register")({

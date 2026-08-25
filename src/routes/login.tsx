@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { GoogleAuthButton } from "@/components/google-auth-button";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
 export const Route = createFileRoute("/login")({
