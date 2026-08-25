@@ -67,6 +67,19 @@ function RegisterPage() {
     telephone: "",
   });
   const [loading, setLoading] = useState(false);
+  const { user, loading: authLoading } = useAuth();
+
+  // Déjà connecté : on va directement au paiement du plan choisi (ou au dashboard)
+  useEffect(() => {
+    if (authLoading || !user) return;
+    const p = normalizePlan(plan);
+    if (isPaidPlan(p)) {
+      navigate({ to: "/paiement", search: { plan: p, cycle: cycle ?? "monthly", statut: undefined } });
+    } else {
+      navigate({ to: "/dashboard" });
+    }
+  }, [user, authLoading, plan, cycle, navigate]);
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
