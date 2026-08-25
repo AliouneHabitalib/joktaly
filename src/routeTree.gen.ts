@@ -22,6 +22,7 @@ import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticated/factures'
 import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticated/produits'
 import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
+import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
 import { Route as AuthenticatedClientsIndexRouteImport } from './routes/_authenticated/clients.index'
 import { Route as AuthenticatedClientsIdRouteImport } from './routes/_authenticated/clients.$id'
@@ -99,6 +100,11 @@ const AuthenticatedStatistiquesRoute =
     path: '/statistiques',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedAdminJournalRoute =
   AuthenticatedAdminJournalRouteImport.update({
     id: '/admin/journal',
@@ -174,6 +180,7 @@ export interface FileRoutesByFullPath {
   '/factures': typeof AuthenticatedFacturesRouteWithChildren
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/clients/$id': typeof AuthenticatedClientsIdRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
@@ -196,6 +203,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/clients/$id': typeof AuthenticatedClientsIdRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
@@ -223,6 +231,7 @@ export interface FileRoutesById {
   '/_authenticated/factures': typeof AuthenticatedFacturesRouteWithChildren
   '/_authenticated/produits': typeof AuthenticatedProduitsRoute
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/_authenticated/clients/$id': typeof AuthenticatedClientsIdRoute
   '/_authenticated/devis/$id': typeof AuthenticatedDevisIdRoute
@@ -250,6 +259,7 @@ export interface FileRouteTypes {
     | '/factures'
     | '/produits'
     | '/statistiques'
+    | '/auth/callback'
     | '/admin/journal'
     | '/clients/$id'
     | '/devis/$id'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/produits'
     | '/statistiques'
+    | '/auth/callback'
     | '/admin/journal'
     | '/clients/$id'
     | '/devis/$id'
@@ -298,6 +309,7 @@ export interface FileRouteTypes {
     | '/_authenticated/factures'
     | '/_authenticated/produits'
     | '/_authenticated/statistiques'
+    | '/auth/callback'
     | '/_authenticated/admin/journal'
     | '/_authenticated/clients/$id'
     | '/_authenticated/devis/$id'
@@ -318,6 +330,7 @@ export interface RootRouteChildren {
   PaiementRoute: typeof PaiementRoute
   RegisterRoute: typeof RegisterRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   PrintDevisIdRoute: typeof PrintDevisIdRoute
   ApiPublicHooksPaydunyaIpnRoute: typeof ApiPublicHooksPaydunyaIpnRoute
   ApiPublicHooksQuotaResetCheckRoute: typeof ApiPublicHooksQuotaResetCheckRoute
@@ -415,6 +428,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/statistiques'
       preLoaderRoute: typeof AuthenticatedStatistiquesRouteImport
       parentRoute: typeof AuthenticatedRoute
+    }
+    '/auth/callback': {
+      id: '/auth/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/admin/journal': {
       id: '/_authenticated/admin/journal'
@@ -573,6 +593,7 @@ const rootRouteChildren: RootRouteChildren = {
   PaiementRoute: PaiementRoute,
   RegisterRoute: RegisterRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   PrintDevisIdRoute: PrintDevisIdRoute,
   ApiPublicHooksPaydunyaIpnRoute: ApiPublicHooksPaydunyaIpnRoute,
   ApiPublicHooksQuotaResetCheckRoute: ApiPublicHooksQuotaResetCheckRoute,

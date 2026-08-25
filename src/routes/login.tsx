@@ -81,6 +81,10 @@ function LoginPage() {
             {loading ? "Connexion..." : "Se connecter"}
           </Button>
         </form>
+        <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
+          <span className="h-px flex-1 bg-border" /> ou <span className="h-px flex-1 bg-border" />
+        </div>
+        <GoogleAuthButton label="Se connecter avec Google" />
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Pas encore de compte ?{" "}
           <Link to="/register" search={{ plan: undefined, cycle: undefined }} className="font-medium text-primary hover:underline">Créer un compte</Link>
