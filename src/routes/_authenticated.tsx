@@ -36,6 +36,7 @@ function AuthenticatedLayout() {
           plan: status.pending.plan,
           cycle: (status.pending.cycle === "yearly" ? "yearly" : "monthly") as "monthly" | "yearly",
           statut: undefined,
+          provider: undefined,
         },
       });
     }
