@@ -29,6 +29,7 @@ export const Route = createFileRoute("/paiement")({
     plan: (typeof search.plan === "string" ? search.plan : undefined) as string | undefined,
     cycle: (search.cycle === "yearly" ? "yearly" : "monthly") as "monthly" | "yearly",
     statut: (typeof search.statut === "string" ? search.statut : undefined) as string | undefined,
+    provider: (typeof search.provider === "string" ? search.provider : undefined) as string | undefined,
   }),
   head: () => ({
     meta: [
