@@ -164,6 +164,10 @@ function RegisterPage() {
             {loading ? "Création..." : "Créer mon compte"}
           </Button>
         </form>
+        <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
+          <span className="h-px flex-1 bg-border" /> ou <span className="h-px flex-1 bg-border" />
+        </div>
+        <GoogleAuthButton label="S'inscrire avec Google" plan={plan} cycle={cycle ?? "monthly"} />
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Déjà un compte ?{" "}
           <Link to="/login" className="font-medium text-primary hover:underline">Se connecter</Link>
