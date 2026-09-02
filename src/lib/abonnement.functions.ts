@@ -91,13 +91,14 @@ export const selectPaidPlan = createServerFn({ method: "POST" })
 
 export const startCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { plan: string; cycle: string }) => data)
+  .inputValidator((data: { plan: string; cycle: string; provider?: string }) => data)
   .handler(async ({ data, context }) => {
     const { normalizePlan, normalizeCycle, chargedAmount, PRICING, isPaidPlan } = await import("./pricing");
     const plan = normalizePlan(data.plan);
     if (!plan || !isPaidPlan(plan)) throw new Error("Plan invalide");
     const cycle = normalizeCycle(data.cycle);
     const montant = chargedAmount(plan, cycle);
+    const provider = data.provider === "paypal" ? "paypal" : "paydunya";
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
@@ -117,11 +118,48 @@ export const startCheckout = createServerFn({ method: "POST" })
         cycle,
         montant,
         statut: "en_attente",
-        provider: "paydunya",
+        provider,
       })
       .select("id")
       .single();
     if (error) throw new Error(error.message);
+
+    const origin = new URL(getRequest().url).origin;
+    const label = `Abonnement TERA-DEVIS ${PRICING[plan].nom} (${cycle === "yearly" ? "annuel" : "mensuel"})`;
+
+    if (provider === "paypal") {
+      const { getPaypalConfig, createOrder } = await import("./paypal.server");
+      const cfg = getPaypalConfig();
+      if (!cfg) {
+        return {
+          ok: false as const,
+          abonnementId: row.id as string,
+          montant,
+          reason: "config_manquante",
+          message:
+            "Le paiement PayPal n'est pas encore activé : les identifiants PayPal doivent être ajoutés dans les paramètres du projet.",
+        };
+      }
+      try {
+        const order = await createOrder({
+          cfg,
+          amountXof: montant,
+          description: label,
+          referenceId: String(row.id),
+          returnUrl: `${origin}/paiement?statut=retour&provider=paypal`,
+          cancelUrl: `${origin}/paiement?statut=annule`,
+        });
+        await admin
+          .from("abonnements")
+          .update({ provider_token: order.id, provider_response: order.raw as any })
+          .eq("id", row.id);
+        return { ok: true as const, abonnementId: row.id as string, montant, url: order.url, token: order.id };
+      } catch (e) {
+        const message = e instanceof Error ? e.message : "Erreur de paiement";
+        await admin.from("abonnements").update({ statut: "echoue" }).eq("id", row.id);
+        return { ok: false as const, abonnementId: row.id as string, montant, reason: "provider_error", message };
+      }
+    }
 
     const { getPaydunyaConfig, createInvoice } = await import("./paydunya.server");
     const cfg = getPaydunyaConfig();
@@ -136,12 +174,11 @@ export const startCheckout = createServerFn({ method: "POST" })
       };
     }
 
-    const origin = new URL(getRequest().url).origin;
     try {
       const invoice = await createInvoice({
         cfg,
         amount: montant,
-        description: `Abonnement TERA-DEVIS ${PRICING[plan].nom} (${cycle === "yearly" ? "annuel" : "mensuel"})`,
+        description: label,
         itemName: `TERA-DEVIS ${PRICING[plan].nom}`,
         returnUrl: `${origin}/paiement?statut=retour`,
         cancelUrl: `${origin}/paiement?statut=annule`,
@@ -170,7 +207,7 @@ export const refreshPaymentStatus = createServerFn({ method: "POST" })
 
     const { data: row } = await admin
       .from("abonnements")
-      .select("id, user_id, plan, cycle, provider_token, statut")
+      .select("id, user_id, plan, cycle, provider, provider_token, statut")
       .eq("user_id", context.userId)
       .eq("statut", "en_attente")
       .order("created_at", { ascending: false })
@@ -179,6 +216,23 @@ export const refreshPaymentStatus = createServerFn({ method: "POST" })
 
     if (!row) return { statut: "aucun" as const };
     if (!row.provider_token) return { statut: "en_attente" as const };
+
+    if (row.provider === "paypal") {
+      const { getPaypalConfig, captureOrder } = await import("./paypal.server");
+      const cfg = getPaypalConfig();
+      if (!cfg) return { statut: "en_attente" as const };
+      const { status, raw } = await captureOrder(cfg, row.provider_token as string);
+      if (status === "COMPLETED") {
+        const { activateAbonnement } = await import("./abonnement.server");
+        await activateAbonnement(row, raw);
+        return { statut: "paye" as const, plan: row.plan as string };
+      }
+      if (status === "VOIDED" || status === "PAYER_ACTION_REQUIRED") {
+        await admin.from("abonnements").update({ statut: "echoue", provider_response: raw }).eq("id", row.id);
+        return { statut: "echoue" as const };
+      }
+      return { statut: "en_attente" as const };
+    }
 
     const { getPaydunyaConfig, confirmInvoice } = await import("./paydunya.server");
     const cfg = getPaydunyaConfig();

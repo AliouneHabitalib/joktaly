@@ -58,7 +58,7 @@ function AuthCallbackPage() {
       if (isPaidPlan(plan)) {
         navigate({
           to: "/paiement",
-          search: { plan, cycle: normalizeCycle(intent.cycle), statut: undefined },
+          search: { plan, cycle: normalizeCycle(intent.cycle), statut: undefined, provider: undefined },
         });
       } else {
         navigate({ to: "/dashboard" });
