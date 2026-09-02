@@ -104,11 +104,11 @@ function PaiementPage() {
     }
   }, [status, navigate]);
 
-  const handlePay = async () => {
+  const handlePay = async (provider: "paydunya" | "paypal" = "paydunya") => {
     setBusy(true);
     setError(null);
     try {
-      const res = await checkout({ data: { plan, cycle } });
+      const res = await checkout({ data: { plan, cycle, provider } });
       if (res.ok && "url" in res && res.url) {
         window.location.href = res.url;
         return;
