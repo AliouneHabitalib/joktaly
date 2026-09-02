@@ -74,7 +74,7 @@ function RegisterPage() {
     if (authLoading || !user) return;
     const p = normalizePlan(plan);
     if (isPaidPlan(p)) {
-      navigate({ to: "/paiement", search: { plan: p, cycle: cycle ?? "monthly", statut: undefined } });
+      navigate({ to: "/paiement", search: { plan: p, cycle: cycle ?? "monthly", statut: undefined, provider: undefined } });
     } else {
       navigate({ to: "/dashboard" });
     }
@@ -107,7 +107,7 @@ function RegisterPage() {
     if (errEnt) return toast.error(errEnt.message);
     toast.success("Compte créé avec succès");
     if (isPaidPlan(normalizePlan(plan))) {
-      navigate({ to: "/paiement", search: { plan: normalizePlan(plan)!, cycle: cycle ?? "monthly", statut: undefined } });
+      navigate({ to: "/paiement", search: { plan: normalizePlan(plan)!, cycle: cycle ?? "monthly", statut: undefined, provider: undefined } });
       return;
     }
     navigate({ to: "/dashboard" });
