@@ -186,22 +186,8 @@ export const refreshPaymentStatus = createServerFn({ method: "POST" })
     if (!row) return { statut: "aucun" as const };
     if (!row.provider_token) return { statut: "en_attente" as const };
 
-    if (row.provider === "paypal") {
-      const { getPaypalConfig, captureOrder } = await import("./paypal.server");
-      const cfg = getPaypalConfig();
-      if (!cfg) return { statut: "en_attente" as const };
-      const { status, raw } = await captureOrder(cfg, row.provider_token as string);
-      if (status === "COMPLETED") {
-        const { activateAbonnement } = await import("./abonnement.server");
-        await activateAbonnement(row, raw);
-        return { statut: "paye" as const, plan: row.plan as string };
-      }
-      if (status === "VOIDED" || status === "PAYER_ACTION_REQUIRED") {
-        await admin.from("abonnements").update({ statut: "echoue", provider_response: raw }).eq("id", row.id);
-        return { statut: "echoue" as const };
-      }
-      return { statut: "en_attente" as const };
-    }
+
+
 
     const { getPaydunyaConfig, confirmInvoice } = await import("./paydunya.server");
     const cfg = getPaydunyaConfig();
