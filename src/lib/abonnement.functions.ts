@@ -91,14 +91,14 @@ export const selectPaidPlan = createServerFn({ method: "POST" })
 
 export const startCheckout = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
-  .inputValidator((data: { plan: string; cycle: string; provider?: string }) => data)
+  .inputValidator((data: { plan: string; cycle: string }) => data)
   .handler(async ({ data, context }) => {
     const { normalizePlan, normalizeCycle, chargedAmount, PRICING, isPaidPlan } = await import("./pricing");
     const plan = normalizePlan(data.plan);
     if (!plan || !isPaidPlan(plan)) throw new Error("Plan invalide");
     const cycle = normalizeCycle(data.cycle);
     const montant = chargedAmount(plan, cycle);
-    const provider = data.provider === "paypal" ? "paypal" : "paydunya";
+    const provider = "paydunya";
 
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const admin = supabaseAdmin as any;
