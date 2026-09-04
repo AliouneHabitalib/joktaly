@@ -104,11 +104,11 @@ function PaiementPage() {
     }
   }, [status, navigate]);
 
-  const handlePay = async (provider: "paydunya" | "paypal" = "paydunya") => {
+  const handlePay = async () => {
     setBusy(true);
     setError(null);
     try {
-      const res = await checkout({ data: { plan, cycle, provider } });
+      const res = await checkout({ data: { plan, cycle } });
       if (res.ok && "url" in res && res.url) {
         window.location.href = res.url;
         return;
@@ -185,36 +185,13 @@ function PaiementPage() {
           </p>
         )}
 
-        <Button className="mt-6 w-full" onClick={() => handlePay("paydunya")} disabled={busy}>
+        <Button className="mt-6 w-full" onClick={() => handlePay()} disabled={busy}>
           {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CreditCard className="mr-2 h-4 w-4" />}
           Payer {total.toLocaleString("fr-FR")} FCFA — Wave / OM / Carte
         </Button>
 
-        <div className="my-4 flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="h-px flex-1 bg-border" /> ou <span className="h-px flex-1 bg-border" />
-        </div>
-
-        <Button variant="outline" className="w-full" onClick={() => handlePay("paypal")} disabled={busy}>
-          {busy ? (
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-          ) : (
-            <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
-              <path
-                fill="#003087"
-                d="M7.08 21.34H3.9a.53.53 0 0 1-.52-.62L6.2 3.13a.75.75 0 0 1 .74-.63h6.2c3.3 0 5.5 1.7 5.02 4.94-.5 3.4-3.1 5.13-6.5 5.13H9.3a.75.75 0 0 0-.74.64l-.85 7.5a.53.53 0 0 1-.63.63z"
-              />
-              <path
-                fill="#009cde"
-                d="M18.9 8.16c.6 2.9-1.6 5.9-5.6 5.9h-2a.75.75 0 0 0-.74.64l-.9 6.02a.53.53 0 0 0 .52.62h2.72a.66.66 0 0 0 .65-.56l.66-4.2a.66.66 0 0 1 .65-.56h.9c3.1 0 5.3-1.6 5.75-4.6.3-1.9-.5-3.13-1.6-3.9z"
-              />
-            </svg>
-          )}
-          Payer avec PayPal
-        </Button>
-
         <div className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
-          <ShieldCheck className="h-3.5 w-3.5 shrink-0" /> Paiement sécurisé via PayDunya ou PayPal (débité en EUR au
-          taux fixe 655,957 FCFA = 1 €)
+          <ShieldCheck className="h-3.5 w-3.5 shrink-0" /> Paiement sécurisé via PayDunya
         </div>
 
         <button
