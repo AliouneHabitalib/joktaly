@@ -127,39 +127,8 @@ export const startCheckout = createServerFn({ method: "POST" })
     const origin = new URL(getRequest().url).origin;
     const label = `Abonnement TERA-DEVIS ${PRICING[plan].nom} (${cycle === "yearly" ? "annuel" : "mensuel"})`;
 
-    if (provider === "paypal") {
-      const { getPaypalConfig, createOrder } = await import("./paypal.server");
-      const cfg = getPaypalConfig();
-      if (!cfg) {
-        return {
-          ok: false as const,
-          abonnementId: row.id as string,
-          montant,
-          reason: "config_manquante",
-          message:
-            "Le paiement PayPal n'est pas encore activé : les identifiants PayPal doivent être ajoutés dans les paramètres du projet.",
-        };
-      }
-      try {
-        const order = await createOrder({
-          cfg,
-          amountXof: montant,
-          description: label,
-          referenceId: String(row.id),
-          returnUrl: `${origin}/paiement?statut=retour&provider=paypal`,
-          cancelUrl: `${origin}/paiement?statut=annule`,
-        });
-        await admin
-          .from("abonnements")
-          .update({ provider_token: order.id, provider_response: order.raw as any })
-          .eq("id", row.id);
-        return { ok: true as const, abonnementId: row.id as string, montant, url: order.url, token: order.id };
-      } catch (e) {
-        const message = e instanceof Error ? e.message : "Erreur de paiement";
-        await admin.from("abonnements").update({ statut: "echoue" }).eq("id", row.id);
-        return { ok: false as const, abonnementId: row.id as string, montant, reason: "provider_error", message };
-      }
-    }
+
+
 
     const { getPaydunyaConfig, createInvoice } = await import("./paydunya.server");
     const cfg = getPaydunyaConfig();
