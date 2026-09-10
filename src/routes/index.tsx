@@ -13,9 +13,12 @@ import { InteractiveDemo } from "@/components/interactive-demo";
 import { MobileMockup } from "@/components/mobile-mockup";
 import { AiChatWidget } from "@/components/ai-chat-widget";
 import heroImage from "@/assets/hero-entrepreneur.jpg";
+import coiffeuseImage from "@/assets/hero-coiffeuse.jpg";
+import menuisierImage from "@/assets/hero-menuisier.jpg";
 import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
+import { useInView } from "@/hooks/use-in-view";
 import {
   FileText,
   Users,
