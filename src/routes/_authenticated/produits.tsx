@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -39,6 +40,7 @@ import { toast } from "sonner";
 import { formatMontant } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/produits")({
+  head: privateHead("Mes produits et services", "Gérez votre catalogue de produits et services réutilisables dans vos devis et factures."),
   component: ProduitsPage,
 });
 

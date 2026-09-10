@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -50,6 +51,7 @@ import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/wha
 import { ListSkeleton } from "./devis.index";
 
 export const Route = createFileRoute("/_authenticated/factures/")({
+  head: privateHead("Mes factures", "Suivez vos factures, vos encaissements et vos relances clients."),
   component: FacturesListPage,
 });
 

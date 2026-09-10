@@ -1,4 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useMemo, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -51,6 +52,7 @@ import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/wha
 import { Skeleton } from "@/components/ui/skeleton";
 
 export const Route = createFileRoute("/_authenticated/devis/")({
+  head: privateHead("Mes devis", "Retrouvez tous vos devis, leur statut et convertissez-les en factures."),
   component: DevisListPage,
 });
 

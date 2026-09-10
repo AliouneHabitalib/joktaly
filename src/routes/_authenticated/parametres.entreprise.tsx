@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -37,6 +38,7 @@ import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
 
 export const Route = createFileRoute("/_authenticated/parametres/entreprise")({
+  head: privateHead("Paramètres de l'entreprise", "Modifiez les informations, le logo et l'identité visuelle de votre entreprise."),
   component: ParametresEntreprisePage,
 });
 
