@@ -197,6 +197,8 @@ function Index() {
         </div>
       </section>
 
+      <UserStoriesSection />
+
       {/* Features */}
       <section className="container mx-auto grid gap-6 px-4 py-20 md:grid-cols-4">
         {[
