@@ -38,6 +38,7 @@ export const Route = createFileRoute("/paiement")({
       { property: "og:title", content: "Finaliser votre abonnement — TERA-DEVIS" },
       { property: "og:description", content: "Réglez votre abonnement TERA-DEVIS par Wave, Orange Money ou carte bancaire." },
       { property: "og:type", content: "website" },
+      { name: "robots", content: "noindex, nofollow" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
