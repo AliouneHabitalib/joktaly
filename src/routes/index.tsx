@@ -61,6 +61,31 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "https://tera-devis.lovable.app/" },
+      { rel: "alternate", hrefLang: "fr", href: "https://tera-devis.lovable.app/" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://tera-devis.lovable.app/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "SoftwareApplication",
+          name: "TERA-DEVIS",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Web",
+          url: "https://tera-devis.lovable.app/",
+          inLanguage: "fr",
+          description:
+            "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone.",
+          offers: {
+            "@type": "AggregateOffer",
+            priceCurrency: "XOF",
+            lowPrice: "0",
+            highPrice: "15000",
+            offerCount: "5",
+          },
+        }),
+      },
     ],
   }),
   component: Index,

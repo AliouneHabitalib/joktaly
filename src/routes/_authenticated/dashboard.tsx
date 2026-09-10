@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +15,7 @@ import { Badge } from "@/components/ui/badge";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  head: privateHead("Tableau de bord", "Vue d'ensemble de votre activité : chiffre d'affaires, devis, factures et encaissements."),
   component: DashboardPage,
 });
 

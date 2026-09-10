@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -10,6 +11,7 @@ import { ArrowLeft, FileText, Receipt, Wallet, Mail, Phone, MapPin } from "lucid
 import { formatMontant, formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/clients/$id")({
+  head: privateHead("Fiche client", "Détail d'un client : coordonnées, devis, factures et paiements associés."),
   component: ClientDetailPage,
 });
 

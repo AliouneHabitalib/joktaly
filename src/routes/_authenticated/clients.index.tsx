@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -31,6 +32,7 @@ import { toast } from "sonner";
 import { formatMontant } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/clients/")({
+  head: privateHead("Mes clients", "Consultez et gérez la liste de vos clients dans votre espace TERA-DEVIS."),
   component: ClientsPage,
 });
 

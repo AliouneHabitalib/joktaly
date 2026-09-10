@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { privateHead } from "@/lib/private-head";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -14,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { TrendingUp, TrendingDown, Receipt, FileText, Users, Wallet } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/statistiques")({
+  head: privateHead("Statistiques", "Analysez votre chiffre d'affaires, vos encaissements et vos performances commerciales."),
   component: StatistiquesPage,
 });
 

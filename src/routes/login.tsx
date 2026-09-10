@@ -38,6 +38,8 @@ export const Route = createFileRoute("/login")({
     ],
     links: [
       { rel: "canonical", href: "https://tera-devis.lovable.app/login" },
+      { rel: "alternate", hrefLang: "fr", href: "https://tera-devis.lovable.app/login" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://tera-devis.lovable.app/login" },
     ],
   }),
 });

@@ -20,6 +20,7 @@ export const Route = createFileRoute("/_authenticated/aide")({
       { property: "og:title", content: "Aide et support — TERA-DEVIS" },
       { property: "og:description", content: "Guides de démarrage, tutoriels et FAQ pour tirer le meilleur de TERA-DEVIS." },
       { property: "og:type", content: "website" },
+      { name: "robots", content: "noindex, nofollow" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),

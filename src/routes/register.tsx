@@ -50,6 +50,8 @@ export const Route = createFileRoute("/register")({
         rel: "canonical",
         href: "https://tera-devis.lovable.app/register",
       },
+      { rel: "alternate", hrefLang: "fr", href: "https://tera-devis.lovable.app/register" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://tera-devis.lovable.app/register" },
     ],
   }),
 });
