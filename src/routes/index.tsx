@@ -120,7 +120,7 @@ function Index() {
           <div className="flex items-center gap-2">
             <div className="relative">
               <img src={logoAsset.url} alt="Logo TERA-DEVIS — application de devis et factures" className="relative z-10 h-9 w-9 object-contain" />
-              <RabbitMascot className="absolute -right-2.5 -bottom-2 z-0 h-8 w-8 hidden sm:block" />
+              <RabbitMascot className="absolute -right-3 -top-3 z-0 h-9 w-9 hidden sm:block" />
             </div>
             <span className="text-lg font-bold sm:text-xl">TERA-DEVIS</span>
           </div>
