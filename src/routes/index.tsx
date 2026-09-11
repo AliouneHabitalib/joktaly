@@ -12,6 +12,7 @@ import {
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { MobileMockup } from "@/components/mobile-mockup";
 import { AiChatWidget } from "@/components/ai-chat-widget";
+import { RabbitMascot } from "@/components/rabbit-mascot";
 import heroImage from "@/assets/hero-entrepreneur.jpg";
 import coiffeuseImage from "@/assets/hero-coiffeuse.jpg";
 import menuisierImage from "@/assets/hero-menuisier.jpg";
@@ -117,7 +118,10 @@ function Index() {
       <header className="border-b bg-card/90 backdrop-blur sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto flex items-center justify-between gap-2 px-4 py-3 sm:py-4">
           <div className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="Logo TERA-DEVIS — application de devis et factures" className="h-9 w-9 object-contain" />
+            <div className="relative">
+              <img src={logoAsset.url} alt="Logo TERA-DEVIS — application de devis et factures" className="relative z-10 h-9 w-9 object-contain" />
+              <RabbitMascot className="absolute -right-3 -top-3 z-0 h-9 w-9 hidden sm:block" />
+            </div>
             <span className="text-lg font-bold sm:text-xl">TERA-DEVIS</span>
           </div>
           <div className="flex items-center gap-2">
