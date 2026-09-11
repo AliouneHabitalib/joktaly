@@ -795,3 +795,92 @@ function HeroVisual() {
     </div>
   );
 }
+
+function UserStoriesSection() {
+  const { ref, inView } = useInView<HTMLElement>({ threshold: 0.15 });
+
+  const stories = [
+    {
+      image: coiffeuseImage,
+      alt: "Fatou, coiffeuse à Dakar, facture une cliente depuis son ordinateur portable dans son salon moderne",
+      legend: "Je facture mes clientes en 2 minutes entre deux rendez-vous.",
+      name: "Fatou N. — Salon Éclat, Dakar",
+      role: "Coiffeuse & esthéticienne",
+    },
+    {
+      image: menuisierImage,
+      alt: "Ousmane, menuisier dans son atelier, envoie un devis depuis son téléphone entouré de bois et d'outils",
+      legend: "J'envoie mes devis par WhatsApp directement depuis mon téléphone.",
+      name: "Ousmane D. — Atelier Bois & Design, Abidjan",
+      role: "Menuisier indépendant",
+    },
+  ];
+
+  return (
+    <section
+      ref={ref}
+      className="container mx-auto px-4 py-16 sm:py-20"
+      aria-labelledby="user-stories-title"
+    >
+      <div className="mx-auto max-w-3xl text-center">
+        <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+          Ils utilisent TERA-DEVIS
+        </span>
+        <h2
+          id="user-stories-title"
+          className="mt-3 text-2xl font-bold sm:text-3xl md:text-4xl"
+        >
+          Pensé pour ceux qui font tourner leur business au quotidien
+        </h2>
+        <p className="mt-3 text-muted-foreground">
+          Des entrepreneurs comme vous, qui facturent plus vite et suivent leurs paiements sans stress.
+        </p>
+      </div>
+
+      <div
+        className={`mt-10 grid gap-6 sm:grid-cols-2 ${
+          inView ? "animate-fade-in-up" : "opacity-0"
+        }`}
+      >
+        {stories.map((story) => (
+          <figure
+            key={story.name}
+            className="group overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg"
+          >
+            <div className="relative aspect-[4/3] overflow-hidden">
+              <img
+                src={story.image}
+                alt={story.alt}
+                width={800}
+                height={600}
+                loading="lazy"
+                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+            </div>
+            <figcaption className="p-5 sm:p-6">
+              <blockquote>
+                <p className="text-lg font-semibold leading-snug text-foreground">
+                  « {story.legend} »
+                </p>
+              </blockquote>
+              <div className="mt-4 flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent/20 text-sm font-bold text-accent-foreground">
+                  {story.name
+                    .split(" ")
+                    .filter((_, i) => i === 0 || i === 1)
+                    .map((n) => n[0])
+                    .join("")}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold">{story.name}</p>
+                  <p className="text-xs text-muted-foreground">{story.role}</p>
+                </div>
+              </div>
+            </figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  );
+}
