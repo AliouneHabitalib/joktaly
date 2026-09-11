@@ -12,6 +12,7 @@ import {
 import { InteractiveDemo } from "@/components/interactive-demo";
 import { MobileMockup } from "@/components/mobile-mockup";
 import { AiChatWidget } from "@/components/ai-chat-widget";
+import { RabbitMascot } from "@/components/rabbit-mascot";
 import heroImage from "@/assets/hero-entrepreneur.jpg";
 import coiffeuseImage from "@/assets/hero-coiffeuse.jpg";
 import menuisierImage from "@/assets/hero-menuisier.jpg";
