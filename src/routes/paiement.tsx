@@ -100,10 +100,11 @@ function PaiementPage() {
   }, [user, search.statut]);
 
   useEffect(() => {
+    if (busy) return;
     if (status && !status.requiresPayment && status.plan !== "gratuit") {
       navigate({ to: "/dashboard" });
     }
-  }, [status, navigate]);
+  }, [status, navigate, busy]);
 
   const handlePay = async () => {
     setBusy(true);
