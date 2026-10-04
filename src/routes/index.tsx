@@ -770,7 +770,7 @@ function HeroVisual() {
           alt="Aminata, entrepreneure à Dakar, envoie un devis à sa cliente depuis son téléphone"
           width={1280}
           height={1280}
-          className="aspect-[4/5] w-full object-cover sm:aspect-square"
+          className="aspect-[16/11] w-full object-cover sm:aspect-square"
         />
         <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-left text-xs text-white/90">
           Aminata S. — Teranga Atelier, Dakar
@@ -824,7 +824,7 @@ function UserStoriesSection() {
   return (
     <section
       ref={ref}
-      className="container mx-auto px-4 py-16 sm:py-20"
+      className="container mx-auto px-4 py-10 sm:py-20"
       aria-labelledby="user-stories-title"
     >
       <div className="mx-auto max-w-3xl text-center">
@@ -843,7 +843,7 @@ function UserStoriesSection() {
       </div>
 
       <div
-        className={`mt-10 grid gap-6 sm:grid-cols-2 ${
+        className={`mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2 ${
           inView ? "animate-fade-in-up" : "opacity-0"
         }`}
       >
@@ -852,7 +852,7 @@ function UserStoriesSection() {
             key={story.name}
             className="group overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg"
           >
-            <div className="relative aspect-[4/3] overflow-hidden">
+            <div className="relative aspect-[16/11] overflow-hidden sm:aspect-[4/3]">
               <img
                 src={story.image}
                 alt={story.alt}
@@ -863,9 +863,9 @@ function UserStoriesSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             </div>
-            <figcaption className="p-5 sm:p-6">
+            <figcaption className="p-4 sm:p-6">
               <blockquote>
-                <p className="text-lg font-semibold leading-snug text-foreground">
+                <p className="text-base font-semibold leading-snug text-foreground sm:text-lg">
                   « {story.legend} »
                 </p>
               </blockquote>
