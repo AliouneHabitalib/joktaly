@@ -616,14 +616,14 @@ function Index() {
       </section>
 
       {/* CTA */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="mx-auto max-w-2xl rounded-3xl border bg-card p-10 text-center shadow-[var(--shadow-card)]">
+      <section className="container mx-auto px-4 py-12 sm:py-20">
+        <div className="mx-auto max-w-2xl rounded-3xl border bg-card p-6 text-center shadow-[var(--shadow-card)] sm:p-10">
           <h2 className="text-2xl font-bold md:text-3xl">Prêt à simplifier votre facturation ?</h2>
           <p className="mt-4 text-muted-foreground">
             Rejoignez les entrepreneurs qui gagnent du temps chaque jour avec TERA-DEVIS.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button size="lg" asChild>
+            <Button size="lg" className="w-full sm:w-auto" asChild>
               <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
                 Essayer gratuitement <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
