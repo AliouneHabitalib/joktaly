@@ -141,26 +141,31 @@ function Index() {
           className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl"
           aria-hidden="true"
         />
-        <div className="container relative mx-auto grid gap-12 px-4 py-14 text-white sm:py-20 md:grid-cols-2 md:items-center md:py-24">
+        <div className="container relative mx-auto grid gap-8 px-4 py-10 text-white sm:py-20 md:grid-cols-2 md:items-center md:gap-12 md:py-24">
           <div className="text-center md:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur sm:text-sm">
               <Check className="h-3.5 w-3.5 text-accent" />
               <span>Fait à Dakar, pour les entrepreneurs d'Afrique francophone</span>
             </div>
-            <h1 className="mt-5 text-[2rem] font-bold leading-[1.1] sm:text-5xl md:text-6xl">
+            <h1 className="mt-4 text-[2rem] font-bold leading-[1.1] sm:text-5xl md:text-6xl">
               Vous faites le travail.
               <br />
               <span className="text-accent">Nous faisons la paperasse.</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg md:mx-0">
-              Aminata, couturière à Dakar, envoie son devis avant même que le client
-              ne quitte sa boutique. Devis, factures, relances : tout se fait depuis
-              votre téléphone, en français et en FCFA.
+            <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-white/85 sm:mt-5 sm:text-lg md:mx-0">
+              <span className="sm:hidden">
+                Devis, factures et relances depuis votre téléphone — en français et en FCFA.
+              </span>
+              <span className="hidden sm:inline">
+                Aminata, couturière à Dakar, envoie son devis avant même que le client
+                ne quitte sa boutique. Devis, factures, relances : tout se fait depuis
+                votre téléphone, en français et en FCFA.
+              </span>
             </p>
-            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
               <Button
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
+                className="w-full bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg sm:w-auto"
                 asChild
               >
                 <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
@@ -170,7 +175,7 @@ function Index() {
               <Button
                 size="lg"
                 variant="outline"
-                className="bg-white/10 text-white border-white/30 hover:bg-white/20"
+                className="w-full bg-white/10 text-white border-white/30 hover:bg-white/20 sm:w-auto"
                 asChild
               >
                 <a href="#demo">
@@ -179,7 +184,7 @@ function Index() {
               </Button>
             </div>
             {/* Payment methods */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+            <div className="mt-8 hidden flex-wrap items-center justify-center gap-3 sm:flex md:justify-start">
               <span className="text-xs uppercase tracking-wide text-white/60">
                 Paiements acceptés
               </span>
