@@ -141,26 +141,31 @@ function Index() {
           className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full bg-accent/20 blur-3xl"
           aria-hidden="true"
         />
-        <div className="container relative mx-auto grid gap-12 px-4 py-14 text-white sm:py-20 md:grid-cols-2 md:items-center md:py-24">
+        <div className="container relative mx-auto grid gap-8 px-4 py-10 text-white sm:py-20 md:grid-cols-2 md:items-center md:gap-12 md:py-24">
           <div className="text-center md:text-left animate-fade-in">
             <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-medium backdrop-blur sm:text-sm">
               <Check className="h-3.5 w-3.5 text-accent" />
               <span>Fait à Dakar, pour les entrepreneurs d'Afrique francophone</span>
             </div>
-            <h1 className="mt-5 text-[2rem] font-bold leading-[1.1] sm:text-5xl md:text-6xl">
+            <h1 className="mt-4 text-[2rem] font-bold leading-[1.1] sm:text-5xl md:text-6xl">
               Vous faites le travail.
               <br />
               <span className="text-accent">Nous faisons la paperasse.</span>
             </h1>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg md:mx-0">
-              Aminata, couturière à Dakar, envoie son devis avant même que le client
-              ne quitte sa boutique. Devis, factures, relances : tout se fait depuis
-              votre téléphone, en français et en FCFA.
+            <p className="mx-auto mt-3 max-w-xl text-base leading-relaxed text-white/85 sm:mt-5 sm:text-lg md:mx-0">
+              <span className="sm:hidden">
+                Devis, factures et relances depuis votre téléphone — en français et en FCFA.
+              </span>
+              <span className="hidden sm:inline">
+                Aminata, couturière à Dakar, envoie son devis avant même que le client
+                ne quitte sa boutique. Devis, factures, relances : tout se fait depuis
+                votre téléphone, en français et en FCFA.
+              </span>
             </p>
-            <div className="mt-7 flex flex-wrap justify-center gap-3 md:justify-start">
+            <div className="mt-6 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:justify-center md:justify-start">
               <Button
                 size="lg"
-                className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg"
+                className="w-full bg-accent text-accent-foreground hover:bg-accent/90 shadow-lg sm:w-auto"
                 asChild
               >
                 <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
@@ -170,7 +175,7 @@ function Index() {
               <Button
                 size="lg"
                 variant="outline"
-                className="bg-white/10 text-white border-white/30 hover:bg-white/20"
+                className="w-full bg-white/10 text-white border-white/30 hover:bg-white/20 sm:w-auto"
                 asChild
               >
                 <a href="#demo">
@@ -179,7 +184,7 @@ function Index() {
               </Button>
             </div>
             {/* Payment methods */}
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-3 md:justify-start">
+            <div className="mt-8 hidden flex-wrap items-center justify-center gap-3 sm:flex md:justify-start">
               <span className="text-xs uppercase tracking-wide text-white/60">
                 Paiements acceptés
               </span>
@@ -441,7 +446,7 @@ function Index() {
       </section>
 
       {/* Tarifs */}
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">Tarifs</h2>
@@ -464,7 +469,7 @@ function Index() {
               </button>
             </div>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+          <div className="-mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mt-12 md:mx-0 md:grid md:grid-cols-2 md:px-0 md:pb-0 lg:grid-cols-5">
             {[
               {
                 nom: "Gratuit",
@@ -524,7 +529,7 @@ function Index() {
               return (
               <div
                 key={plan.nom}
-                className={`relative flex flex-col rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg ${plan.highlight ? "ring-2 ring-primary scale-[1.02]" : ""}`}
+                className={`relative flex w-[78%] max-w-[300px] shrink-0 snap-center flex-col rounded-2xl border bg-card p-5 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg sm:w-[64%] md:w-auto md:max-w-none md:shrink md:p-6 ${plan.highlight ? "ring-2 ring-primary md:scale-[1.02]" : ""}`}
               >
                 {plan.highlight && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground shadow-md">
@@ -552,7 +557,7 @@ function Index() {
                   Sans engagement • Annulation à tout moment
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">{plan.ideal}</p>
-                <ul className="mt-6 flex-1 space-y-3">
+                <ul className="mt-5 flex-1 space-y-2.5 sm:mt-6 sm:space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -572,6 +577,9 @@ function Index() {
               </div>
             );})}
           </div>
+          <p className="mt-3 text-center text-xs text-muted-foreground md:hidden">
+            Faites glisser pour voir toutes les formules →
+          </p>
         </div>
       </section>
 
@@ -608,14 +616,14 @@ function Index() {
       </section>
 
       {/* CTA */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="mx-auto max-w-2xl rounded-3xl border bg-card p-10 text-center shadow-[var(--shadow-card)]">
+      <section className="container mx-auto px-4 py-12 sm:py-20">
+        <div className="mx-auto max-w-2xl rounded-3xl border bg-card p-6 text-center shadow-[var(--shadow-card)] sm:p-10">
           <h2 className="text-2xl font-bold md:text-3xl">Prêt à simplifier votre facturation ?</h2>
           <p className="mt-4 text-muted-foreground">
             Rejoignez les entrepreneurs qui gagnent du temps chaque jour avec TERA-DEVIS.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
-            <Button size="lg" asChild>
+            <Button size="lg" className="w-full sm:w-auto" asChild>
               <Link to="/register" search={{ plan: undefined, cycle: undefined }}>
                 Essayer gratuitement <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
@@ -765,7 +773,7 @@ function HeroVisual() {
           alt="Aminata, entrepreneure à Dakar, envoie un devis à sa cliente depuis son téléphone"
           width={1280}
           height={1280}
-          className="aspect-[4/5] w-full object-cover sm:aspect-square"
+          className="aspect-[16/11] w-full object-cover sm:aspect-square"
         />
         <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-left text-xs text-white/90">
           Aminata S. — Teranga Atelier, Dakar
@@ -819,7 +827,7 @@ function UserStoriesSection() {
   return (
     <section
       ref={ref}
-      className="container mx-auto px-4 py-16 sm:py-20"
+      className="container mx-auto px-4 py-10 sm:py-20"
       aria-labelledby="user-stories-title"
     >
       <div className="mx-auto max-w-3xl text-center">
@@ -838,7 +846,7 @@ function UserStoriesSection() {
       </div>
 
       <div
-        className={`mt-10 grid gap-6 sm:grid-cols-2 ${
+        className={`mt-8 grid gap-6 sm:mt-10 sm:grid-cols-2 ${
           inView ? "animate-fade-in-up" : "opacity-0"
         }`}
       >
@@ -847,7 +855,7 @@ function UserStoriesSection() {
             key={story.name}
             className="group overflow-hidden rounded-2xl border bg-card shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg"
           >
-            <div className="relative aspect-[4/3] overflow-hidden">
+            <div className="relative aspect-[16/11] overflow-hidden sm:aspect-[4/3]">
               <img
                 src={story.image}
                 alt={story.alt}
@@ -858,9 +866,9 @@ function UserStoriesSection() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             </div>
-            <figcaption className="p-5 sm:p-6">
+            <figcaption className="p-4 sm:p-6">
               <blockquote>
-                <p className="text-lg font-semibold leading-snug text-foreground">
+                <p className="text-base font-semibold leading-snug text-foreground sm:text-lg">
                   « {story.legend} »
                 </p>
               </blockquote>
