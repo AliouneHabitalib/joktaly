@@ -446,7 +446,7 @@ function Index() {
       </section>
 
       {/* Tarifs */}
-      <section className="py-20">
+      <section className="py-12 sm:py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">Tarifs</h2>
@@ -469,7 +469,7 @@ function Index() {
               </button>
             </div>
           </div>
-          <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-5">
+          <div className="-mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mt-12 md:mx-0 md:grid md:grid-cols-2 md:px-0 md:pb-0 lg:grid-cols-5">
             {[
               {
                 nom: "Gratuit",
@@ -529,7 +529,7 @@ function Index() {
               return (
               <div
                 key={plan.nom}
-                className={`relative flex flex-col rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg ${plan.highlight ? "ring-2 ring-primary scale-[1.02]" : ""}`}
+                className={`relative flex w-[78%] max-w-[300px] shrink-0 snap-center flex-col rounded-2xl border bg-card p-5 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg sm:w-[64%] md:w-auto md:max-w-none md:shrink md:p-6 ${plan.highlight ? "ring-2 ring-primary md:scale-[1.02]" : ""}`}
               >
                 {plan.highlight && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground shadow-md">
@@ -557,7 +557,7 @@ function Index() {
                   Sans engagement • Annulation à tout moment
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">{plan.ideal}</p>
-                <ul className="mt-6 flex-1 space-y-3">
+                <ul className="mt-5 flex-1 space-y-2.5 sm:mt-6 sm:space-y-3">
                   {plan.features.map((f) => (
                     <li key={f} className="flex items-start gap-2 text-sm">
                       <Check className="mt-0.5 h-4 w-4 shrink-0 text-primary" />
@@ -577,6 +577,9 @@ function Index() {
               </div>
             );})}
           </div>
+          <p className="mt-3 text-center text-xs text-muted-foreground md:hidden">
+            Faites glisser pour voir toutes les formules →
+          </p>
         </div>
       </section>
 
