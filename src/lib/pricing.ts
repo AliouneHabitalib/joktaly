@@ -37,16 +37,16 @@ export const PRICING: Record<PlanType, PlanPricing> = {
   pro: {
     id: "pro",
     nom: "Pro",
-    base: 9500,
-    ideal: "PME et prestataires actifs",
-    features: ["Devis illimités", "Factures illimitées", "Statistiques", "Modèles personnalisés"],
+    base: 6000,
+    ideal: "Activités en croissance",
+    features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés"],
   },
   business: {
     id: "business",
     nom: "Business",
     base: 15000,
     ideal: "Équipes et entreprises",
-    features: ["Jusqu'à 5 utilisateurs", "Statistiques avancées", "Export Excel / CSV", "Accès API"],
+    features: ["Devis et factures illimités", "Jusqu'à 5 utilisateurs", "Statistiques avancées", "Accès API et webhooks"],
   },
 };
 
