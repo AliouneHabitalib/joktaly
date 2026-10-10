@@ -33,11 +33,13 @@ function AuthCallbackPage() {
       if (cancelled) return true;
 
       // Crée l'entreprise si l'utilisateur arrive pour la première fois via Google
-      const { data: ent } = await supabase
+      const { data: ent, error: readError } = await supabase
         .from("entreprises")
         .select("id")
         .eq("user_id", session.user.id)
         .maybeSingle();
+      if (readError) throw new Error("Impossible de récupérer votre entreprise. Merci de réessayer.");
+      if (cancelled) return true;
       if (!ent) {
         const meta = session.user.user_metadata ?? {};
         const nom =
@@ -45,12 +47,14 @@ function AuthCallbackPage() {
           (typeof meta.name === "string" && meta.name) ||
           session.user.email?.split("@")[0] ||
           "Mon entreprise";
-        await supabase.from("entreprises").insert({
+        const { error: createError } = await supabase.from("entreprises").insert({
           user_id: session.user.id,
           nom,
           email: session.user.email ?? null,
         });
+        if (createError) throw new Error("Impossible de créer votre entreprise. Merci de réessayer.");
       }
+      if (cancelled) return true;
 
       const intent = readPlanIntent();
       clearPlanIntent();
@@ -67,9 +71,18 @@ function AuthCallbackPage() {
     };
 
     let tries = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     const tick = async () => {
       if (cancelled) return;
-      const done = await finish();
+      let done: boolean;
+      try {
+        done = await finish();
+      } catch (error) {
+        if (cancelled) return;
+        toast.error(error instanceof Error ? error.message : "Connexion non aboutie. Merci de réessayer.");
+        navigate({ to: "/login" });
+        return;
+      }
       if (done || cancelled) return;
       tries += 1;
       if (tries > 25) {
@@ -77,12 +90,13 @@ function AuthCallbackPage() {
         navigate({ to: "/login" });
         return;
       }
-      setTimeout(tick, 400);
+      timer = setTimeout(tick, 400);
     };
     void tick();
 
     return () => {
       cancelled = true;
+      clearTimeout(timer);
     };
   }, [navigate]);
 
