@@ -450,8 +450,9 @@ function Index() {
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">Tarifs</h2>
-            <p className="mt-4 text-muted-foreground">
-              Commencez gratuitement. Évoluez quand votre activité grandit.
+            <p className="mt-3 text-lg font-medium">Choisissez la formule adaptée à votre activité</p>
+            <p className="mt-2 text-muted-foreground">
+              Commencez gratuitement et évoluez selon vos besoins
             </p>
             {/* Toggle Monthly/Yearly */}
             <div className="mt-6 inline-flex items-center gap-1 rounded-full border bg-card p-1 shadow-sm">
@@ -469,7 +470,7 @@ function Index() {
               </button>
             </div>
           </div>
-          <div className="-mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:mt-12 md:mx-0 md:grid md:grid-cols-2 md:px-0 md:pb-0 lg:grid-cols-5">
+          <div className="mx-auto mt-8 grid max-w-6xl gap-5 sm:mt-12 md:grid-cols-2 lg:grid-cols-4">
             {[
               {
                 nom: "Gratuit",
@@ -492,20 +493,10 @@ function Index() {
                 note: null,
               },
               {
-                nom: "Essentiel",
+                nom: "Pro",
                 base: 6000,
                 ideal: "Activités en croissance",
-                features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés"],
-                cta: "Choisir Essentiel",
-                variant: "default" as const,
-                highlight: false,
-                note: null,
-              },
-              {
-                nom: "Pro",
-                base: 9500,
-                ideal: "PME et prestataires actifs",
-                features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Statistiques de base", "Modèles personnalisés"],
+                features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés", "Statistiques de base"],
                 cta: "Choisir Pro",
                 variant: "default" as const,
                 highlight: true,
@@ -514,8 +505,8 @@ function Index() {
               {
                 nom: "Business",
                 base: 15000,
-                ideal: "Équipes et entreprises",
-                features: ["Jusqu'à 5 utilisateurs", "Statistiques avancées", "Export Excel / CSV", "Support prioritaire", "Accès API + webhooks"],
+                ideal: "PME, équipes et entreprises",
+                features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Jusqu'à 5 utilisateurs", "Statistiques avancées", "Export Excel / CSV", "Support prioritaire", "Accès API et webhooks"],
                 cta: "Choisir Business",
                 variant: "default" as const,
                 highlight: false,
@@ -529,11 +520,11 @@ function Index() {
               return (
               <div
                 key={plan.nom}
-                className={`relative flex w-[78%] max-w-[300px] shrink-0 snap-center flex-col rounded-2xl border bg-card p-5 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg sm:w-[64%] md:w-auto md:max-w-none md:shrink md:p-6 ${plan.highlight ? "ring-2 ring-primary md:scale-[1.02]" : ""}`}
+                className={`relative flex flex-col rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg ${plan.highlight ? "border-2 border-primary" : ""}`}
               >
                 {plan.highlight && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-xs font-bold uppercase tracking-wide text-accent-foreground shadow-md">
-                    ⭐ Le plus populaire
+                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground shadow-md">
+                    Populaire
                   </span>
                 )}
                 <h3 className="text-lg font-semibold">{plan.nom}</h3>
@@ -566,7 +557,7 @@ function Index() {
                   ))}
                 </ul>
                 <Button
-                  className={`mt-6 w-full ${plan.highlight ? "bg-accent text-accent-foreground hover:bg-accent/90" : ""}`}
+                  className="mt-6 w-full"
                   variant={plan.variant}
                   asChild
                 >
@@ -577,9 +568,6 @@ function Index() {
               </div>
             );})}
           </div>
-          <p className="mt-3 text-center text-xs text-muted-foreground md:hidden">
-            Faites glisser pour voir toutes les formules →
-          </p>
         </div>
       </section>
 
