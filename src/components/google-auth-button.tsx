@@ -4,30 +4,41 @@ import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { savePlanIntent } from "@/lib/plan-intent";
+import { useNavigate } from "@tanstack/react-router";
 
 interface Props {
   label?: string;
   plan?: string | undefined;
   cycle?: "monthly" | "yearly" | undefined;
+  onPendingChange?: (pending: boolean) => void;
 }
 
-export function GoogleAuthButton({ label = "Continuer avec Google", plan, cycle }: Props) {
+export function GoogleAuthButton({ label = "Continuer avec Google", plan, cycle, onPendingChange }: Props) {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     setLoading(true);
+    onPendingChange?.(true);
     savePlanIntent({ plan, cycle });
     try {
       const res = await lovable.auth.signInWithOAuth("google", {
         redirect_uri: `${window.location.origin}/auth/callback`,
+        extraParams: { prompt: "select_account" },
       });
       if (res && "error" in res && res.error) {
         toast.error("Connexion Google impossible pour le moment.");
         setLoading(false);
+        onPendingChange?.(false);
+        return;
       }
+      if (res.redirected) return;
+      // Dans l'aperçu, Google ouvre une fenêtre puis rend la session sans redirection.
+      await navigate({ to: "/auth/callback" });
     } catch {
       toast.error("Connexion Google impossible pour le moment.");
       setLoading(false);
+      onPendingChange?.(false);
     }
   };
 

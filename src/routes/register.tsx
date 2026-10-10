@@ -38,6 +38,7 @@ export const Route = createFileRoute("/register")({
         content: "https://tera-devis.lovable.app/register",
       },
       { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "twitter:title", content: "Créer un compte — TERA-DEVIS" },
       {
         name: "twitter:description",
@@ -69,18 +70,19 @@ function RegisterPage() {
     telephone: "",
   });
   const [loading, setLoading] = useState(false);
+  const [googlePending, setGooglePending] = useState(false);
   const { user, loading: authLoading } = useAuth();
 
   // Déjà connecté : on va directement au paiement du plan choisi (ou au dashboard)
   useEffect(() => {
-    if (authLoading || !user) return;
+    if (authLoading || !user || googlePending) return;
     const p = normalizePlan(plan);
     if (isPaidPlan(p)) {
       navigate({ to: "/paiement", search: { plan: p, cycle: cycle ?? "monthly", statut: undefined, provider: undefined } });
     } else {
       navigate({ to: "/dashboard" });
     }
-  }, [user, authLoading, plan, cycle, navigate]);
+  }, [user, authLoading, plan, cycle, navigate, googlePending]);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -108,8 +110,9 @@ function RegisterPage() {
     setLoading(false);
     if (errEnt) return toast.error(errEnt.message);
     toast.success("Compte créé avec succès");
-    if (isPaidPlan(normalizePlan(plan))) {
-      navigate({ to: "/paiement", search: { plan: normalizePlan(plan)!, cycle: cycle ?? "monthly", statut: undefined, provider: undefined } });
+    const selectedPlan = normalizePlan(plan);
+    if (isPaidPlan(selectedPlan)) {
+      navigate({ to: "/paiement", search: { plan: selectedPlan, cycle: cycle ?? "monthly", statut: undefined, provider: undefined } });
       return;
     }
     navigate({ to: "/dashboard" });
@@ -169,7 +172,7 @@ function RegisterPage() {
         <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
           <span className="h-px flex-1 bg-border" /> ou <span className="h-px flex-1 bg-border" />
         </div>
-        <GoogleAuthButton label="S'inscrire avec Google" plan={plan} cycle={cycle ?? "monthly"} />
+        <GoogleAuthButton label="S'inscrire avec Google" plan={plan} cycle={cycle ?? "monthly"} onPendingChange={setGooglePending} />
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Déjà un compte ?{" "}
           <Link to="/login" className="font-medium text-primary hover:underline">Se connecter</Link>
