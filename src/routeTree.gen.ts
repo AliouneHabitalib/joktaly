@@ -32,7 +32,6 @@ import { Route as AuthenticatedFacturesIndexRouteImport } from './routes/_authen
 import { Route as AuthenticatedFacturesIdRouteImport } from './routes/_authenticated/factures.$id'
 import { Route as AuthenticatedParametresEntrepriseRouteImport } from './routes/_authenticated/parametres.entreprise'
 import { Route as PrintDevisIdRouteImport } from './routes/print.devis.$id'
-import { Route as ApiPublicHooksPaydunyaIpnRouteImport } from './routes/api/public/hooks/paydunya-ipn'
 import { Route as ApiPublicHooksQuotaResetCheckRouteImport } from './routes/api/public/hooks/quota-reset-check'
 
 const IndexRoute = IndexRouteImport.update({
@@ -154,12 +153,6 @@ const PrintDevisIdRoute = PrintDevisIdRouteImport.update({
   path: '/print/devis/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiPublicHooksPaydunyaIpnRoute =
-  ApiPublicHooksPaydunyaIpnRouteImport.update({
-    id: '/api/public/hooks/paydunya-ipn',
-    path: '/api/public/hooks/paydunya-ipn',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 const ApiPublicHooksQuotaResetCheckRoute =
   ApiPublicHooksQuotaResetCheckRouteImport.update({
     id: '/api/public/hooks/quota-reset-check',
@@ -190,7 +183,6 @@ export interface FileRoutesByFullPath {
   '/clients/': typeof AuthenticatedClientsIndexRoute
   '/devis/': typeof AuthenticatedDevisIndexRoute
   '/factures/': typeof AuthenticatedFacturesIndexRoute
-  '/api/public/hooks/paydunya-ipn': typeof ApiPublicHooksPaydunyaIpnRoute
   '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRoutesByTo {
@@ -213,7 +205,6 @@ export interface FileRoutesByTo {
   '/clients': typeof AuthenticatedClientsIndexRoute
   '/devis': typeof AuthenticatedDevisIndexRoute
   '/factures': typeof AuthenticatedFacturesIndexRoute
-  '/api/public/hooks/paydunya-ipn': typeof ApiPublicHooksPaydunyaIpnRoute
   '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRoutesById {
@@ -241,7 +232,6 @@ export interface FileRoutesById {
   '/_authenticated/clients/': typeof AuthenticatedClientsIndexRoute
   '/_authenticated/devis/': typeof AuthenticatedDevisIndexRoute
   '/_authenticated/factures/': typeof AuthenticatedFacturesIndexRoute
-  '/api/public/hooks/paydunya-ipn': typeof ApiPublicHooksPaydunyaIpnRoute
   '/api/public/hooks/quota-reset-check': typeof ApiPublicHooksQuotaResetCheckRoute
 }
 export interface FileRouteTypes {
@@ -269,7 +259,6 @@ export interface FileRouteTypes {
     | '/clients/'
     | '/devis/'
     | '/factures/'
-    | '/api/public/hooks/paydunya-ipn'
     | '/api/public/hooks/quota-reset-check'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -292,7 +281,6 @@ export interface FileRouteTypes {
     | '/clients'
     | '/devis'
     | '/factures'
-    | '/api/public/hooks/paydunya-ipn'
     | '/api/public/hooks/quota-reset-check'
   id:
     | '__root__'
@@ -319,7 +307,6 @@ export interface FileRouteTypes {
     | '/_authenticated/clients/'
     | '/_authenticated/devis/'
     | '/_authenticated/factures/'
-    | '/api/public/hooks/paydunya-ipn'
     | '/api/public/hooks/quota-reset-check'
   fileRoutesById: FileRoutesById
 }
@@ -332,7 +319,6 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   PrintDevisIdRoute: typeof PrintDevisIdRoute
-  ApiPublicHooksPaydunyaIpnRoute: typeof ApiPublicHooksPaydunyaIpnRoute
   ApiPublicHooksQuotaResetCheckRoute: typeof ApiPublicHooksQuotaResetCheckRoute
 }
 
@@ -499,13 +485,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrintDevisIdRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/hooks/paydunya-ipn': {
-      id: '/api/public/hooks/paydunya-ipn'
-      path: '/api/public/hooks/paydunya-ipn'
-      fullPath: '/api/public/hooks/paydunya-ipn'
-      preLoaderRoute: typeof ApiPublicHooksPaydunyaIpnRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/hooks/quota-reset-check': {
       id: '/api/public/hooks/quota-reset-check'
       path: '/api/public/hooks/quota-reset-check'
@@ -595,7 +574,6 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   PrintDevisIdRoute: PrintDevisIdRoute,
-  ApiPublicHooksPaydunyaIpnRoute: ApiPublicHooksPaydunyaIpnRoute,
   ApiPublicHooksQuotaResetCheckRoute: ApiPublicHooksQuotaResetCheckRoute,
 }
 export const routeTree = rootRouteImport

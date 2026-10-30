@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
-import { Check, CreditCard, Loader2, ShieldCheck } from "lucide-react";
+import { Check, CreditCard } from "lucide-react";
 import {
   PRICING,
   chargedAmount,
@@ -17,9 +17,7 @@ import {
 import {
   cancelPendingSubscription,
   getSubscriptionStatus,
-  refreshPaymentStatus,
   selectPaidPlan,
-  startCheckout,
 } from "@/lib/abonnement.functions";
 import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
 
@@ -34,9 +32,9 @@ export const Route = createFileRoute("/paiement")({
   head: () => ({
     meta: [
       { title: "Finaliser votre abonnement — TERA-DEVIS" },
-      { name: "description", content: "Réglez votre abonnement TERA-DEVIS par Wave, Orange Money ou carte bancaire pour activer votre espace." },
+      { name: "description", content: "Réglez votre abonnement TERA-DEVIS." },
       { property: "og:title", content: "Finaliser votre abonnement — TERA-DEVIS" },
-      { property: "og:description", content: "Réglez votre abonnement TERA-DEVIS par Wave, Orange Money ou carte bancaire." },
+      { property: "og:description", content: "Réglez votre abonnement TERA-DEVIS." },
       { property: "og:type", content: "website" },
       { name: "robots", content: "noindex, nofollow" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -50,8 +48,6 @@ function PaiementPage() {
   const search = Route.useSearch();
   const fetchStatus = useServerFn(getSubscriptionStatus);
   const select = useServerFn(selectPaidPlan);
-  const checkout = useServerFn(startCheckout);
-  const refresh = useServerFn(refreshPaymentStatus);
   const cancel = useServerFn(cancelPendingSubscription);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(
@@ -79,49 +75,12 @@ function PaiementPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, plan, cycle]);
 
-  // Retour depuis PayDunya
-  useEffect(() => {
-    if (!user || search.statut !== "retour") return;
-    setBusy(true);
-    refresh()
-      .then((r) => {
-        if (r.statut === "paye") {
-          toast.success("Paiement confirmé — bienvenue sur TERA-DEVIS !");
-          navigate({ to: "/dashboard" });
-        } else if (r.statut === "echoue") {
-          setError("Le paiement n'a pas abouti. Vous pouvez réessayer.");
-        } else {
-          setError("Paiement en cours de vérification. Réessayez dans un instant.");
-        }
-      })
-      .catch(() => setError("Impossible de vérifier le paiement pour le moment."))
-      .finally(() => setBusy(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, search.statut]);
-
   useEffect(() => {
     if (busy) return;
     if (status && !status.requiresPayment && status.plan !== "gratuit") {
       navigate({ to: "/dashboard" });
     }
   }, [status, navigate, busy]);
-
-  const handlePay = async () => {
-    setBusy(true);
-    setError(null);
-    try {
-      const res = await checkout({ data: { plan, cycle } });
-      if (res.ok && "url" in res && res.url) {
-        window.location.href = res.url;
-        return;
-      }
-      setError(("message" in res && res.message) || "Le paiement n'a pas pu être initialisé.");
-    } catch (e) {
-      setError(e instanceof Error ? e.message : "Erreur inattendue.");
-    } finally {
-      setBusy(false);
-    }
-  };
 
   const handleFree = async () => {
     setBusy(true);
@@ -140,9 +99,9 @@ function PaiementPage() {
             <img src={logoAsset.url} alt="TERA-DEVIS" className="h-9 w-9 object-contain" />
             <span className="text-xl font-bold">TERA-DEVIS</span>
           </Link>
-          <h1 className="mt-4 text-2xl font-bold">Finalisez votre paiement</h1>
+          <h1 className="mt-4 text-2xl font-bold">Votre formule</h1>
           <p className="text-sm text-muted-foreground">
-            Réglez votre abonnement pour accéder à votre espace.
+            Le paiement en ligne sera bientôt disponible. En attendant, utilisez le plan Gratuit.
           </p>
         </div>
 
@@ -172,29 +131,16 @@ function PaiementPage() {
           </ul>
         </div>
 
-        <div className="mt-5">
-          <p className="text-sm font-medium">Moyens de paiement acceptés</p>
-          <div className="mt-2 flex flex-wrap gap-2 text-xs">
-            {["Wave", "Orange Money", "Free Money", "Carte bancaire (Visa / Mastercard)"].map((m) => (
-              <span key={m} className="rounded-full border bg-background px-3 py-1 text-muted-foreground">{m}</span>
-            ))}
-          </div>
-        </div>
-
         {error && (
           <p className="mt-5 rounded-lg border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive">
             {error}
           </p>
         )}
 
-        <Button className="mt-6 w-full" onClick={() => handlePay()} disabled={busy}>
-          {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <CreditCard className="mr-2 h-4 w-4" />}
-          Payer {total.toLocaleString("fr-FR")} FCFA — Wave / OM / Carte
+        <Button className="mt-6 w-full" disabled>
+          <CreditCard className="mr-2 h-4 w-4" />
+          Paiement en ligne bientôt disponible
         </Button>
-
-        <div className="mt-3 flex items-center justify-center gap-1.5 text-center text-xs text-muted-foreground">
-          <ShieldCheck className="h-3.5 w-3.5 shrink-0" /> Paiement sécurisé via PayDunya
-        </div>
 
         <button
           onClick={handleFree}
