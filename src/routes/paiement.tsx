@@ -101,7 +101,7 @@ function PaiementPage() {
           </Link>
           <h1 className="mt-4 text-2xl font-bold">Votre formule</h1>
           <p className="text-sm text-muted-foreground">
-            Le paiement en ligne sera bientôt disponible. En attendant, utilisez le plan Gratuit.
+            Réglez votre abonnement via Wave pour activer votre formule.
           </p>
         </div>
 
@@ -137,9 +137,16 @@ function PaiementPage() {
           </p>
         )}
 
-        <Button className="mt-6 w-full" disabled>
-          <CreditCard className="mr-2 h-4 w-4" />
-          Paiement en ligne bientôt disponible
+        <div className="mt-6 rounded-xl border bg-background/60 p-4 text-center">
+          <p className="text-sm text-muted-foreground">Montant à payer</p>
+          <p className="text-3xl font-bold tabular-nums">{total.toLocaleString("fr-FR")} FCFA</p>
+          <p className="mt-1 text-xs text-muted-foreground">Veuillez payer JOKTALY avec Wave</p>
+        </div>
+        <Button asChild className="mt-4 w-full">
+          <a href={`https://pay.wave.com/m/M_sn_Aix0xKrbNhnP/c/sn/?amount=${total}`} target="_blank" rel="noopener noreferrer">
+            <CreditCard className="mr-2 h-4 w-4" />
+            Payer {total.toLocaleString("fr-FR")} FCFA avec Wave
+          </a>
         </Button>
 
         <button
