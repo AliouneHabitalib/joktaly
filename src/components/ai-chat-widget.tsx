@@ -17,7 +17,7 @@ import {
   PromptInputSubmit,
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
-import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
+import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -28,7 +28,7 @@ const SUGGESTIONS = [
 ];
 
 const WELCOME =
-  "Bonjour 👋 Je suis Tera, l'assistant TERA-DEVIS. Posez-moi votre question sur les devis, les factures ou les tarifs.";
+  "Bonjour 👋 Je suis Tera, l'assistant JOKTALY. Posez-moi votre question sur les devis, les factures ou les tarifs.";
 
 export function AiChatWidget() {
   const [open, setOpen] = useState(false);
@@ -51,7 +51,7 @@ export function AiChatWidget() {
         {
           role: "assistant",
           content:
-            "Désolé, une erreur est survenue. Réessayez ou écrivez-nous à contact@tera-devis.com.",
+            "Désolé, une erreur est survenue. Réessayez ou écrivez-nous à contact@joktaly.com.",
         },
       ]);
     } finally {

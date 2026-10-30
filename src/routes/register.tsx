@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { isPaidPlan, normalizePlan } from "@/lib/pricing";
 import { GoogleAuthButton } from "@/components/google-auth-button";
 import { useAuth } from "@/hooks/use-auth";
-import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
+import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
@@ -18,20 +18,20 @@ export const Route = createFileRoute("/register")({
   }),
   head: () => ({
     meta: [
-      { title: "Créer un compte — TERA-DEVIS" },
+      { title: "Créer un compte — JOKTALY" },
       {
         name: "description",
         content:
-          "Inscrivez-vous gratuitement à TERA-DEVIS et gérez vos devis, factures et paiements pour votre PME.",
+          "Inscrivez-vous gratuitement à JOKTALY et gérez vos devis, factures et paiements pour votre PME.",
       },
       {
         property: "og:title",
-        content: "Créer un compte — TERA-DEVIS",
+        content: "Créer un compte — JOKTALY",
       },
       {
         property: "og:description",
         content:
-          "Inscrivez-vous gratuitement à TERA-DEVIS et gérez vos devis, factures et paiements pour votre PME.",
+          "Inscrivez-vous gratuitement à JOKTALY et gérez vos devis, factures et paiements pour votre PME.",
       },
       {
         property: "og:url",
@@ -39,11 +39,11 @@ export const Route = createFileRoute("/register")({
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:title", content: "Créer un compte — TERA-DEVIS" },
+      { name: "twitter:title", content: "Créer un compte — JOKTALY" },
       {
         name: "twitter:description",
         content:
-          "Inscrivez-vous gratuitement à TERA-DEVIS et gérez vos devis, factures et paiements pour votre PME.",
+          "Inscrivez-vous gratuitement à JOKTALY et gérez vos devis, factures et paiements pour votre PME.",
       },
     ],
     links: [
@@ -125,8 +125,8 @@ function RegisterPage() {
       <div className="w-full max-w-md rounded-2xl border bg-card p-8 shadow-[var(--shadow-elegant)]">
         <div className="mb-6 text-center">
           <Link to="/" className="inline-flex items-center gap-2">
-            <img src={logoAsset.url} alt="TERA-DEVIS" className="h-9 w-9 object-contain" />
-            <span className="text-xl font-bold">TERA-DEVIS</span>
+            <img src={logoAsset.url} alt="JOKTALY" className="h-9 w-9 object-contain" />
+            <span className="text-xl font-bold">JOKTALY</span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold">Créer un compte</h1>
           <p className="text-sm text-muted-foreground">Commencez gratuitement, sans carte bancaire</p>

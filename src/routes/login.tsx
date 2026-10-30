@@ -6,34 +6,34 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { GoogleAuthButton } from "@/components/google-auth-button";
-import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
+import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
   head: () => ({
     meta: [
-      { title: "Connexion — TERA-DEVIS" },
+      { title: "Connexion — JOKTALY" },
       {
         name: "description",
         content:
-          "Connectez-vous à TERA-DEVIS pour créer des devis et factures professionnels en quelques clics.",
+          "Connectez-vous à JOKTALY pour créer des devis et factures professionnels en quelques clics.",
       },
       {
         property: "og:title",
-        content: "Connexion — TERA-DEVIS",
+        content: "Connexion — JOKTALY",
       },
       {
         property: "og:description",
         content:
-          "Connectez-vous à TERA-DEVIS pour créer des devis et factures professionnels en quelques clics.",
+          "Connectez-vous à JOKTALY pour créer des devis et factures professionnels en quelques clics.",
       },
       { property: "og:url", content: "https://tera-devis.lovable.app/login" },
       { property: "og:type", content: "website" },
-      { name: "twitter:title", content: "Connexion — TERA-DEVIS" },
+      { name: "twitter:title", content: "Connexion — JOKTALY" },
       {
         name: "twitter:description",
         content:
-          "Connectez-vous à TERA-DEVIS pour créer des devis et factures professionnels en quelques clics.",
+          "Connectez-vous à JOKTALY pour créer des devis et factures professionnels en quelques clics.",
       },
     ],
     links: [
@@ -65,8 +65,8 @@ function LoginPage() {
       <div className="w-full max-w-md rounded-2xl border bg-card p-8 shadow-[var(--shadow-elegant)]">
         <div className="mb-6 text-center">
           <Link to="/" className="inline-flex items-center gap-2">
-            <img src={logoAsset.url} alt="TERA-DEVIS" className="h-9 w-9 object-contain" />
-            <span className="text-xl font-bold">TERA-DEVIS</span>
+            <img src={logoAsset.url} alt="JOKTALY" className="h-9 w-9 object-contain" />
+            <span className="text-xl font-bold">JOKTALY</span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold">Connexion</h1>
           <p className="text-sm text-muted-foreground">Bienvenue, connectez-vous à votre compte</p>

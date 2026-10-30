@@ -39,7 +39,7 @@ export function InteractiveDemo() {
           <span className="h-2.5 w-2.5 rounded-full bg-card/30" />
         </div>
         <span className="rounded-md bg-card/10 px-3 py-1 text-xs font-medium">
-          app.tera-devis.com
+          app.joktaly.com
         </span>
         <span className="hidden text-xs opacity-70 sm:inline">Aperçu</span>
       </div>

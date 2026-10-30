@@ -19,7 +19,7 @@ import {
   getSubscriptionStatus,
   selectPaidPlan,
 } from "@/lib/abonnement.functions";
-import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
+import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 export const Route = createFileRoute("/paiement")({
   component: PaiementPage,
@@ -31,10 +31,10 @@ export const Route = createFileRoute("/paiement")({
   }),
   head: () => ({
     meta: [
-      { title: "Finaliser votre abonnement — TERA-DEVIS" },
-      { name: "description", content: "Réglez votre abonnement TERA-DEVIS." },
-      { property: "og:title", content: "Finaliser votre abonnement — TERA-DEVIS" },
-      { property: "og:description", content: "Réglez votre abonnement TERA-DEVIS." },
+      { title: "Finaliser votre abonnement — JOKTALY" },
+      { name: "description", content: "Réglez votre abonnement JOKTALY." },
+      { property: "og:title", content: "Finaliser votre abonnement — JOKTALY" },
+      { property: "og:description", content: "Réglez votre abonnement JOKTALY." },
       { property: "og:type", content: "website" },
       { name: "robots", content: "noindex, nofollow" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -96,8 +96,8 @@ function PaiementPage() {
       <div className="w-full max-w-lg rounded-2xl border bg-card p-8 shadow-[var(--shadow-elegant)]">
         <div className="text-center">
           <Link to="/" className="inline-flex items-center gap-2">
-            <img src={logoAsset.url} alt="TERA-DEVIS" className="h-9 w-9 object-contain" />
-            <span className="text-xl font-bold">TERA-DEVIS</span>
+            <img src={logoAsset.url} alt="JOKTALY" className="h-9 w-9 object-contain" />
+            <span className="text-xl font-bold">JOKTALY</span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold">Votre formule</h1>
           <p className="text-sm text-muted-foreground">

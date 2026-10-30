@@ -1,6 +1,6 @@
 import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
 import { Send } from "lucide-react";
-import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
+import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 export function MobileMockup() {
   return (
@@ -12,8 +12,8 @@ export function MobileMockup() {
             aria-hidden="true"
           />
           <div className="flex items-center gap-2 bg-secondary px-3 pb-2 pt-6 text-secondary-foreground">
-            <img src={logoAsset.url} alt="TERA-DEVIS sur mobile" className="h-5 w-5 object-contain" />
-            <span className="text-xs font-bold">TERA-DEVIS</span>
+            <img src={logoAsset.url} alt="JOKTALY sur mobile" className="h-5 w-5 object-contain" />
+            <span className="text-xs font-bold">JOKTALY</span>
           </div>
 
           <div className="space-y-2 p-3">
