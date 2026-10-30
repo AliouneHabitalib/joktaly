@@ -20,14 +20,14 @@ Ce que tu sais :
 - Prix mensuels : Gratuit 0 FCFA (gratuit à vie), Starter 3 000 FCFA, Pro 6 000 FCFA, Business 15 000 FCFA (4 formules). Paiement annuel : -20%.
 - Paiement par Wave, Orange Money, Free Money et carte bancaire.
 - Inscription gratuite, sans carte bancaire, en 2 minutes.
-Si tu ne sais pas, dis-le simplement et invite à écrire à contact@tera-devis.com. Ne promets jamais de fonctionnalité inexistante. Termine si pertinent par une invitation à créer un compte gratuit.`;
+Si tu ne sais pas, dis-le simplement et invite à écrire à contact@joktaly.com. Ne promets jamais de fonctionnalité inexistante. Termine si pertinent par une invitation à créer un compte gratuit.`;
 
 export const askAssistant = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => schema.parse(data))
   .handler(async ({ data }) => {
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) {
-      return { reply: "L'assistant est momentanément indisponible. Écrivez-nous à contact@tera-devis.com." };
+      return { reply: "L'assistant est momentanément indisponible. Écrivez-nous à contact@joktaly.com." };
     }
 
     const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -46,7 +46,7 @@ export const askAssistant = createServerFn({ method: "POST" })
       return { reply: "Beaucoup de questions en ce moment 😊 Réessayez dans quelques instants." };
     }
     if (!res.ok) {
-      return { reply: "Je n'arrive pas à répondre pour l'instant. Réessayez ou écrivez à contact@tera-devis.com." };
+      return { reply: "Je n'arrive pas à répondre pour l'instant. Réessayez ou écrivez à contact@joktaly.com." };
     }
 
     const json = (await res.json()) as {

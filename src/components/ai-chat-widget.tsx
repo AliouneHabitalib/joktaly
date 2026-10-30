@@ -51,7 +51,7 @@ export function AiChatWidget() {
         {
           role: "assistant",
           content:
-            "Désolé, une erreur est survenue. Réessayez ou écrivez-nous à contact@tera-devis.com.",
+            "Désolé, une erreur est survenue. Réessayez ou écrivez-nous à contact@joktaly.com.",
         },
       ]);
     } finally {

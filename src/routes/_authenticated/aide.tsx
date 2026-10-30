@@ -228,7 +228,7 @@ function AidePage() {
           </CardHeader>
           <CardContent>
             <Button asChild variant="outline" className="w-full">
-              <a href="mailto:support@tera-devis.com?subject=Demande%20d%27assistance%20JOKTALY">
+              <a href="mailto:support@joktaly.com?subject=Demande%20d%27assistance%20JOKTALY">
                 Écrire à l'équipe
               </a>
             </Button>
