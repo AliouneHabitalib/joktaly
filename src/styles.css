@@ -67,7 +67,7 @@
 
 :root {
   --radius: 0.625rem;
-  /* TERA-DEVIS — vert émeraude africain + or sénégalais */
+  /* JOKTALY — vert émeraude africain + or sénégalais */
   --background: oklch(0.99 0.005 150);
   --foreground: oklch(0.22 0.03 200);
   --card: oklch(1 0 0);

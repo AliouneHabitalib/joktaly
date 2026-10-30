@@ -15,10 +15,10 @@ import {
 export const Route = createFileRoute("/_authenticated/aide")({
   head: () => ({
     meta: [
-      { title: "Aide et support — TERA-DEVIS" },
-      { name: "description", content: "Guides de démarrage, tutoriels et réponses aux questions fréquentes pour utiliser TERA-DEVIS : devis, factures, clients, produits et paiements." },
-      { property: "og:title", content: "Aide et support — TERA-DEVIS" },
-      { property: "og:description", content: "Guides de démarrage, tutoriels et FAQ pour tirer le meilleur de TERA-DEVIS." },
+      { title: "Aide et support — JOKTALY" },
+      { name: "description", content: "Guides de démarrage, tutoriels et réponses aux questions fréquentes pour utiliser JOKTALY : devis, factures, clients, produits et paiements." },
+      { property: "og:title", content: "Aide et support — JOKTALY" },
+      { property: "og:description", content: "Guides de démarrage, tutoriels et FAQ pour tirer le meilleur de JOKTALY." },
       { property: "og:type", content: "website" },
       { name: "robots", content: "noindex, nofollow" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -115,7 +115,7 @@ const FAQ = [
   },
 ];
 
-const WHATSAPP = "https://wa.me/221771234567?text=" + encodeURIComponent("Bonjour, j'ai besoin d'aide avec TERA-DEVIS.");
+const WHATSAPP = "https://wa.me/221771234567?text=" + encodeURIComponent("Bonjour, j'ai besoin d'aide avec JOKTALY.");
 
 function AidePage() {
   const [q, setQ] = useState("");
@@ -228,7 +228,7 @@ function AidePage() {
           </CardHeader>
           <CardContent>
             <Button asChild variant="outline" className="w-full">
-              <a href="mailto:support@tera-devis.com?subject=Demande%20d%27assistance%20TERA-DEVIS">
+              <a href="mailto:support@tera-devis.com?subject=Demande%20d%27assistance%20JOKTALY">
                 Écrire à l'équipe
               </a>
             </Button>

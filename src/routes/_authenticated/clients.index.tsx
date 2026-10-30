@@ -32,7 +32,7 @@ import { toast } from "sonner";
 import { formatMontant } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/clients/")({
-  head: privateHead("Mes clients", "Consultez et gérez la liste de vos clients dans votre espace TERA-DEVIS."),
+  head: privateHead("Mes clients", "Consultez et gérez la liste de vos clients dans votre espace JOKTALY."),
   component: ClientsPage,
 });
 

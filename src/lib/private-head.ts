@@ -5,10 +5,10 @@
 export function privateHead(title: string, description: string) {
   return () => ({
     meta: [
-      { title: `${title} — TERA-DEVIS` },
+      { title: `${title} — JOKTALY` },
       { name: "description", content: description },
       { name: "robots", content: "noindex, nofollow" },
-      { property: "og:title", content: `${title} — TERA-DEVIS` },
+      { property: "og:title", content: `${title} — JOKTALY` },
       { property: "og:description", content: description },
     ],
   });

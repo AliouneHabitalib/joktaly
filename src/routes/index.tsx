@@ -17,7 +17,7 @@ import coiffeuseImage from "@/assets/hero-coiffeuse.jpg";
 import menuisierImage from "@/assets/hero-menuisier.jpg";
 import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
-import logoAsset from "@/assets/tera-devis-logo.png.asset.json";
+import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 import { useInView } from "@/hooks/use-in-view";
 import {
   FileText,
@@ -50,16 +50,16 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "TERA-DEVIS — Devis & Factures pour PME d'Afrique" },
+      { title: "JOKTALY — Devis & Factures pour PME d'Afrique" },
       { name: "description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
-      { property: "og:title", content: "TERA-DEVIS — Devis & Factures pour PME d'Afrique" },
+      { property: "og:title", content: "JOKTALY — Devis & Factures pour PME d'Afrique" },
       { property: "og:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
       { property: "og:url", content: "https://tera-devis.lovable.app/" },
       { property: "og:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
       { property: "og:image:width", content: "1216" },
       { property: "og:image:height", content: "640" },
       { name: "twitter:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
-      { name: "twitter:title", content: "TERA-DEVIS — Devis & Factures pour PME d'Afrique" },
+      { name: "twitter:title", content: "JOKTALY — Devis & Factures pour PME d'Afrique" },
       { name: "twitter:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
     ],
     links: [
@@ -73,7 +73,7 @@ export const Route = createFileRoute("/")({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "SoftwareApplication",
-          name: "TERA-DEVIS",
+          name: "JOKTALY",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web",
           url: "https://tera-devis.lovable.app/",
@@ -117,8 +117,8 @@ function Index() {
       <header className="border-b bg-card/90 backdrop-blur sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto flex items-center justify-between gap-2 px-4 py-3 sm:py-4">
           <div className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="Logo TERA-DEVIS — application de devis et factures" className="h-9 w-9 object-contain" />
-            <span className="text-lg font-bold sm:text-xl">TERA-DEVIS</span>
+            <img src={logoAsset.url} alt="Logo JOKTALY — application de devis et factures" className="h-9 w-9 object-contain" />
+            <span className="text-lg font-bold sm:text-xl">JOKTALY</span>
           </div>
           <div className="flex items-center gap-2">
             <Button variant="ghost" size="sm" className="hidden sm:inline-flex" asChild>
@@ -259,11 +259,11 @@ function Index() {
         </div>
       </section>
 
-      {/* Pourquoi choisir TERA-DEVIS ? */}
+      {/* Pourquoi choisir JOKTALY ? */}
       <section className="bg-muted/30 py-20">
         <div className="container mx-auto px-4">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold md:text-4xl">Pourquoi choisir TERA-DEVIS ?</h2>
+            <h2 className="text-3xl font-bold md:text-4xl">Pourquoi choisir JOKTALY ?</h2>
             <p className="mt-4 text-muted-foreground">
               L'outil de facturation pensé pour vous faire gagner du temps et de l'argent.
             </p>
@@ -327,7 +327,7 @@ function Index() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Ils nous font confiance</h2>
           <p className="mt-4 text-muted-foreground">
-            Des entrepreneurs africains témoignent de leur expérience avec TERA-DEVIS.
+            Des entrepreneurs africains témoignent de leur expérience avec JOKTALY.
           </p>
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
@@ -341,7 +341,7 @@ function Index() {
               plan: "Starter",
               citation:
                 "En 10 minutes j'avais créé mon premier devis professionnel. Mes clients reçoivent tout par WhatsApp, c'est exactement ce dont j'avais besoin.",
-              anciennete: "Utilise TERA-DEVIS depuis 3 mois",
+              anciennete: "Utilise JOKTALY depuis 3 mois",
             },
             {
               nom: "Moussa Traoré",
@@ -352,7 +352,7 @@ function Index() {
               plan: "Pro",
               citation:
                 "Je suivais mes paiements dans un cahier. Maintenant tout est sur mon téléphone. J'ai récupéré plus de 800 000 FCFA d'impayés grâce aux relances automatiques.",
-              anciennete: "Utilise TERA-DEVIS depuis 6 mois",
+              anciennete: "Utilise JOKTALY depuis 6 mois",
             },
             {
               nom: "Fatou Seck",
@@ -363,7 +363,7 @@ function Index() {
               plan: "Starter",
               citation:
                 "Les relances automatiques des impayés m'ont permis de récupérer de l'argent que j'avais déjà oublié. Simple, rapide, efficace.",
-              anciennete: "Utilise TERA-DEVIS depuis 2 mois",
+              anciennete: "Utilise JOKTALY depuis 2 mois",
             },
             {
               nom: "Cheikh Ndiaye",
@@ -374,7 +374,7 @@ function Index() {
               plan: "Business",
               citation:
                 "Avec 5 utilisateurs sur le plan Business, mon agence facture 3 fois plus vite qu'avant. Le support répond en moins de 4h, c'est sérieux.",
-              anciennete: "Utilise TERA-DEVIS depuis 8 mois",
+              anciennete: "Utilise JOKTALY depuis 8 mois",
             },
           ].map((t) => (
             <div
@@ -418,7 +418,7 @@ function Index() {
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold md:text-4xl">Pour qui ?</h2>
           <p className="mt-4 text-muted-foreground">
-            TERA-DEVIS s'adresse à tous les professionnels qui veulent facturer simplement et professionnellement.
+            JOKTALY s'adresse à tous les professionnels qui veulent facturer simplement et professionnellement.
           </p>
         </div>
         <div className="mt-12 flex flex-wrap justify-center gap-3">
@@ -608,7 +608,7 @@ function Index() {
         <div className="mx-auto max-w-2xl rounded-3xl border bg-card p-6 text-center shadow-[var(--shadow-card)] sm:p-10">
           <h2 className="text-2xl font-bold md:text-3xl">Prêt à simplifier votre facturation ?</h2>
           <p className="mt-4 text-muted-foreground">
-            Rejoignez les entrepreneurs qui gagnent du temps chaque jour avec TERA-DEVIS.
+            Rejoignez les entrepreneurs qui gagnent du temps chaque jour avec JOKTALY.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button size="lg" className="w-full sm:w-auto" asChild>
@@ -626,7 +626,7 @@ function Index() {
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">Questions fréquentes</h2>
             <p className="mt-4 text-muted-foreground">
-              Tout ce que vous devez savoir pour bien démarrer avec TERA-DEVIS.
+              Tout ce que vous devez savoir pour bien démarrer avec JOKTALY.
             </p>
           </div>
           <div className="mx-auto mt-10 max-w-3xl rounded-2xl border bg-card px-6 shadow-[var(--shadow-card)]">
@@ -661,7 +661,7 @@ function Index() {
                   a: "Vous pouvez payer via Wave, Orange Money, Free Money ou carte bancaire. Paiement 100% sécurisé.",
                 },
                 {
-                  q: "Est-ce que TERA-DEVIS fonctionne sans connexion rapide ?",
+                  q: "Est-ce que JOKTALY fonctionne sans connexion rapide ?",
                   a: "Oui. L'application est optimisée pour les connexions lentes (3G/4G) courantes en Afrique.",
                 },
               ].map((item, i) => (
@@ -684,8 +684,8 @@ function Index() {
         <div className="container mx-auto px-4">
           <div className="max-w-md">
             <div className="flex items-center gap-2">
-              <img src={logoAsset.url} alt="Logo TERA-DEVIS dans l'aperçu d'un devis" className="h-8 w-8 object-contain" />
-              <span className="text-lg font-bold">TERA-DEVIS</span>
+              <img src={logoAsset.url} alt="Logo JOKTALY dans l'aperçu d'un devis" className="h-8 w-8 object-contain" />
+              <span className="text-lg font-bold">JOKTALY</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
               L'outil de facturation pensé pour les entrepreneurs africains.
@@ -693,7 +693,7 @@ function Index() {
           </div>
         </div>
         <div className="container mx-auto mt-10 flex flex-col items-center justify-between gap-2 border-t px-4 pt-6 text-sm text-muted-foreground md:flex-row">
-          <p>© {new Date().getFullYear()} TERA-DEVIS. Tous droits réservés.</p>
+          <p>© {new Date().getFullYear()} JOKTALY. Tous droits réservés.</p>
           <p>
             Made with <span aria-label="amour">❤️</span> pour l'Afrique
           </p>
@@ -773,7 +773,7 @@ function HeroVisual() {
         <div className="flex items-center justify-between gap-2 border-b pb-2">
           <div className="flex items-center gap-2">
             <img src={logoAsset.url} alt="" className="h-6 w-6 object-contain" />
-            <span className="text-sm font-bold">TERA-DEVIS</span>
+            <span className="text-sm font-bold">JOKTALY</span>
           </div>
           <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">
             {DEMO_DEVIS.numero}
@@ -820,7 +820,7 @@ function UserStoriesSection() {
     >
       <div className="mx-auto max-w-3xl text-center">
         <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-          Ils utilisent TERA-DEVIS
+          Ils utilisent JOKTALY
         </span>
         <h2
           id="user-stories-title"

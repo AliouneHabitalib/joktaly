@@ -9,10 +9,10 @@ export const Route = createFileRoute("/auth/callback")({
   component: AuthCallbackPage,
   head: () => ({
     meta: [
-      { title: "Connexion en cours — TERA-DEVIS" },
-      { name: "description", content: "Finalisation de votre connexion sécurisée à TERA-DEVIS." },
-      { property: "og:title", content: "Connexion en cours — TERA-DEVIS" },
-      { property: "og:description", content: "Finalisation de votre connexion sécurisée à TERA-DEVIS." },
+      { title: "Connexion en cours — JOKTALY" },
+      { name: "description", content: "Finalisation de votre connexion sécurisée à JOKTALY." },
+      { property: "og:title", content: "Connexion en cours — JOKTALY" },
+      { property: "og:description", content: "Finalisation de votre connexion sécurisée à JOKTALY." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex" },

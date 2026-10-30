@@ -358,7 +358,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(7.5);
     pdf.setTextColor(150, 155, 158);
-    pdf.text(`${doc.entreprise.nom} — Document généré avec TERA-DEVIS`, margin, pageH - 11);
+    pdf.text(`${doc.entreprise.nom} — Document généré avec JOKTALY`, margin, pageH - 11);
     pdf.text(`Page ${p} / ${total}`, pageW - margin, pageH - 11, { align: "right" });
   }
 
