@@ -65,7 +65,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
 
 export function generatePdf(doc: PdfDoc): jsPDF {
   const pdf = new jsPDF({ unit: "mm", format: "a4" });
-  const [r, g, b] = hexToRgb(doc.entreprise.couleur_primaire || "#1D9E75");
+  const [r, g, b] = hexToRgb(doc.entreprise.couleur_primaire || "#0A63F0");
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
   const margin = 18;

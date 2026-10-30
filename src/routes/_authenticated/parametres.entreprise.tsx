@@ -80,7 +80,7 @@ const DEFAULTS: FormState = {
   rc: "",
   devise: "FCFA",
   tva_taux: "18",
-  couleur_primaire: "#1D9E75",
+  couleur_primaire: "#0A63F0",
   logo_url: "",
   coordonnees_bancaires: "",
   couleur_secondaire: "#C9A84C",
@@ -122,7 +122,7 @@ function ParametresEntreprisePage() {
       rc: entreprise.rc ?? "",
       devise: entreprise.devise ?? "FCFA",
       tva_taux: String(entreprise.tva_taux ?? 18),
-      couleur_primaire: entreprise.couleur_primaire ?? "#1D9E75",
+      couleur_primaire: entreprise.couleur_primaire ?? "#0A63F0",
       logo_url: entreprise.logo_url ?? "",
       coordonnees_bancaires: entreprise.coordonnees_bancaires ?? "",
       ...extras,
@@ -164,7 +164,7 @@ function ParametresEntreprisePage() {
         rc: form.rc || null,
         devise: form.devise || "FCFA",
         tva_taux: Number(form.tva_taux) || 0,
-        couleur_primaire: form.couleur_primaire || "#1D9E75",
+        couleur_primaire: form.couleur_primaire || "#0A63F0",
         logo_url: form.logo_url || null,
         coordonnees_bancaires: form.coordonnees_bancaires || null,
       };
@@ -207,7 +207,7 @@ function ParametresEntreprisePage() {
 
   const preview = useMemo(
     () => ({
-      primary: form.couleur_primaire || "#1D9E75",
+      primary: form.couleur_primaire || "#0A63F0",
       secondary: form.couleur_secondaire || "#C9A84C",
     }),
     [form.couleur_primaire, form.couleur_secondaire],
