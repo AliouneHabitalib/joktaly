@@ -92,7 +92,7 @@ export async function buildPdfDoc(params: {
       ninea: entreprise.ninea,
       rc: entreprise.rc,
       devise: entreprise.devise ?? "FCFA",
-      couleur_primaire: entreprise.couleur_primaire ?? "#1D9E75",
+      couleur_primaire: entreprise.couleur_primaire ?? "#0A63F0",
       coordonnees_bancaires: entreprise.coordonnees_bancaires,
       mentions_legales: extras.mentions_legales ?? null,
     },

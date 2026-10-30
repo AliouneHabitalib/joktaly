@@ -13,7 +13,7 @@ interface Props {
  * Le rendu utilise le logo et la couleur primaire de l'entreprise.
  */
 export function PrintDocument({ doc, autoPrint = true }: Props) {
-  const couleur = doc.entreprise.couleur_primaire || "#1D9E75";
+  const couleur = doc.entreprise.couleur_primaire || "#0A63F0";
   const devise = doc.entreprise.devise || "FCFA";
   const isDevis = doc.type === "devis";
 
