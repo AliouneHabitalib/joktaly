@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
+import { Route as ChoisirFormuleRouteImport } from './routes/choisir-formule'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as PaiementRouteImport } from './routes/paiement'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -41,6 +42,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRoute = AuthenticatedRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChoisirFormuleRoute = ChoisirFormuleRouteImport.update({
+  id: '/choisir-formule',
+  path: '/choisir-formule',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -162,6 +168,7 @@ const ApiPublicHooksQuotaResetCheckRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/choisir-formule': typeof ChoisirFormuleRoute
   '/login': typeof LoginRoute
   '/paiement': typeof PaiementRoute
   '/register': typeof RegisterRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/choisir-formule': typeof ChoisirFormuleRoute
   '/login': typeof LoginRoute
   '/paiement': typeof PaiementRoute
   '/register': typeof RegisterRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteWithChildren
+  '/choisir-formule': typeof ChoisirFormuleRoute
   '/login': typeof LoginRoute
   '/paiement': typeof PaiementRoute
   '/register': typeof RegisterRoute
@@ -238,6 +247,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/choisir-formule'
     | '/login'
     | '/paiement'
     | '/register'
@@ -263,6 +273,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/choisir-formule'
     | '/login'
     | '/paiement'
     | '/register'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/choisir-formule'
     | '/login'
     | '/paiement'
     | '/register'
@@ -313,6 +325,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
+  ChoisirFormuleRoute: typeof ChoisirFormuleRoute
   LoginRoute: typeof LoginRoute
   PaiementRoute: typeof PaiementRoute
   RegisterRoute: typeof RegisterRoute
@@ -336,6 +349,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/choisir-formule': {
+      id: '/choisir-formule'
+      path: '/choisir-formule'
+      fullPath: '/choisir-formule'
+      preLoaderRoute: typeof ChoisirFormuleRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -568,6 +588,7 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
+  ChoisirFormuleRoute: ChoisirFormuleRoute,
   LoginRoute: LoginRoute,
   PaiementRoute: PaiementRoute,
   RegisterRoute: RegisterRoute,
