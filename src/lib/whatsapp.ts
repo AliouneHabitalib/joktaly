@@ -37,6 +37,29 @@ export function buildDocumentMessage(params: {
   return lines.filter((l, i, a) => !(l === "" && a[i - 1] === "")).join("\n").trim();
 }
 
+/** Message de relance pour une facture impayée ou partiellement payée. */
+export function buildRelanceMessage(params: {
+  type: "devis" | "facture";
+  numero: string;
+  montant: number;
+  devise?: string | null;
+  clientNom?: string | null;
+  entrepriseNom?: string | null;
+  reste?: number | null;
+}): string {
+  const devise = params.devise ?? "FCFA";
+  const reste = params.reste != null && params.reste > 0 ? params.reste : params.montant;
+  return [
+    params.clientNom ? `Bonjour ${params.clientNom},` : "Bonjour,",
+    "",
+    `Sauf erreur de notre part, la facture N°${params.numero} reste à régler : ${formatMontant(reste, devise)}.`,
+    "Merci de procéder au paiement dès que possible. Si c'est déjà fait, ne tenez pas compte de ce message.",
+    "",
+    "Cordialement,",
+    params.entrepriseNom ?? "",
+  ].join("\n").trim();
+}
+
 export function whatsappUrl(phone: string, message: string): string {
   const p = normalizePhone(phone);
   return p
