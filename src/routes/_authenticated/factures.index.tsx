@@ -46,7 +46,7 @@ import { toast } from "sonner";
 import { formatMontant, formatDate } from "@/lib/format";
 import { downloadPdf } from "@/lib/pdf";
 import { buildPdfDoc } from "@/lib/devis-facture-shared";
-import { buildDocumentMessage } from "@/lib/whatsapp";
+import { buildDocumentMessage, buildRelanceMessage } from "@/lib/whatsapp";
 import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
 import { ListSkeleton } from "./devis.index";
 
@@ -158,7 +158,7 @@ function FacturesListPage() {
     }
   };
 
-  const handleWhatsapp = async (f: FactureRow) => {
+  const handleWhatsapp = async (f: FactureRow, relance = false) => {
     if (!entreprise) return;
     const { data: client } = await supabase
       .from("clients")
@@ -167,8 +167,8 @@ function FacturesListPage() {
       .single();
     setWaPayload({
       phone: client?.whatsapp || client?.telephone || "",
-      title: `Envoyer la facture ${f.numero}`,
-      message: buildDocumentMessage({
+      title: relance ? `Relancer le client — ${f.numero}` : `Envoyer la facture ${f.numero}`,
+      message: (relance ? buildRelanceMessage : buildDocumentMessage)({
         type: "facture",
         numero: f.numero,
         montant: Number(f.total_ttc),
@@ -357,6 +357,11 @@ function FacturesListPage() {
                             <DropdownMenuItem onClick={() => handleWhatsapp(f)}>
                               <MessageCircle className="mr-2 h-4 w-4" /> Envoyer WhatsApp
                             </DropdownMenuItem>
+                            {f.statut !== "payee" && f.statut !== "annulee" && (
+                              <DropdownMenuItem onClick={() => handleWhatsapp(f, true)}>
+                                <MessageCircle className="mr-2 h-4 w-4" /> Relancer le client
+                              </DropdownMenuItem>
+                            )}
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
                               onClick={() => setToDelete(f)}
