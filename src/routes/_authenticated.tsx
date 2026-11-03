@@ -28,6 +28,10 @@ function AuthenticatedLayout() {
   });
 
   useEffect(() => {
+    if (status && !status.planChosen) navigate({ to: "/choisir-formule" });
+  }, [status, navigate]);
+
+  useEffect(() => {
     if (status?.requiresPayment && status.pending) {
       toast.info("Finalisez votre paiement pour accéder à votre espace.");
       navigate({
@@ -50,7 +54,13 @@ function AuthenticatedLayout() {
     );
   }
   if (!user) return null;
-  if (status?.requiresPayment) return null;
+  if (!status || !status.planChosen || status.requiresPayment) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+      </div>
+    );
+  }
   return <AppShell />;
 }
 

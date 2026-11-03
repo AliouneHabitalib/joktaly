@@ -6,7 +6,7 @@ export const getSubscriptionStatus = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { supabase, userId } = context;
     const [{ data: profile }, { data: pending }] = await Promise.all([
-      supabase.from("profiles").select("plan, plan_expires_at").eq("id", userId).maybeSingle(),
+      supabase.from("profiles").select("plan, plan_expires_at, plan_choisi").eq("id", userId).maybeSingle(),
       (supabase as any)
         .from("abonnements")
         .select("id, plan, cycle, montant, statut, created_at")
@@ -33,6 +33,7 @@ export const getSubscriptionStatus = createServerFn({ method: "GET" })
           }
         : null,
       requiresPayment,
+      planChosen: !!(profile as any)?.plan_choisi,
     };
   });
 
@@ -55,6 +56,7 @@ export const selectPaidPlan = createServerFn({ method: "POST" })
       .select("plan")
       .eq("id", context.userId)
       .maybeSingle();
+    await admin.from("profiles").update({ plan_choisi: true }).eq("id", context.userId);
     if (profile?.plan && profile.plan !== "gratuit") {
       return { ok: true as const, alreadyActive: true as const };
     }
@@ -93,6 +95,7 @@ export const cancelPendingSubscription = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await (supabaseAdmin as any).from("profiles").update({ plan_choisi: true }).eq("id", context.userId);
     await (supabaseAdmin as any)
       .from("abonnements")
       .update({ statut: "annule" })
