@@ -13,8 +13,10 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as ChoisirFormuleRouteImport } from './routes/choisir-formule'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as MotDePasseOublieRouteImport } from './routes/mot-de-passe-oublie'
 import { Route as PaiementRouteImport } from './routes/paiement'
 import { Route as RegisterRouteImport } from './routes/register'
+import { Route as ReinitialiserMotDePasseRouteImport } from './routes/reinitialiser-mot-de-passe'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
 import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
@@ -54,6 +56,11 @@ const LoginRoute = LoginRouteImport.update({
   path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MotDePasseOublieRoute = MotDePasseOublieRouteImport.update({
+  id: '/mot-de-passe-oublie',
+  path: '/mot-de-passe-oublie',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PaiementRoute = PaiementRouteImport.update({
   id: '/paiement',
   path: '/paiement',
@@ -62,6 +69,11 @@ const PaiementRoute = PaiementRouteImport.update({
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReinitialiserMotDePasseRoute = ReinitialiserMotDePasseRouteImport.update({
+  id: '/reinitialiser-mot-de-passe',
+  path: '/reinitialiser-mot-de-passe',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -170,8 +182,10 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/choisir-formule': typeof ChoisirFormuleRoute
   '/login': typeof LoginRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/paiement': typeof PaiementRoute
   '/register': typeof RegisterRoute
+  '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/aide': typeof AuthenticatedAideRoute
   '/clients': typeof AuthenticatedClientsRouteWithChildren
@@ -196,8 +210,10 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/choisir-formule': typeof ChoisirFormuleRoute
   '/login': typeof LoginRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/paiement': typeof PaiementRoute
   '/register': typeof RegisterRoute
+  '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/aide': typeof AuthenticatedAideRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -221,8 +237,10 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/choisir-formule': typeof ChoisirFormuleRoute
   '/login': typeof LoginRoute
+  '/mot-de-passe-oublie': typeof MotDePasseOublieRoute
   '/paiement': typeof PaiementRoute
   '/register': typeof RegisterRoute
+  '/reinitialiser-mot-de-passe': typeof ReinitialiserMotDePasseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/aide': typeof AuthenticatedAideRoute
   '/_authenticated/clients': typeof AuthenticatedClientsRouteWithChildren
@@ -249,8 +267,10 @@ export interface FileRouteTypes {
     | '/'
     | '/choisir-formule'
     | '/login'
+    | '/mot-de-passe-oublie'
     | '/paiement'
     | '/register'
+    | '/reinitialiser-mot-de-passe'
     | '/sitemap.xml'
     | '/aide'
     | '/clients'
@@ -275,8 +295,10 @@ export interface FileRouteTypes {
     | '/'
     | '/choisir-formule'
     | '/login'
+    | '/mot-de-passe-oublie'
     | '/paiement'
     | '/register'
+    | '/reinitialiser-mot-de-passe'
     | '/sitemap.xml'
     | '/aide'
     | '/dashboard'
@@ -299,8 +321,10 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/choisir-formule'
     | '/login'
+    | '/mot-de-passe-oublie'
     | '/paiement'
     | '/register'
+    | '/reinitialiser-mot-de-passe'
     | '/sitemap.xml'
     | '/_authenticated/aide'
     | '/_authenticated/clients'
@@ -327,8 +351,10 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   ChoisirFormuleRoute: typeof ChoisirFormuleRoute
   LoginRoute: typeof LoginRoute
+  MotDePasseOublieRoute: typeof MotDePasseOublieRoute
   PaiementRoute: typeof PaiementRoute
   RegisterRoute: typeof RegisterRoute
+  ReinitialiserMotDePasseRoute: typeof ReinitialiserMotDePasseRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
   PrintDevisIdRoute: typeof PrintDevisIdRoute
@@ -365,6 +391,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mot-de-passe-oublie': {
+      id: '/mot-de-passe-oublie'
+      path: '/mot-de-passe-oublie'
+      fullPath: '/mot-de-passe-oublie'
+      preLoaderRoute: typeof MotDePasseOublieRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/paiement': {
       id: '/paiement'
       path: '/paiement'
@@ -377,6 +410,13 @@ declare module '@tanstack/react-router' {
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reinitialiser-mot-de-passe': {
+      id: '/reinitialiser-mot-de-passe'
+      path: '/reinitialiser-mot-de-passe'
+      fullPath: '/reinitialiser-mot-de-passe'
+      preLoaderRoute: typeof ReinitialiserMotDePasseRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -590,8 +630,10 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   ChoisirFormuleRoute: ChoisirFormuleRoute,
   LoginRoute: LoginRoute,
+  MotDePasseOublieRoute: MotDePasseOublieRoute,
   PaiementRoute: PaiementRoute,
   RegisterRoute: RegisterRoute,
+  ReinitialiserMotDePasseRoute: ReinitialiserMotDePasseRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   AuthCallbackRoute: AuthCallbackRoute,
   PrintDevisIdRoute: PrintDevisIdRoute,
