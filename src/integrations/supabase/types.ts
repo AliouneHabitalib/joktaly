@@ -599,6 +599,7 @@ export type Database = {
           id: string
           nom: string | null
           plan: Database["public"]["Enums"]["plan_type"]
+          plan_choisi: boolean
           plan_expires_at: string | null
           telephone: string | null
           updated_at: string
@@ -609,6 +610,7 @@ export type Database = {
           id: string
           nom?: string | null
           plan?: Database["public"]["Enums"]["plan_type"]
+          plan_choisi?: boolean
           plan_expires_at?: string | null
           telephone?: string | null
           updated_at?: string
@@ -619,6 +621,7 @@ export type Database = {
           id?: string
           nom?: string | null
           plan?: Database["public"]["Enums"]["plan_type"]
+          plan_choisi?: boolean
           plan_expires_at?: string | null
           telephone?: string | null
           updated_at?: string
