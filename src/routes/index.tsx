@@ -690,6 +690,20 @@ function Index() {
             <p className="mt-3 text-sm text-muted-foreground">
               L'outil de facturation pensé pour les entrepreneurs africains.
             </p>
+            <div className="mt-4 flex flex-col gap-1 text-sm">
+              <a
+                href="mailto:contact@joktaly.com"
+                className="font-medium text-primary hover:underline"
+              >
+                contact@joktaly.com
+              </a>
+              <a
+                href="mailto:support@joktaly.com"
+                className="text-muted-foreground hover:text-primary hover:underline"
+              >
+                support@joktaly.com
+              </a>
+            </div>
           </div>
         </div>
         <div className="container mx-auto mt-10 flex flex-col items-center justify-between gap-2 border-t px-4 pt-6 text-sm text-muted-foreground md:flex-row">
