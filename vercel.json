@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/~oauth/:path*", "destination": "https://joktaly.lovable.app/~oauth/:path*" }
+  ]
+}
