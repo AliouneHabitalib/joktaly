@@ -19,7 +19,6 @@ import {
   getSubscriptionStatus,
   selectPaidPlan,
 } from "@/lib/abonnement.functions";
-import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 export const Route = createFileRoute("/paiement")({
   component: PaiementPage,
@@ -96,7 +95,7 @@ function PaiementPage() {
       <div className="w-full max-w-lg rounded-2xl border bg-card p-8 shadow-[var(--shadow-elegant)]">
         <div className="text-center">
           <Link to="/" className="inline-flex items-center gap-2">
-            <img src={logoAsset.url} alt="JOKTALY" className="h-9 w-9 object-contain" />
+            <img src="/joktaly-insigne.png" alt="JOKTALY" className="h-9 w-9 object-contain" />
             <span className="text-xl font-bold">JOKTALY</span>
           </Link>
           <h1 className="mt-4 text-2xl font-bold">Votre formule</h1>

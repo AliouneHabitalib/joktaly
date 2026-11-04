@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { PRICING } from "@/lib/pricing";
 import type { PlanType } from "@/lib/plans";
 import { cancelPendingSubscription } from "@/lib/abonnement.functions";
-import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 const PLANS: PlanType[] = ["gratuit", "starter", "pro", "business"];
 
@@ -52,7 +51,7 @@ function ChoisirFormulePage() {
   return (
     <div className="min-h-screen bg-muted/30 px-4 py-10">
       <div className="mx-auto max-w-6xl text-center">
-        <img src={logoAsset.url} alt="JOKTALY" className="mx-auto h-10 w-10 object-contain" />
+        <img src="/joktaly-insigne.png" alt="JOKTALY" className="mx-auto h-10 w-10 object-contain" />
         <h1 className="mt-4 text-2xl font-bold sm:text-3xl">Choisissez votre formule</h1>
         <p className="mt-2 text-sm text-muted-foreground">
           Sélectionnez une formule pour accéder à votre espace.
