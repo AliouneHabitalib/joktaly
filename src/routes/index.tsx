@@ -17,7 +17,6 @@ import coiffeuseImage from "@/assets/hero-coiffeuse.jpg";
 import menuisierImage from "@/assets/hero-menuisier.jpg";
 import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
 import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
-import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 import { useInView } from "@/hooks/use-in-view";
 import {
   FileText,
@@ -117,7 +116,7 @@ function Index() {
       <header className="border-b bg-card/90 backdrop-blur sticky top-0 z-50 shadow-sm">
         <div className="container mx-auto flex items-center justify-between gap-2 px-4 py-3 sm:py-4">
           <div className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="Logo JOKTALY — application de devis et factures" className="h-9 w-9 object-contain" />
+            <img src="/joktaly-insigne.png" alt="Logo JOKTALY — application de devis et factures" className="h-9 w-9 object-contain" />
             <span className="text-lg font-bold sm:text-xl">JOKTALY</span>
           </div>
           <div className="flex items-center gap-2">
@@ -684,7 +683,7 @@ function Index() {
         <div className="container mx-auto px-4">
           <div className="max-w-md">
             <div className="flex items-center gap-2">
-              <img src={logoAsset.url} alt="Logo JOKTALY dans l'aperçu d'un devis" className="h-8 w-8 object-contain" />
+              <img src="/joktaly-insigne.png" alt="Logo JOKTALY dans l'aperçu d'un devis" className="h-8 w-8 object-contain" />
               <span className="text-lg font-bold">JOKTALY</span>
             </div>
             <p className="mt-3 text-sm text-muted-foreground">
@@ -786,7 +785,7 @@ function HeroVisual() {
       <div className="absolute -bottom-8 -left-2 w-[15rem] rounded-2xl border bg-card p-3.5 text-card-foreground shadow-2xl sm:-left-8 sm:w-[17rem] sm:p-4">
         <div className="flex items-center justify-between gap-2 border-b pb-2">
           <div className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="" className="h-6 w-6 object-contain" />
+            <img src="/joktaly-insigne.png" alt="" className="h-6 w-6 object-contain" />
             <span className="text-sm font-bold">JOKTALY</span>
           </div>
           <span className="rounded bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">

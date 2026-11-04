@@ -17,7 +17,6 @@ import {
   PromptInputSubmit,
 } from "@/components/ai-elements/prompt-input";
 import { Shimmer } from "@/components/ai-elements/shimmer";
-import logoAsset from "@/assets/joktaly-logo.png.asset.json";
 
 type ChatMessage = { role: "user" | "assistant"; content: string };
 
@@ -65,7 +64,7 @@ export function AiChatWidget() {
         <div className="fixed inset-x-3 bottom-3 z-50 flex max-h-[80vh] flex-col overflow-hidden rounded-2xl border bg-card shadow-2xl sm:inset-x-auto sm:bottom-24 sm:right-5 sm:h-[540px] sm:w-[380px]">
           <div className="flex items-center justify-between gap-3 bg-secondary px-4 py-3 text-secondary-foreground">
             <div className="flex items-center gap-2.5">
-              <img src={logoAsset.url} alt="" className="h-8 w-8 rounded-lg bg-card/10 object-contain p-1" />
+              <img src="/joktaly-insigne.png" alt="" className="h-8 w-8 rounded-lg bg-card/10 object-contain p-1" />
               <div className="leading-tight">
                 <p className="text-sm font-semibold">Assistant Tera</p>
                 <p className="flex items-center gap-1.5 text-xs opacity-80">
