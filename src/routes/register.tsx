@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { authErrorFr } from "@/lib/auth-errors";
 import { isPaidPlan, normalizePlan } from "@/lib/pricing";
 import { useAuth } from "@/hooks/use-auth";
 
@@ -93,7 +94,7 @@ function RegisterPage() {
         data: { nom: form.nom },
       },
     });
-    if (error) { setLoading(false); return toast.error(error.message); }
+    if (error) { setLoading(false); return toast.error(authErrorFr(error.message)); }
     if (!data.user) { setLoading(false); return toast.error("Erreur lors de la création du compte"); }
 
     // Créer l'entreprise (le trigger a déjà créé le profil)
@@ -105,7 +106,7 @@ function RegisterPage() {
       email: form.email,
     });
     setLoading(false);
-    if (errEnt) return toast.error(errEnt.message);
+    if (errEnt) return toast.error("Impossible d'enregistrer votre entreprise. Merci de réessayer.");
     toast.success("Compte créé avec succès");
     const selectedPlan = normalizePlan(plan);
     if (isPaidPlan(selectedPlan)) {

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
+import { authErrorFr } from "@/lib/auth-errors";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -33,7 +34,7 @@ function Page() {
       redirectTo: `${window.location.origin}/reinitialiser-mot-de-passe`,
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(authErrorFr(error.message));
     setSent(true);
   };
 
