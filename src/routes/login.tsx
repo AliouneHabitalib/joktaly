@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
+import { authErrorFr } from "@/lib/auth-errors";
 
 export const Route = createFileRoute("/login")({
   component: LoginPage,
@@ -53,7 +54,7 @@ function LoginPage() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) return toast.error(authErrorFr(error.message));
     toast.success("Connexion réussie");
     navigate({ to: "/dashboard" });
   };
