@@ -23,11 +23,16 @@ function AuthenticatedLayout() {
     if (!loading && !user) navigate({ to: "/login" });
   }, [user, loading, navigate]);
 
-  const { data: status } = useQuery({
+  const { data: status, isError, isFetching, refetch } = useQuery({
     queryKey: ["subscription-status"],
     enabled: !!user,
     queryFn: () => fetchStatus(),
   });
+
+  async function handleSignOut() {
+    await supabase.auth.signOut();
+    navigate({ to: "/login" });
+  }
 
   useEffect(() => {
     if (status && !status.planChosen) navigate({ to: "/choisir-formule" });
@@ -56,6 +61,29 @@ function AuthenticatedLayout() {
     );
   }
   if (!user) return null;
+  if (isError) {
+    return (
+      <div className="flex min-h-screen items-center justify-center p-4">
+        <div className="w-full max-w-md rounded-2xl border bg-card p-6 text-center shadow-[var(--shadow-card)]">
+          <h1 className="text-lg font-semibold text-foreground">
+            Impossible de charger votre espace
+          </h1>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Une erreur est survenue en récupérant les informations de votre compte.
+            Vérifiez votre connexion internet, puis réessayez.
+          </p>
+          <div className="mt-5 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <Button onClick={() => refetch()} disabled={isFetching}>
+              Réessayer
+            </Button>
+            <Button variant="outline" onClick={handleSignOut}>
+              Se déconnecter
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (!status || !status.planChosen || status.requiresPayment) {
     return (
       <div className="flex min-h-screen items-center justify-center">
