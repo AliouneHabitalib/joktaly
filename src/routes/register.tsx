@@ -6,7 +6,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { isPaidPlan, normalizePlan } from "@/lib/pricing";
-import { GoogleAuthButton } from "@/components/google-auth-button";
 import { useAuth } from "@/hooks/use-auth";
 
 export const Route = createFileRoute("/register")({
@@ -69,19 +68,18 @@ function RegisterPage() {
     telephone: "",
   });
   const [loading, setLoading] = useState(false);
-  const [googlePending, setGooglePending] = useState(false);
   const { user, loading: authLoading } = useAuth();
 
   // Déjà connecté : on va directement au paiement du plan choisi (ou au dashboard)
   useEffect(() => {
-    if (authLoading || !user || googlePending) return;
+    if (authLoading || !user) return;
     const p = normalizePlan(plan);
     if (isPaidPlan(p)) {
       navigate({ to: "/paiement", search: { plan: p, cycle: cycle ?? "monthly", statut: undefined, provider: undefined } });
     } else {
       navigate({ to: "/dashboard" });
     }
-  }, [user, authLoading, plan, cycle, navigate, googlePending]);
+  }, [user, authLoading, plan, cycle, navigate]);
 
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -168,10 +166,6 @@ function RegisterPage() {
             {loading ? "Création..." : "Créer mon compte"}
           </Button>
         </form>
-        <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground">
-          <span className="h-px flex-1 bg-border" /> ou <span className="h-px flex-1 bg-border" />
-        </div>
-        <GoogleAuthButton label="S'inscrire avec Google" plan={plan} cycle={cycle ?? "monthly"} onPendingChange={setGooglePending} />
         <p className="mt-6 text-center text-sm text-muted-foreground">
           Déjà un compte ?{" "}
           <Link to="/login" className="font-medium text-primary hover:underline">Se connecter</Link>
