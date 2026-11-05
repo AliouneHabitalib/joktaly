@@ -1,3 +1,3 @@
 # Architecture rules
 
-- Complete Google OAuth through the public `/auth/callback` route for both popup and full-page flows; this centralizes company initialization and selected-plan routing before entering protected pages.
+- Sign-in is email/password only (Google removed); the public `/auth/callback` route stays as a safe landing that initializes the company and routes the selected plan.
