@@ -103,3 +103,25 @@ export const cancelPendingSubscription = createServerFn({ method: "POST" })
       .eq("statut", "en_attente");
     return { ok: true };
   });
+
+/** Choix du plan Gratuit sans clé service : met plan_choisi = true via le client utilisateur (RLS + trigger empêchent toute modification du plan). */
+export const selectFreePlan = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { supabase, userId } = context;
+    const { data, error } = await supabase
+      .from("profiles")
+      .update({ plan_choisi: true } as any)
+      .eq("id", userId)
+      .select("id")
+      .maybeSingle();
+    if (error || !data) {
+      console.error("selectFreePlan failed", error);
+      throw new Error("Impossible d'enregistrer la formule Gratuit.");
+    }
+    // Annulation de l'abonnement en attente : non bloquante (écritures client refusées par la RLS).
+    try {
+      await (supabase as any).from("abonnements").update({ statut: "annule" }).eq("user_id", userId).eq("statut", "en_attente");
+    } catch {}
+    return { ok: true };
+  });

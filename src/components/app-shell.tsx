@@ -51,7 +51,7 @@ export function AppShell() {
   const isActive = (to: string) => pathname === to || pathname.startsWith(to + "/");
 
   return (
-    <div className="flex min-h-screen w-full bg-muted/30">
+    <div className="flex min-h-dvh w-full bg-muted/30">
       {/* Sidebar Desktop */}
       <aside className="hidden w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground md:flex">
         <div className="flex h-16 items-center gap-2 border-b border-sidebar-border px-6">
@@ -84,13 +84,13 @@ export function AppShell() {
       </aside>
 
       {/* Mobile header */}
-      <div className="flex flex-1 flex-col">
+      <div className="flex min-w-0 flex-1 flex-col">
         <header className="flex h-14 items-center justify-between border-b bg-card px-4 md:hidden">
           <div className="flex items-center gap-2">
             <img src="/joktaly-insigne.png" alt="JOKTALY" className="h-7 w-7 object-contain" />
             <span className="font-bold">JOKTALY</span>
           </div>
-          <Button variant="ghost" size="icon" onClick={() => setMobileOpen(true)}>
+          <Button variant="ghost" size="icon" className="h-11 w-11" aria-label="Menu" onClick={() => setMobileOpen(true)}>
             <Menu className="h-5 w-5" />
           </Button>
         </header>
@@ -102,7 +102,7 @@ export function AppShell() {
             <aside className="absolute left-0 top-0 flex h-full w-72 flex-col bg-sidebar text-sidebar-foreground">
               <div className="flex h-14 items-center justify-between border-b border-sidebar-border px-4">
                 <span className="font-bold">JOKTALY</span>
-                <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)}>
+                <Button variant="ghost" size="icon" className="h-11 w-11" aria-label="Menu" onClick={() => setMobileOpen(false)}>
                   <X className="h-5 w-5" />
                 </Button>
               </div>
