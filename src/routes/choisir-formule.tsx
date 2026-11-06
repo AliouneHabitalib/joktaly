@@ -7,7 +7,8 @@ import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { PRICING } from "@/lib/pricing";
 import type { PlanType } from "@/lib/plans";
-import { cancelPendingSubscription } from "@/lib/abonnement.functions";
+import { toast } from "sonner";
+import { selectFreePlan } from "@/lib/abonnement.functions";
 
 const PLANS: PlanType[] = ["gratuit", "starter", "pro", "business"];
 
@@ -30,7 +31,7 @@ function ChoisirFormulePage() {
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { user, loading } = useAuth();
-  const chooseFree = useServerFn(cancelPendingSubscription);
+  const chooseFree = useServerFn(selectFreePlan);
   const [busy, setBusy] = useState(false);
 
   useEffect(() => {
@@ -40,7 +41,13 @@ function ChoisirFormulePage() {
   const pick = async (plan: PlanType) => {
     if (plan === "gratuit") {
       setBusy(true);
-      await chooseFree().catch(() => {});
+      try {
+        await chooseFree();
+      } catch {
+        toast.error("Impossible d'activer la formule Gratuit. Vérifiez votre connexion et réessayez.");
+        setBusy(false);
+        return;
+      }
       await qc.invalidateQueries({ queryKey: ["subscription-status"] });
       navigate({ to: "/dashboard" });
       return;
