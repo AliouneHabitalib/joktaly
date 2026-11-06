@@ -55,7 +55,7 @@ function AuthenticatedLayout() {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-dvh items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );
@@ -63,7 +63,7 @@ function AuthenticatedLayout() {
   if (!user) return null;
   if (isError) {
     return (
-      <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="flex min-h-dvh items-center justify-center p-4">
         <div className="w-full max-w-md rounded-2xl border bg-card p-6 text-center shadow-[var(--shadow-card)]">
           <h1 className="text-lg font-semibold text-foreground">
             Impossible de charger votre espace
@@ -86,7 +86,7 @@ function AuthenticatedLayout() {
   }
   if (!status || !status.planChosen || status.requiresPayment) {
     return (
-      <div className="flex min-h-screen items-center justify-center">
+      <div className="flex min-h-dvh items-center justify-center">
         <div className="h-8 w-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
       </div>
     );

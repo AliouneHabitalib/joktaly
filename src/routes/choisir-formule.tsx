@@ -56,7 +56,7 @@ function ChoisirFormulePage() {
   };
 
   return (
-    <div className="min-h-screen bg-muted/30 px-4 py-10">
+    <div className="min-h-dvh bg-muted/30 px-4 py-10">
       <div className="mx-auto max-w-6xl text-center">
         <img src="/joktaly-insigne.png" alt="JOKTALY" className="mx-auto h-10 w-10 object-contain" />
         <h1 className="mt-4 text-2xl font-bold sm:text-3xl">Choisissez votre formule</h1>
