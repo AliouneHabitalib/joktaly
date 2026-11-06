@@ -1,16 +1,17 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Check } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { PRICING } from "@/lib/pricing";
 import type { PlanType } from "@/lib/plans";
 import { toast } from "sonner";
-import { selectFreePlan } from "@/lib/abonnement.functions";
+import { getSubscriptionStatus, selectFreePlan } from "@/lib/abonnement.functions";
 
 const PLANS: PlanType[] = ["gratuit", "starter", "pro", "business"];
+const RANK: Record<string, number> = { gratuit: 0, starter: 1, essentiel: 2, pro: 2, business: 3 };
 
 export const Route = createFileRoute("/choisir-formule")({
   component: ChoisirFormulePage,
@@ -33,6 +34,14 @@ function ChoisirFormulePage() {
   const { user, loading } = useAuth();
   const chooseFree = useServerFn(selectFreePlan);
   const [busy, setBusy] = useState(false);
+  const fetchStatus = useServerFn(getSubscriptionStatus);
+  const { data: status } = useQuery({
+    queryKey: ["subscription-status"],
+    enabled: !!user,
+    queryFn: () => fetchStatus(),
+  });
+  const existing = !!status?.planChosen;
+  const currentRank = existing ? RANK[status!.plan] ?? 0 : -1;
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login" });
@@ -61,13 +70,20 @@ function ChoisirFormulePage() {
         <img src="/joktaly-insigne.png" alt="JOKTALY" className="mx-auto h-10 w-10 object-contain" />
         <h1 className="mt-4 text-2xl font-bold sm:text-3xl">Choisissez votre formule</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Sélectionnez une formule pour accéder à votre espace.
+          {existing ? "Passez à une formule supérieure quand vous le souhaitez." : "Sélectionnez une formule pour accéder à votre espace."}
         </p>
+        {existing && (
+          <Button asChild variant="link" className="mt-2 min-h-11">
+            <Link to="/dashboard">← Retour au tableau de bord</Link>
+          </Button>
+        )}
       </div>
       <div className="mx-auto mt-8 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {PLANS.map((id) => {
           const p = PRICING[id];
           const popular = id === "pro";
+          const isCurrent = existing && status!.plan === id;
+          const isLower = existing && !isCurrent && RANK[id] < currentRank;
           return (
             <div key={id} className={`flex flex-col rounded-2xl border bg-card p-6 ${popular ? "border-primary ring-1 ring-primary" : ""}`}>
               <div className="flex items-center justify-between">
@@ -86,9 +102,10 @@ function ChoisirFormulePage() {
                   </li>
                 ))}
               </ul>
-              <Button className="mt-6 w-full" variant={popular ? "default" : "outline"} disabled={busy} onClick={() => pick(id)}>
-                Choisir {p.nom}
+              <Button className="mt-6 w-full" variant={popular ? "default" : "outline"} disabled={busy || isCurrent || isLower} onClick={() => pick(id)}>
+                {isCurrent ? "Plan actuel" : `Choisir ${p.nom}`}
               </Button>
+              {isLower && <p className="mt-2 text-center text-xs text-muted-foreground">Rétrogradation non disponible ici</p>}
             </div>
           );
         })}

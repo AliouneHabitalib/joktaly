@@ -248,7 +248,7 @@ function AidePage() {
             </div>
           </div>
           <Button asChild variant="secondary" className="shrink-0">
-            <a href={WHATSAPP} target="_blank" rel="noopener noreferrer">Changer de plan</a>
+            <Link to="/choisir-formule">Changer de plan</Link>
           </Button>
         </CardContent>
       </Card>
