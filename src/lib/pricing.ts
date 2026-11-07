@@ -1,4 +1,4 @@
-import type { PlanType } from "./plans";
+import { PLANS, type PlanType } from "./plans";
 
 export type BillingCycle = "monthly" | "yearly";
 
@@ -12,43 +12,23 @@ export interface PlanPricing {
 }
 
 /** Catalogue tarifaire affiché sur la page d'accueil et la page de paiement. */
-export const PRICING: Record<PlanType, PlanPricing> = {
-  gratuit: {
-    id: "gratuit",
-    nom: "Gratuit",
-    base: 0,
-    ideal: "Tester l'application",
-    features: ["3 devis / mois", "1 facture / mois", "5 clients", "Export PDF"],
-  },
-  starter: {
-    id: "starter",
-    nom: "Starter",
-    base: 3000,
-    ideal: "Petits entrepreneurs",
-    features: ["10 devis / mois", "5 factures / mois", "30 clients", "Conversion devis → facture"],
-  },
-  essentiel: {
-    id: "essentiel",
-    nom: "Essentiel",
-    base: 6000,
-    ideal: "Activités en croissance",
-    features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques"],
-  },
-  pro: {
-    id: "pro",
-    nom: "Pro",
-    base: 6000,
-    ideal: "Activités en croissance",
-    features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés"],
-  },
-  business: {
-    id: "business",
-    nom: "Business",
-    base: 15000,
-    ideal: "Équipes et entreprises",
-    features: ["Devis et factures illimités", "Jusqu'à 5 utilisateurs", "Statistiques avancées", "Accès API et webhooks"],
-  },
+const IDEALS: Record<PlanType, string> = {
+  gratuit: "Tester l'application",
+  starter: "Petits entrepreneurs",
+  pro: "Activités en croissance",
+  essentiel: "Activités en croissance",
+  business: "Équipes et entreprises",
 };
+
+export const PRICING = Object.fromEntries(
+  Object.entries(PLANS).map(([key, plan]) => [key, {
+    id: plan.id,
+    nom: plan.nom,
+    base: plan.prix_fcfa,
+    ideal: IDEALS[key as PlanType],
+    features: plan.features,
+  }]),
+) as Record<PlanType, PlanPricing>;
 
 export const PAID_PLANS: PlanType[] = ["starter", "essentiel", "pro", "business"];
 

@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { privateHead } from "@/lib/private-head";
 import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { getUserQuota } from "@/lib/quota.functions";
+import { PLANS } from "@/lib/plans";
 import { useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/use-auth";
@@ -34,6 +37,25 @@ const STATUT_LABELS: Record<string, string> = {
 };
 
 function StatistiquesPage() {
+  const fetchQuota = useServerFn(getUserQuota);
+  const { data: quota, isError, refetch } = useQuery({ queryKey: ["quota"], queryFn: () => fetchQuota() });
+  if (!quota) return isError ? (
+    <div className="space-y-4">
+      <p>Impossible de vérifier votre formule.</p>
+      <Button onClick={() => refetch()}>Réessayer</Button>
+    </div>
+  ) : <p className="text-muted-foreground">Chargement…</p>;
+  if (!PLANS[quota.plan].limites.statistiques_avancees) return (
+    <div className="space-y-4">
+      <h1 className="text-2xl font-bold">Statistiques</h1>
+      <p className="text-muted-foreground">Les statistiques avancées sont réservées à la formule {PLANS.business.nom}.</p>
+      <Button asChild><Link to="/choisir-formule">Changer de plan</Link></Button>
+    </div>
+  );
+  return <AdvancedStatistics />;
+}
+
+function AdvancedStatistics() {
   const { user } = useAuth();
   const { data: entreprise } = useEntreprise(user?.id);
   const [periode, setPeriode] = useState<"6m" | "12m" | "ytd">("12m");
