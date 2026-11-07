@@ -6,11 +6,10 @@ import { Check } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
 import { PRICING } from "@/lib/pricing";
-import type { PlanType } from "@/lib/plans";
+import { PUBLIC_PLANS, type PlanType } from "@/lib/plans";
 import { toast } from "sonner";
 import { getSubscriptionStatus, selectFreePlan } from "@/lib/abonnement.functions";
 
-const PLANS: PlanType[] = ["gratuit", "starter", "pro", "business"];
 const RANK: Record<string, number> = { gratuit: 0, starter: 1, essentiel: 2, pro: 2, business: 3 };
 
 export const Route = createFileRoute("/choisir-formule")({
@@ -41,7 +40,7 @@ function ChoisirFormulePage() {
     queryFn: () => fetchStatus(),
   });
   const existing = !!status?.planChosen;
-  const currentRank = existing ? RANK[status!.plan] ?? 0 : -1;
+  const currentRank = existing && status ? RANK[status.plan] ?? 0 : -1;
 
   useEffect(() => {
     if (!loading && !user) navigate({ to: "/login" });
@@ -79,10 +78,10 @@ function ChoisirFormulePage() {
         )}
       </div>
       <div className="mx-auto mt-8 grid max-w-6xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {PLANS.map((id) => {
+        {PUBLIC_PLANS.map((id) => {
           const p = PRICING[id];
           const popular = id === "pro";
-          const isCurrent = existing && status!.plan === id;
+          const isCurrent = existing && status != null && PRICING[status.plan as PlanType]?.id === id;
           const isLower = existing && !isCurrent && RANK[id] < currentRank;
           return (
             <div key={id} className={`flex flex-col rounded-2xl border bg-card p-6 ${popular ? "border-primary ring-1 ring-primary" : ""}`}>

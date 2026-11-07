@@ -243,7 +243,7 @@ function AidePage() {
             <div>
               <p className="font-medium">Besoin de plus de devis et factures ?</p>
               <p className="text-sm text-muted-foreground">
-                Les plans supérieurs lèvent les limites mensuelles et débloquent les statistiques avancées.
+                Starter et Pro augmentent les quotas mensuels. Business offre des documents et clients illimités et les statistiques avancées.
               </p>
             </div>
           </div>

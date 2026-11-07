@@ -16,6 +16,8 @@ import heroImage from "@/assets/hero-entrepreneur.jpg";
 import coiffeuseImage from "@/assets/hero-coiffeuse.jpg";
 import menuisierImage from "@/assets/hero-menuisier.jpg";
 import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
+import { PRICING, monthlyPrice } from "@/lib/pricing";
+import { PUBLIC_PLANS } from "@/lib/plans";
 import { useInView } from "@/hooks/use-in-view";
 import {
   FileText,
@@ -83,9 +85,9 @@ export const Route = createFileRoute("/")({
           offers: {
             "@type": "AggregateOffer",
             priceCurrency: "XOF",
-            lowPrice: "0",
-            highPrice: "15000",
-            offerCount: "5",
+            lowPrice: String(PRICING.gratuit.base),
+            highPrice: String(PRICING.business.base),
+            offerCount: String(PUBLIC_PLANS.length),
           },
         }),
       },
@@ -471,58 +473,17 @@ function Index() {
             </div>
           </div>
           <div className="mx-auto mt-8 grid max-w-6xl gap-5 sm:mt-12 md:grid-cols-2 lg:grid-cols-4">
-            {[
-              {
-                nom: "Gratuit",
-                base: 0,
-                ideal: "Tester l'application",
-                features: ["5 devis / mois", "3 factures / mois", "10 clients", "Export PDF"],
-                cta: "Commencer gratuitement",
-                variant: "outline" as const,
-                highlight: false,
-                note: "Gratuit à vie, sans limite de durée",
-              },
-              {
-                nom: "Starter",
-                base: 3000,
-                ideal: "Petits entrepreneurs",
-                features: ["10 devis / mois", "5 factures / mois", "30 clients", "Conversion devis → facture", "Export PDF pro"],
-                cta: "Choisir Starter",
-                variant: "default" as const,
-                highlight: false,
-                note: null,
-              },
-              {
-                nom: "Pro",
-                base: 6000,
-                ideal: "Activités en croissance",
-                features: ["20 devis / mois", "10 factures / mois", "50 clients", "Rappels automatiques", "Modèles personnalisés", "Statistiques de base"],
-                cta: "Choisir Pro",
-                variant: "default" as const,
-                highlight: true,
-                note: null,
-              },
-              {
-                nom: "Business",
-                base: 15000,
-                ideal: "PME, équipes et entreprises",
-                features: ["Devis illimités", "Factures illimitées", "Paiements & rappels", "Jusqu'à 5 utilisateurs", "Statistiques avancées", "Export Excel / CSV", "Support prioritaire", "Accès API et webhooks"],
-                cta: "Choisir Business",
-                variant: "default" as const,
-                highlight: false,
-                note: null,
-              },
-            ].map((plan) => {
-              const isFree = plan.base === 0;
-              const monthly = plan.base;
-              const yearlyMonthly = Math.round((plan.base * 0.8));
-              const display = isFree ? 0 : billing === "yearly" ? yearlyMonthly : monthly;
+            {PUBLIC_PLANS.map((id) => {
+              const plan = PRICING[id];
+              const isFree = id === "gratuit";
+              const highlight = id === "pro";
+              const display = monthlyPrice(id, billing);
               return (
               <div
                 key={plan.nom}
-                className={`relative flex flex-col rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg ${plan.highlight ? "border-2 border-primary" : ""}`}
+                className={`relative flex flex-col rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg ${highlight ? "border-2 border-primary" : ""}`}
               >
-                {plan.highlight && (
+                {highlight && (
                   <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-primary px-3 py-1 text-xs font-bold uppercase tracking-wide text-primary-foreground shadow-md">
                     Populaire
                   </span>
@@ -541,9 +502,6 @@ function Index() {
                     Économisez 20% — facturé annuellement
                   </p>
                 )}
-                {plan.note && (
-                  <p className="mt-1 text-xs font-semibold text-primary">{plan.note}</p>
-                )}
                 <p className="mt-1 text-[11px] text-muted-foreground">
                   Sans engagement • Annulation à tout moment
                 </p>
@@ -558,11 +516,11 @@ function Index() {
                 </ul>
                 <Button
                   className="mt-6 w-full"
-                  variant={plan.variant}
+                  variant={isFree ? "outline" : "default"}
                   asChild
                 >
-                  <Link to="/register" search={{ plan: plan.nom.toLowerCase(), cycle: billing === "yearly" ? "yearly" : undefined }}>
-                    {plan.cta}
+                  <Link to="/register" search={{ plan: id, cycle: billing === "yearly" ? "yearly" : undefined }}>
+                    {isFree ? "Commencer gratuitement" : `Choisir ${plan.nom}`}
                   </Link>
                 </Button>
               </div>
