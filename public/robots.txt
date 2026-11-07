@@ -16,4 +16,4 @@ Disallow: /auth/
 Disallow: /print/
 Disallow: /api/
 
-Sitemap: https://tera-devis.lovable.app/sitemap.xml
+Sitemap: https://www.joktaly.com/sitemap.xml

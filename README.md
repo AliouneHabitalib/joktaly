@@ -682,7 +682,7 @@ Commence par la Phase 1. Pour chaque étape :
 
 This project was built with [Lovable](https://lovable.dev).
 
-**Live app**: https://tera-devis.lovable.app
+**Live app**: https://www.joktaly.com
 
 ## Build with Lovable
 

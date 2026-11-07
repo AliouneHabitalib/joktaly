@@ -26,7 +26,7 @@ export const Route = createFileRoute("/login")({
         content:
           "Connectez-vous à JOKTALY pour créer des devis et factures professionnels en quelques clics.",
       },
-      { property: "og:url", content: "https://tera-devis.lovable.app/login" },
+      { property: "og:url", content: "https://www.joktaly.com/login" },
       { property: "og:type", content: "website" },
       { name: "twitter:title", content: "Connexion — JOKTALY" },
       {
@@ -36,9 +36,9 @@ export const Route = createFileRoute("/login")({
       },
     ],
     links: [
-      { rel: "canonical", href: "https://tera-devis.lovable.app/login" },
-      { rel: "alternate", hrefLang: "fr", href: "https://tera-devis.lovable.app/login" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://tera-devis.lovable.app/login" },
+      { rel: "canonical", href: "https://www.joktaly.com/login" },
+      { rel: "alternate", hrefLang: "fr", href: "https://www.joktaly.com/login" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://www.joktaly.com/login" },
     ],
   }),
 });
