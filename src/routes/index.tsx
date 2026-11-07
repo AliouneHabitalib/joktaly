@@ -16,7 +16,6 @@ import heroImage from "@/assets/hero-entrepreneur.jpg";
 import coiffeuseImage from "@/assets/hero-coiffeuse.jpg";
 import menuisierImage from "@/assets/hero-menuisier.jpg";
 import { DEMO_DEVIS, fmtFcfa } from "@/lib/demo-data";
-import ogImage from "@/assets/og-tera-devis.jpg.asset.json";
 import { useInView } from "@/hooks/use-in-view";
 import {
   FileText,
@@ -53,18 +52,20 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
       { property: "og:title", content: "JOKTALY — Devis & Factures pour PME d'Afrique" },
       { property: "og:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
-      { property: "og:url", content: "https://tera-devis.lovable.app/" },
-      { property: "og:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
+      { property: "og:url", content: "https://www.joktaly.com/" },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:image", content: "https://www.joktaly.com/og-joktaly.jpg" },
       { property: "og:image:width", content: "1216" },
       { property: "og:image:height", content: "640" },
-      { name: "twitter:image", content: `https://tera-devis.lovable.app${ogImage.url}` },
+      { name: "twitter:image", content: "https://www.joktaly.com/og-joktaly.jpg" },
       { name: "twitter:title", content: "JOKTALY — Devis & Factures pour PME d'Afrique" },
       { name: "twitter:description", content: "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone." },
     ],
     links: [
-      { rel: "canonical", href: "https://tera-devis.lovable.app/" },
-      { rel: "alternate", hrefLang: "fr", href: "https://tera-devis.lovable.app/" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://tera-devis.lovable.app/" },
+      { rel: "canonical", href: "https://www.joktaly.com/" },
+      { rel: "alternate", hrefLang: "fr", href: "https://www.joktaly.com/" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://www.joktaly.com/" },
     ],
     scripts: [
       {
@@ -75,7 +76,7 @@ export const Route = createFileRoute("/")({
           name: "JOKTALY",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Web",
-          url: "https://tera-devis.lovable.app/",
+          url: "https://www.joktaly.com/",
           inLanguage: "fr",
           description:
             "Créez vos devis et factures en 2 minutes, envoyez-les par WhatsApp et suivez vos paiements. Pensé pour les entrepreneurs et PME d'Afrique francophone.",

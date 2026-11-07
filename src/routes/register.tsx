@@ -34,7 +34,7 @@ export const Route = createFileRoute("/register")({
       },
       {
         property: "og:url",
-        content: "https://tera-devis.lovable.app/register",
+        content: "https://www.joktaly.com/register",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
@@ -48,10 +48,10 @@ export const Route = createFileRoute("/register")({
     links: [
       {
         rel: "canonical",
-        href: "https://tera-devis.lovable.app/register",
+        href: "https://www.joktaly.com/register",
       },
-      { rel: "alternate", hrefLang: "fr", href: "https://tera-devis.lovable.app/register" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://tera-devis.lovable.app/register" },
+      { rel: "alternate", hrefLang: "fr", href: "https://www.joktaly.com/register" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://www.joktaly.com/register" },
     ],
   }),
 });
