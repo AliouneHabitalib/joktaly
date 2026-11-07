@@ -8,6 +8,13 @@
       "when": 1793703457390,
       "tag": "0000_migration",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794041438500,
+      "tag": "0001_align_plan_quota_reference",
+      "breakpoints": true
     }
   ]
 }
