@@ -33,11 +33,11 @@ describe("Catalogue unique des formules", () => {
       }
       if (devis === null || factures === null) expect(features).toContain("Devis et factures illimités");
       if (clients === null) expect(features).toContain("Clients illimités");
-      const userClaim = features.map((feature) => feature.match(/^Jusqu'à (\d+) utilisateurs$/)).find(Boolean);
+      const userClaim = features.map((feature) => feature.match(/^Jusqu'à (\d+) utilisateurs \(bientôt\)$/)).find(Boolean);
       expect(userClaim ? Number(userClaim[1]) : 1).toBe(users);
       expect(features.includes("Statistiques avancées")).toBe(stats);
-      expect(features.includes("Rappels automatiques")).toBe(reminders);
-      expect(features.includes("Accès API et webhooks")).toBe(api);
+      expect(features.includes("Rappels automatiques (bientôt)")).toBe(reminders);
+      expect(features.includes("Accès API et webhooks (bientôt)")).toBe(api);
       expect(features).toEqual(PLANS[id].features);
     });
     for (const [kind, limit] of [["devis", devis], ["factures", factures]] as const) {

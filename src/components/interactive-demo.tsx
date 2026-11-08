@@ -39,9 +39,9 @@ export function InteractiveDemo() {
           <span className="h-2.5 w-2.5 rounded-full bg-card/30" />
         </div>
         <span className="rounded-md bg-card/10 px-3 py-1 text-xs font-medium">
-          app.joktaly.com
+          www.joktaly.com
         </span>
-        <span className="hidden text-xs opacity-70 sm:inline">Aperçu</span>
+        <span className="hidden text-xs opacity-70 sm:inline">Simulation</span>
       </div>
 
       {/* Onglets */}
@@ -140,7 +140,7 @@ export function InteractiveDemo() {
                 }`}
               >
                 {sent ? <Check className="h-4 w-4 animate-scale-in" /> : <Send className="h-4 w-4" />}
-                {sent ? "Devis envoyé au client" : "Envoyer au client"}
+                {sent ? "Envoi simulé" : "Simuler le partage"}
               </button>
             </div>
           </div>
@@ -186,7 +186,7 @@ export function InteractiveDemo() {
                           : "bg-secondary text-secondary-foreground hover:opacity-90"
                       }`}
                     >
-                      {done ? "Relance envoyée" : "Relancer"}
+                      {done ? "Relance simulée" : "Simuler une relance"}
                     </button>
                   )}
                 </div>
@@ -262,8 +262,8 @@ export function InteractiveDemo() {
               </div>
             </div>
             <div className="mt-4 rounded-xl border border-accent/40 bg-accent/10 p-3.5 text-sm text-accent-foreground">
-              Conseil : 2 factures dépassent 30 jours. Une relance peut récupérer 1 925 000 FCFA
-              cette semaine.
+              Exemple : 2 factures dépassent 30 jours. Préparez une relance manuelle
+              pour rappeler les montants restant à payer.
             </div>
           </div>
         )}

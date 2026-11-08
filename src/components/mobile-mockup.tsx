@@ -45,7 +45,7 @@ export function MobileMockup() {
               <Send className="h-3 w-3" /> Envoyer au client
             </button>
             <p className="text-center text-[10px] text-muted-foreground">
-              Optimisé 3G · Mobile-first
+              Aperçu sur téléphone
             </p>
           </div>
         </div>
