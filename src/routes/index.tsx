@@ -528,7 +528,7 @@ function Index() {
                   a: "Une connexion Internet est nécessaire pour accéder à votre compte et enregistrer vos documents. Les performances dépendent de votre appareil et du réseau ; le fonctionnement hors ligne et les performances en 3G ne sont pas garantis.",
                 },
               ].map((item, i) => (
-                <AccordionItem key={i} value={`faq-${i}`} className="[&>[data-state=closed]]:hidden">
+                <AccordionItem key={i} value={`faq-${i}`} className="[&>div[data-state=closed]]:hidden">
                   <AccordionTrigger className="text-base font-semibold text-left">
                     {item.q}
                   </AccordionTrigger>
