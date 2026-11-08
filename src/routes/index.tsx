@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   Accordion,
   AccordionContent,
@@ -32,13 +31,11 @@ import {
   GraduationCap,
   Check,
   ArrowRight,
-  Star,
   ShieldCheck,
   Lock,
   HeadphonesIcon,
   Server,
   X,
-  BadgeCheck,
   PlayCircle,
 } from "lucide-react";
 
@@ -159,7 +156,7 @@ function Index() {
                 Devis, factures et relances depuis votre téléphone — en français et en FCFA.
               </span>
               <span className="hidden sm:inline">
-                Aminata, couturière à Dakar, envoie son devis avant même que le client
+                Par exemple, une couturière à Dakar prépare son devis avant que le client
                 ne quitte sa boutique. Devis, factures, relances : tout se fait depuis
                 votre téléphone, en français et en FCFA.
               </span>
@@ -188,9 +185,9 @@ function Index() {
             {/* Payment methods */}
             <div className="mt-8 hidden flex-wrap items-center justify-center gap-3 sm:flex md:justify-start">
               <span className="text-xs uppercase tracking-wide text-white/60">
-                Paiements acceptés
+                Abonnement
               </span>
-              {["Wave", "Orange Money", "Free Money"].map((p) => (
+              {["Wave · validation manuelle"].map((p) => (
                 <span
                   key={p}
                   className="inline-flex items-center rounded-md bg-card px-2.5 py-1 text-xs font-semibold text-card-foreground shadow-sm"
@@ -210,7 +207,7 @@ function Index() {
       <section className="container mx-auto grid gap-6 px-4 py-20 md:grid-cols-4">
         {[
           { icon: FileText, title: "Devis pro", desc: "Numérotés auto, PDF en 1 clic" },
-          { icon: CreditCard, title: "Factures", desc: "Wave, Orange Money, virement" },
+          { icon: CreditCard, title: "Factures", desc: "Enregistrement des paiements reçus" },
           { icon: Users, title: "Clients", desc: "Historique complet, WhatsApp intégré" },
           { icon: BarChart3, title: "Statistiques", desc: "CA, impayés, conversion devis" },
         ].map(({ icon: Icon, title, desc }) => (
@@ -233,7 +230,7 @@ function Index() {
               Un vrai devis de chantier, du premier clic à l'envoi
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Exemple réel : rénovation de bureaux à Dakar, remise, TVA 18 % et suivi des
+              Exemple fictif : rénovation de bureaux à Dakar, remise, TVA 18 % et suivi des
               paiements. Cliquez, tout est interactif — sans créer de compte.
             </p>
           </div>
@@ -279,18 +276,18 @@ function Index() {
               },
               {
                 icon: FileText,
-                title: "Génération automatique de factures",
-                desc: "Transformez un devis accepté en facture en un clic. Plus d'erreur de saisie.",
+                title: "Conversion de devis en facture",
+                desc: "Transformez un devis accepté en facture en un clic. Les lignes et montants sont repris.",
               },
               {
                 icon: Send,
-                title: "Envoi direct par WhatsApp ou email",
-                desc: "Partagez vos documents avec vos clients instantanément, où qu'ils soient.",
+                title: "Partage par WhatsApp et préparation d’e-mail",
+                desc: "Ouvrez un message pré-rempli et joignez vous-même le PDF téléchargé.",
               },
               {
                 icon: Wallet,
                 title: "Suivi des paiements",
-                desc: "Visualisez en temps réel vos encaissements et relancez les impayés facilement.",
+                desc: "Enregistrez les paiements reçus et préparez une relance WhatsApp des impayés.",
               },
               {
                 icon: History,
@@ -300,7 +297,7 @@ function Index() {
               {
                 icon: Globe,
                 title: "Adapté aux entrepreneurs africains",
-                desc: "Pensé pour les réalités locales : devis en FCFA, mobile money, connexion lente.",
+                desc: "Devis en FCFA, TVA configurable et utilisation depuis votre téléphone.",
               },
               {
                 icon: GraduationCap,
@@ -320,98 +317,6 @@ function Index() {
               </div>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Témoignages */}
-      <section className="bg-muted/30 py-20">
-        <div className="container mx-auto px-4">
-        <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold md:text-4xl">Ils nous font confiance</h2>
-          <p className="mt-4 text-muted-foreground">
-            Des entrepreneurs africains témoignent de leur expérience avec JOKTALY.
-          </p>
-        </div>
-        <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {[
-            {
-              nom: "Aminata Diallo",
-              role: "Consultante RH indépendante",
-              ville: "Dakar, Sénégal",
-              initiales: "AD",
-              couleur: "bg-primary/15 text-primary",
-              plan: "Starter",
-              citation:
-                "En 10 minutes j'avais créé mon premier devis professionnel. Mes clients reçoivent tout par WhatsApp, c'est exactement ce dont j'avais besoin.",
-              anciennete: "Utilise JOKTALY depuis 3 mois",
-            },
-            {
-              nom: "Moussa Traoré",
-              role: "Entrepreneur BTP",
-              ville: "Abidjan, Côte d'Ivoire",
-              initiales: "MT",
-              couleur: "bg-accent/20 text-accent-foreground",
-              plan: "Pro",
-              citation:
-                "Je suivais mes paiements dans un cahier. Maintenant tout est sur mon téléphone. J'ai récupéré plus de 800 000 FCFA d'impayés grâce aux relances automatiques.",
-              anciennete: "Utilise JOKTALY depuis 6 mois",
-            },
-            {
-              nom: "Fatou Seck",
-              role: "Gérante de boutique mode",
-              ville: "Dakar, Sénégal",
-              initiales: "FS",
-              couleur: "bg-secondary text-secondary-foreground",
-              plan: "Starter",
-              citation:
-                "Les relances automatiques des impayés m'ont permis de récupérer de l'argent que j'avais déjà oublié. Simple, rapide, efficace.",
-              anciennete: "Utilise JOKTALY depuis 2 mois",
-            },
-            {
-              nom: "Cheikh Ndiaye",
-              role: "Dirigeant agence digitale",
-              ville: "Dakar, Sénégal",
-              initiales: "CN",
-              couleur: "bg-primary/15 text-primary",
-              plan: "Business",
-              citation:
-                "Avec 5 utilisateurs sur le plan Business, mon agence facture 3 fois plus vite qu'avant. Le support répond en moins de 4h, c'est sérieux.",
-              anciennete: "Utilise JOKTALY depuis 8 mois",
-            },
-          ].map((t) => (
-            <div
-              key={t.nom}
-              className="flex flex-col rounded-2xl border bg-card p-6 shadow-[var(--shadow-card)] transition-all hover:-translate-y-1 hover:shadow-lg"
-            >
-              <div className="flex items-center gap-3">
-                <div
-                  className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary font-semibold text-secondary-foreground"
-                  aria-hidden="true"
-                >
-                  {t.initiales}
-                </div>
-                <div>
-                  <p className="font-semibold">{t.nom}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
-                  <p className="text-xs text-muted-foreground">{t.ville}</p>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center justify-between">
-                <div className="flex gap-0.5" aria-label="5 étoiles sur 5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-accent text-accent" />
-                ))}
-                </div>
-                <Badge variant="secondary" className="text-[10px]">Plan {t.plan}</Badge>
-              </div>
-              <p className="mt-4 text-sm italic text-muted-foreground">"{t.citation}"</p>
-              <p className="mt-3 text-xs text-muted-foreground">{t.anciennete}</p>
-              <span className="mt-2 inline-flex w-fit items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700">
-                <BadgeCheck className="h-3 w-3" /> Client vérifié
-              </span>
-            </div>
-          ))}
-        </div>
         </div>
       </section>
 
@@ -503,7 +408,7 @@ function Index() {
                   </p>
                 )}
                 <p className="mt-1 text-[11px] text-muted-foreground">
-                  Sans engagement • Annulation à tout moment
+                  Pour toute demande d’arrêt : support@joktaly.com
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">{plan.ideal}</p>
                 <ul className="mt-5 flex-1 space-y-2.5 sm:mt-6 sm:space-y-3">
@@ -535,16 +440,16 @@ function Index() {
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold md:text-4xl">Confiance & sécurité</h2>
             <p className="mt-4 text-muted-foreground">
-              Vos données sont protégées avec les meilleurs standards du marché.
+              Des informations claires sur vos documents, vos échanges et notre assistance.
             </p>
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
             {[
-              { icon: Lock, title: "Connexion sécurisée (SSL)", desc: "Vos échanges sont chiffrés de bout en bout." },
-              { icon: Server, title: "Données protégées où que vous soyez", desc: "Vos données sont hébergées et protégées selon les standards européens (RGPD), avec sauvegardes quotidiennes." },
-              { icon: ShieldCheck, title: "Adapté au Sénégal", desc: "Mentions légales et fiscales prêtes pour vos documents." },
-              { icon: CreditCard, title: "Paiements sécurisés", desc: "Wave, Orange Money et carte bancaire pris en charge." },
-              { icon: HeadphonesIcon, title: "Support réactif", desc: "Une équipe qui vous répond sous 4h ouvrées." },
+              { icon: Lock, title: "Connexion HTTPS", desc: "Vos échanges sont chiffrés (HTTPS)." },
+              { icon: Server, title: "Données enregistrées en ligne", desc: "Retrouvez vos documents avec votre compte et une connexion Internet." },
+              { icon: ShieldCheck, title: "Informations de l’entreprise", desc: "NINEA, RC/RCCM, mentions légales et TVA à renseigner selon votre situation." },
+              { icon: CreditCard, title: "Abonnement via Wave", desc: "Paiement par lien Wave, puis validation manuelle de la formule." },
+              { icon: HeadphonesIcon, title: "Support par e-mail", desc: "Support par e-mail : support@joktaly.com" },
             ].map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
@@ -566,7 +471,7 @@ function Index() {
         <div className="mx-auto max-w-2xl rounded-3xl border bg-card p-6 text-center shadow-[var(--shadow-card)] sm:p-10">
           <h2 className="text-2xl font-bold md:text-3xl">Prêt à simplifier votre facturation ?</h2>
           <p className="mt-4 text-muted-foreground">
-            Rejoignez les entrepreneurs qui gagnent du temps chaque jour avec JOKTALY.
+            Créez vos devis et suivez vos factures dans votre espace JOKTALY.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Button size="lg" className="w-full sm:w-auto" asChild>
@@ -592,42 +497,42 @@ function Index() {
               {[
                 {
                   q: "Comment fonctionne l'envoi WhatsApp ?",
-                  a: "Depuis n'importe quel devis ou facture, cliquez sur 'Envoyer par WhatsApp'. Le PDF est généré et un message pré-rempli s'ouvre dans WhatsApp avec le lien sécurisé du document.",
+                  a: "Depuis un devis ou une facture enregistré, ouvrez le partage WhatsApp. Vérifiez le message pré-rempli, téléchargez le PDF et joignez-le vous-même dans WhatsApp. L’envoi reste à confirmer dans WhatsApp ; aucun lien public sécurisé n’est généré.",
                 },
                 {
                   q: "Puis-je mettre mon logo sur les devis PDF ?",
-                  a: "Oui. Depuis les Paramètres entreprise, importez votre logo : il apparaît automatiquement sur tous vos devis et factures PDF.",
+                  a: "Oui. Importez une image PNG ou JPEG dans les Paramètres entreprise. Le logo enregistré est repris sur vos devis et factures PDF ; vérifiez le rendu dans l’aperçu.",
                 },
                 {
                   q: "Que se passe-t-il si je dépasse ma limite mensuelle ?",
-                  a: "Vous recevez une notification pour upgrader. Aucun document n'est perdu : vous pourrez à nouveau créer dès le mois suivant ou après changement de plan.",
+                  a: "La création est bloquée quand le quota est atteint. Vos documents existants restent accessibles. Le compteur mensuel repart au mois suivant ; une formule supérieure augmente le quota après son activation.",
                 },
                 {
                   q: "Mes données sont-elles sécurisées ?",
-                  a: "Toutes vos données sont chiffrées (SSL) et hébergées en Europe (RGPD), avec sauvegarde automatique quotidienne. Nous ne partageons jamais vos informations.",
+                  a: "Vos échanges avec le site sont chiffrés par HTTPS. L’accès à vos documents nécessite votre compte. Nous ne revendiquons ici ni chiffrement de bout en bout, ni certification RGPD, ni fréquence de sauvegarde garantie.",
                 },
                 {
                   q: "Puis-je exporter mes données en Excel ?",
-                  a: "Oui, à partir du plan Business : exportez vos clients, devis et factures au format Excel / CSV en un clic.",
+                  a: "L’export Excel / CSV n’est pas disponible actuellement. Vous pouvez télécharger vos devis et factures en PDF.",
                 },
                 {
                   q: "Comment annuler mon abonnement ?",
-                  a: "Sans engagement : annulez en un clic depuis votre tableau de bord. Vous gardez l'accès jusqu'à la fin de votre période payée.",
+                  a: "Il n’y a pas de bouton d’annulation automatique dans le tableau de bord. Pour demander l’arrêt ou une modification de votre abonnement, écrivez à support@joktaly.com.",
                 },
                 {
                   q: "Comment puis-je payer mon abonnement ?",
-                  a: "Vous pouvez payer via Wave, Orange Money, Free Money ou carte bancaire. Paiement 100% sécurisé.",
+                  a: "La page de paiement affiche le montant et ouvre un lien Wave. La validation du paiement et l’activation de la formule sont manuelles. Orange Money, Free Money et carte bancaire ne sont pas intégrés pour l’abonnement. Les paiements de vos clients sont enregistrés manuellement, sans encaissement en ligne par JOKTALY.",
                 },
                 {
                   q: "Est-ce que JOKTALY fonctionne sans connexion rapide ?",
-                  a: "Oui. L'application est optimisée pour les connexions lentes (3G/4G) courantes en Afrique.",
+                  a: "Une connexion Internet est nécessaire pour accéder à votre compte et enregistrer vos documents. Les performances dépendent de votre appareil et du réseau ; le fonctionnement hors ligne et les performances en 3G ne sont pas garantis.",
                 },
               ].map((item, i) => (
-                <AccordionItem key={i} value={`faq-${i}`}>
+                <AccordionItem key={i} value={`faq-${i}`} className="[&>[data-state=closed]]:hidden">
                   <AccordionTrigger className="text-base font-semibold text-left">
                     {item.q}
                   </AccordionTrigger>
-                  <AccordionContent className="text-sm text-foreground/80 leading-relaxed">
+                  <AccordionContent forceMount className="text-sm text-foreground/80 leading-relaxed">
                     {item.a}
                   </AccordionContent>
                 </AccordionItem>
@@ -698,13 +603,13 @@ function Index() {
               </div>
               <h3 className="mt-4 text-xl font-bold">Une dernière chose !</h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                Inscrivez-vous maintenant et recevez <strong>10 modèles de devis gratuits</strong> prêts à utiliser.
+                Inscrivez-vous gratuitement pour créer vos devis dans les limites de la formule Gratuit.
               </p>
               <Button
                 className="mt-5 w-full bg-accent text-accent-foreground hover:bg-accent/90"
                 asChild
               >
-                <Link to="/register" search={{ plan: undefined, cycle: undefined }}>Recevoir mes modèles gratuits</Link>
+                <Link to="/register" search={{ plan: undefined, cycle: undefined }}>Créer mon compte gratuit</Link>
               </Button>
               <button
                 onClick={() => setShowExitPopup(false)}
@@ -730,13 +635,13 @@ function HeroVisual() {
       <figure className="relative overflow-hidden rounded-[2rem] border border-white/20 shadow-2xl ring-1 ring-white/10">
         <img
           src={heroImage}
-          alt="Aminata, entrepreneure à Dakar, envoie un devis à sa cliente depuis son téléphone"
+          alt="Illustration d’une entrepreneure préparant un devis sur son téléphone"
           width={1280}
           height={1280}
           className="aspect-[16/11] w-full object-cover sm:aspect-square"
         />
         <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-4 text-left text-xs text-white/90">
-          Aminata S. — Teranga Atelier, Dakar
+          Exemple d’usage — atelier à Dakar
         </figcaption>
       </figure>
 
@@ -757,7 +662,7 @@ function HeroVisual() {
           <span className="text-sm font-bold tabular-nums">{fmtFcfa(DEMO_DEVIS.total)}</span>
         </div>
         <span className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-success/15 px-2.5 py-1 text-[11px] font-semibold text-success">
-          <Send className="h-3 w-3" /> Envoyé en 2 minutes
+          <Send className="h-3 w-3" /> Exemple de devis
         </span>
       </div>
     </div>
@@ -771,7 +676,7 @@ function UserStoriesSection() {
     {
       image: coiffeuseImage,
       alt: "Fatou, coiffeuse à Dakar, facture une cliente depuis son ordinateur portable dans son salon moderne",
-      legend: "Je facture mes clientes en 2 minutes entre deux rendez-vous.",
+      legend: "Je prépare mes factures entre deux rendez-vous.",
       name: "Fatou N. — Salon Éclat, Dakar",
       role: "Coiffeuse & esthéticienne",
     },
@@ -792,7 +697,7 @@ function UserStoriesSection() {
     >
       <div className="mx-auto max-w-3xl text-center">
         <span className="inline-block rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
-          Ils utilisent JOKTALY
+          Pensé pour vous
         </span>
         <h2
           id="user-stories-title"
@@ -801,7 +706,7 @@ function UserStoriesSection() {
           Pensé pour ceux qui font tourner leur business au quotidien
         </h2>
         <p className="mt-3 text-muted-foreground">
-          Des entrepreneurs comme vous, qui facturent plus vite et suivent leurs paiements sans stress.
+          Des exemples d’usage pour les activités de tous les jours.
         </p>
       </div>
 
@@ -827,6 +732,7 @@ function UserStoriesSection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
             </div>
             <figcaption className="p-4 sm:p-6">
+              <p className="mb-2 text-xs text-muted-foreground">Exemple d’usage</p>
               <blockquote>
                 <p className="text-base font-semibold leading-snug text-foreground sm:text-lg">
                   « {story.legend} »
