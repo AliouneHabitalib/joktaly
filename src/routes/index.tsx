@@ -227,7 +227,7 @@ function Index() {
               Démo interactive
             </span>
             <h2 className="mt-3 text-3xl font-bold md:text-4xl">
-              Un vrai devis de chantier, du premier clic à l'envoi
+              Un exemple de devis de chantier, du premier clic au partage
             </h2>
             <p className="mt-3 text-muted-foreground">
               Exemple fictif : rénovation de bureaux à Dakar, remise, TVA 18 % et suivi des
@@ -272,7 +272,7 @@ function Index() {
               {
                 icon: Zap,
                 title: "Création rapide de devis professionnels",
-                desc: "Générez un devis complet en moins de 2 minutes avec numérotation automatique.",
+                desc: "Préparez un devis avec numérotation automatique et téléchargement PDF.",
               },
               {
                 icon: FileText,
@@ -282,7 +282,7 @@ function Index() {
               {
                 icon: Send,
                 title: "Partage par WhatsApp et préparation d’e-mail",
-                desc: "Ouvrez un message pré-rempli et joignez vous-même le PDF téléchargé.",
+                desc: "WhatsApp prépare un message. Pour les factures, ouvrez aussi votre messagerie ; joignez le PDF vous-même.",
               },
               {
                 icon: Wallet,
@@ -509,7 +509,7 @@ function Index() {
                 },
                 {
                   q: "Mes données sont-elles sécurisées ?",
-                  a: "Vos échanges avec le site sont chiffrés par HTTPS. L’accès à vos documents nécessite votre compte. Nous ne revendiquons ici ni chiffrement de bout en bout, ni certification RGPD, ni fréquence de sauvegarde garantie.",
+                  a: "Vos échanges avec le site sont chiffrés par HTTPS. L’accès à vos documents nécessite votre compte. Cela ne signifie pas un chiffrement de bout en bout et ne garantit pas une fréquence de sauvegarde.",
                 },
                 {
                   q: "Puis-je exporter mes données en Excel ?",
