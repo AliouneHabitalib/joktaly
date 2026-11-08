@@ -29,11 +29,11 @@ function definePlan(config: Omit<PlanConfig, "features">, extras: string[]): Pla
         `${limits.factures_par_mois} facture${limits.factures_par_mois === 1 ? "" : "s"} / mois`,
       ];
   features.push(limits.clients_max === null ? "Clients illimités" : `${limits.clients_max} clients`);
-  if (limits.utilisateurs > 1) features.push(`Jusqu'à ${limits.utilisateurs} utilisateurs`);
-  if (limits.rappels_auto) features.push("Rappels automatiques");
+  if (limits.utilisateurs > 1) features.push(`Jusqu'à ${limits.utilisateurs} utilisateurs (bientôt)`);
+  if (limits.rappels_auto) features.push("Rappels automatiques (bientôt)");
   features.push(...extras);
   if (limits.statistiques_avancees) features.push("Statistiques avancées");
-  if (limits.api_access) features.push("Accès API et webhooks");
+  if (limits.api_access) features.push("Accès API et webhooks (bientôt)");
   return { ...config, features };
 }
 
@@ -43,7 +43,7 @@ const pro = definePlan({
     devis_par_mois: 20, factures_par_mois: 10, clients_max: 50,
     utilisateurs: 1, statistiques_avancees: false, rappels_auto: true, api_access: false,
   },
-}, ["Modèles personnalisés"]);
+}, ["Modèles personnalisés (bientôt)"]);
 
 export const PLANS: Record<PlanType, PlanConfig> = {
   gratuit: definePlan({

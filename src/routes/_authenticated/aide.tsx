@@ -83,7 +83,7 @@ const FAQ = [
   },
   {
     q: "Comment envoyer un document à mon client ?",
-    a: "Trois possibilités : télécharger le PDF et l'envoyer vous-même, utiliser le bouton WhatsApp qui prépare un message avec le récapitulatif, ou le bouton « Envoyer par email » depuis l'éditeur de facture qui ouvre votre messagerie avec un message pré-rempli.",
+    a: "Téléchargez le PDF pour l’envoyer vous-même, ou ouvrez WhatsApp avec un message pré-rempli et joignez le PDF manuellement. Depuis l’éditeur de facture, le bouton « Envoyer par email » télécharge le PDF et ouvre votre messagerie : ajoutez la pièce jointe et confirmez l’envoi vous-même. Aucun e-mail n’est envoyé automatiquement par JOKTALY.",
   },
   {
     q: "Comment enregistrer un paiement ?",
@@ -111,7 +111,7 @@ const FAQ = [
   },
   {
     q: "Comment changer de plan ?",
-    a: "Contactez-nous via WhatsApp ou par email : nous activons votre nouveau plan après confirmation du paiement (Wave, Orange Money ou carte bancaire).",
+    a: "Ouvrez « Changer de plan » pour choisir une formule supérieure. Les formules payantes passent par un lien Wave ; leur activation est manuelle après vérification du paiement. Pour toute question, écrivez à support@joktaly.com.",
   },
 ];
 
@@ -206,7 +206,7 @@ function AidePage() {
               <MessageCircle className="h-5 w-5 text-primary" /> Support WhatsApp
             </CardTitle>
             <CardDescription>
-              Réponse rapide du lundi au samedi, de 9h à 19h (GMT).
+              Ouvrir une conversation dans WhatsApp.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -223,7 +223,7 @@ function AidePage() {
               <Mail className="h-5 w-5 text-primary" /> Support par email
             </CardTitle>
             <CardDescription>
-              Décrivez votre problème, nous revenons vers vous sous 24h ouvrées.
+              Décrivez votre problème à support@joktaly.com.
             </CardDescription>
           </CardHeader>
           <CardContent>
