@@ -68,165 +68,148 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   const [r, g, b] = hexToRgb(doc.entreprise.couleur_primaire || "#0A63F0");
   const pageW = pdf.internal.pageSize.getWidth();
   const pageH = pdf.internal.pageSize.getHeight();
-  const margin = 18;
+  const margin = 15;
   const contentW = pageW - margin * 2;
   const devise = doc.entreprise.devise;
-  const ink: [number, number, number] = [33, 37, 41];
-  const muted: [number, number, number] = [108, 117, 125];
-  const hair: [number, number, number] = [226, 230, 232];
+  const ink: [number, number, number] = [20, 24, 28];
+  const muted: [number, number, number] = [62, 68, 74];
+  const hair: [number, number, number] = [214, 219, 223];
+  const isDevis = doc.type === "devis";
 
-  // ============ EN-TÊTE ============
-  // Filet de marque fin en haut de page (élégant, économe en encre)
+  // Bandeau de marque
   pdf.setFillColor(r, g, b);
-  pdf.rect(0, 0, pageW, 4, "F");
+  pdf.rect(0, 0, pageW, 6, "F");
 
   let headerTextX = margin;
   const logo = doc.entreprise.logo_url;
   if (logo && /^data:image\/(png|jpe?g|svg\+xml|webp)/i.test(logo)) {
     try {
-      const fmt = logo.includes("image/png")
-        ? "PNG"
-        : logo.includes("image/webp")
-        ? "WEBP"
-        : "JPEG";
-      pdf.addImage(logo, fmt, margin, 14, 20, 20, undefined, "FAST");
-      headerTextX = margin + 25;
+      const fmt = logo.includes("image/png") ? "PNG" : logo.includes("image/webp") ? "WEBP" : "JPEG";
+      pdf.addImage(logo, fmt, margin, 13, 22, 22, undefined, "FAST");
+      headerTextX = margin + 26;
     } catch {
       /* logo ignoré si illisible */
     }
   }
+  const leftW = pageW - margin - 62 - headerTextX;
 
   pdf.setTextColor(...ink);
   pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(16);
-  pdf.text(doc.entreprise.nom, headerTextX, 21);
-  let hy = 26;
+  pdf.setFontSize(18);
+  const nomLines = pdf.splitTextToSize(doc.entreprise.nom, leftW);
+  pdf.text(nomLines, headerTextX, 20);
+  let hy = 20 + (nomLines.length - 1) * 7 + 6;
   if (doc.entreprise.slogan) {
     pdf.setFont("helvetica", "italic");
-    pdf.setFontSize(9);
+    pdf.setFontSize(10);
     pdf.setTextColor(...muted);
     pdf.text(doc.entreprise.slogan, headerTextX, hy);
-    hy += 5;
+    hy += 5.5;
   }
-
   pdf.setFont("helvetica", "normal");
-  pdf.setFontSize(8.5);
+  pdf.setFontSize(10);
   pdf.setTextColor(...muted);
   const coord: string[] = [];
   if (doc.entreprise.adresse) coord.push(doc.entreprise.adresse);
   const cityLine = [doc.entreprise.ville, doc.entreprise.pays].filter(Boolean).join(", ");
   if (cityLine) coord.push(cityLine);
-  const contact = [doc.entreprise.telephone, doc.entreprise.email, doc.entreprise.site_web]
-    .filter(Boolean)
-    .join("  ·  ");
-  if (contact) coord.push(contact);
+  if (doc.entreprise.telephone) coord.push(`Tél : ${doc.entreprise.telephone}`);
+  const web = [doc.entreprise.email, doc.entreprise.site_web].filter(Boolean).join("  ·  ");
+  if (web) coord.push(web);
   const legal = [
     doc.entreprise.ninea ? `NINEA ${doc.entreprise.ninea}` : null,
     doc.entreprise.rc ? `RC ${doc.entreprise.rc}` : null,
-  ]
-    .filter(Boolean)
-    .join("  ·  ");
+  ].filter(Boolean).join("  ·  ");
   if (legal) coord.push(legal);
   coord.forEach((line) => {
-    pdf.text(line, headerTextX, hy);
-    hy += 4.4;
+    const ls = pdf.splitTextToSize(line, leftW);
+    pdf.text(ls, headerTextX, hy);
+    hy += ls.length * 5;
   });
 
-  // Bloc titre document (droite)
-  const label = doc.type === "devis" ? "DEVIS" : "FACTURE";
+  // Titre du document (droite)
   pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(26);
+  pdf.setFontSize(28);
   pdf.setTextColor(r, g, b);
-  pdf.text(label, pageW - margin, 24, { align: "right" });
-  pdf.setFont("helvetica", "normal");
-  pdf.setFontSize(10.5);
-  pdf.setTextColor(...muted);
-  pdf.text(`N° ${doc.numero}`, pageW - margin, 30.5, { align: "right" });
+  pdf.text(isDevis ? "DEVIS" : "FACTURE", pageW - margin, 22, { align: "right" });
+  pdf.setFontSize(12);
+  pdf.setTextColor(...ink);
+  pdf.text(`N° ${doc.numero}`, pageW - margin, 29.5, { align: "right" });
 
-  // Séparateur
-  const sepY = Math.max(hy + 4, 42);
+  const sepY = Math.max(hy + 2, 40);
   pdf.setDrawColor(...hair);
-  pdf.setLineWidth(0.3);
+  pdf.setLineWidth(0.4);
   pdf.line(margin, sepY, pageW - margin, sepY);
 
-  // ============ CLIENT / DÉTAILS ============
-  const blockY = sepY + 10;
-  const rightX = margin + contentW * 0.58;
-
+  // Client / détails
+  const blockY = sepY + 9;
+  const rightX = margin + contentW * 0.56;
+  const clientW = rightX - margin - 6;
   pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(8);
+  pdf.setFontSize(10);
   pdf.setTextColor(r, g, b);
-  pdf.text(doc.type === "devis" ? "DEVIS ADRESSÉ À" : "FACTURÉ À", margin, blockY);
-
+  pdf.text(isDevis ? "DEVIS ADRESSÉ À" : "FACTURÉ À", margin, blockY);
   pdf.setTextColor(...ink);
-  pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(11);
+  pdf.setFontSize(12);
   const clientName = [doc.client.prenom, doc.client.nom].filter(Boolean).join(" ").trim();
   let cy = blockY + 7;
   if (clientName) {
-    pdf.text(clientName, margin, cy);
-    cy += 5;
+    const ls = pdf.splitTextToSize(clientName, clientW);
+    pdf.text(ls, margin, cy);
+    cy += ls.length * 5.6;
   }
   pdf.setFont("helvetica", "normal");
-  pdf.setFontSize(9);
+  pdf.setFontSize(10.5);
   pdf.setTextColor(...muted);
-  [
-    doc.client.entreprise_nom,
-    doc.client.adresse,
-    doc.client.ville,
-    doc.client.telephone ? `Tél : ${doc.client.telephone}` : null,
-    doc.client.email,
-  ]
+  [doc.client.entreprise_nom, doc.client.adresse, doc.client.ville,
+    doc.client.telephone ? `Tél : ${doc.client.telephone}` : null, doc.client.email]
     .filter(Boolean)
     .forEach((line) => {
-      pdf.text(String(line), margin, cy);
-      cy += 4.6;
+      const ls = pdf.splitTextToSize(String(line), clientW);
+      pdf.text(ls, margin, cy);
+      cy += ls.length * 5.2;
     });
 
-  // Encadré détails (droite)
-  const echLabel = doc.type === "devis" ? "Valable jusqu'au" : "Échéance";
-  const echValue = doc.type === "devis" ? doc.date_validite : doc.date_echeance;
   const detailRows: [string, string][] = [
     ["Date d'émission", formatDate(doc.date_emission)],
-    [echLabel, formatDate(echValue ?? null)],
+    [isDevis ? "Valable jusqu'au" : "Échéance", formatDate((isDevis ? doc.date_validite : doc.date_echeance) ?? null)],
   ];
-  const boxH = 12 + detailRows.length * 6;
-  pdf.setFillColor(250, 251, 251);
+  const boxH = 13 + detailRows.length * 7;
+  pdf.setFillColor(246, 248, 249);
   pdf.setDrawColor(...hair);
-  pdf.roundedRect(rightX, blockY - 5, pageW - margin - rightX, boxH, 2, 2, "FD");
+  pdf.roundedRect(rightX, blockY - 6, pageW - margin - rightX, boxH, 2, 2, "FD");
   pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(8);
+  pdf.setFontSize(10);
   pdf.setTextColor(r, g, b);
   pdf.text("DÉTAILS", rightX + 5, blockY);
-  let iy = blockY + 7;
+  let iy = blockY + 7.5;
   detailRows.forEach(([k, v]) => {
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(9);
+    pdf.setFontSize(10.5);
     pdf.setTextColor(...muted);
     pdf.text(k, rightX + 5, iy);
     pdf.setFont("helvetica", "bold");
     pdf.setTextColor(...ink);
     pdf.text(v, pageW - margin - 5, iy, { align: "right" });
-    iy += 6;
+    iy += 7;
   });
 
-  // ============ OBJET ============
-  let oy = Math.max(cy, blockY - 5 + boxH + 6) + 6;
+  // Objet
+  let oy = Math.max(cy, blockY - 6 + boxH) + 7;
   if (doc.objet) {
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(9.5);
+    pdf.setFontSize(10.5);
     pdf.setTextColor(...ink);
-    pdf.text("Objet", margin, oy);
+    pdf.text("Objet :", margin, oy);
     pdf.setFont("helvetica", "normal");
-    pdf.setTextColor(...muted);
-    const objetLines = pdf.splitTextToSize(doc.objet, contentW);
-    pdf.text(objetLines, margin, oy + 5);
-    oy += 5 + objetLines.length * 4.8 + 3;
+    const objetLines = pdf.splitTextToSize(doc.objet, contentW - 15);
+    pdf.text(objetLines, margin + 14, oy);
+    oy += objetLines.length * 5.2 + 3;
   }
 
-  // ============ TABLEAU DES LIGNES ============
+  // Tableau
   autoTable(pdf, {
-    startY: oy + 2,
+    startY: oy,
     head: [["#", "Description", "Qté", "Unité", "P.U. HT", "TVA", "Total TTC"]],
     body: doc.lignes.map((l, i) => [
       String(i + 1),
@@ -237,14 +220,16 @@ export function generatePdf(doc: PdfDoc): jsPDF {
       doc.tva_active ? `${l.tva_taux}%` : "—",
       money(l.total_ttc, devise),
     ]),
-    theme: "grid",
+    theme: "plain",
+    rowPageBreak: "avoid",
+    showHead: "everyPage",
     styles: {
       font: "helvetica",
-      fontSize: 9,
-      cellPadding: { top: 3.4, bottom: 3.4, left: 3, right: 3 },
+      fontSize: 10.5,
+      cellPadding: { top: 3, bottom: 3, left: 2.2, right: 2.2 },
       textColor: ink,
       lineColor: hair,
-      lineWidth: 0.1,
+      lineWidth: { bottom: 0.2 },
       valign: "middle",
       overflow: "linebreak",
     },
@@ -252,116 +237,122 @@ export function generatePdf(doc: PdfDoc): jsPDF {
       fillColor: [r, g, b],
       textColor: [255, 255, 255],
       fontStyle: "bold",
-      fontSize: 8.5,
-      cellPadding: { top: 4, bottom: 4, left: 3, right: 3 },
+      fontSize: 10,
       lineWidth: 0,
     },
-    alternateRowStyles: { fillColor: [250, 251, 251] },
+    alternateRowStyles: { fillColor: [246, 248, 249] },
     columnStyles: {
-      0: { halign: "center", cellWidth: 11, textColor: muted },
+      0: { halign: "center", cellWidth: 9, textColor: muted },
       1: { cellWidth: "auto" },
-      2: { halign: "right", cellWidth: 14 },
-      3: { halign: "center", cellWidth: 18, textColor: muted },
-      4: { halign: "right", cellWidth: 28 },
+      2: { halign: "right", cellWidth: 13 },
+      3: { halign: "center", cellWidth: 17, textColor: muted },
+      4: { halign: "right", cellWidth: 33 },
       5: { halign: "center", cellWidth: 14, textColor: muted },
-      6: { halign: "right", cellWidth: 32, fontStyle: "bold" },
+      6: { halign: "right", cellWidth: 36, fontStyle: "bold" },
     },
-    margin: { left: margin, right: margin, bottom: 24 },
+    margin: { left: margin, right: margin, top: 18, bottom: 24 },
   });
 
-  // ============ TOTAUX ============
+  // Totaux
   // @ts-expect-error lastAutoTable est ajouté par le plugin autoTable
-  let ty = (pdf.lastAutoTable?.finalY ?? oy + 60) + 10;
-  const totalsW = 78;
+  let ty = (pdf.lastAutoTable?.finalY ?? oy + 60) + 9;
+  const totalsW = 88;
   const labelX = pageW - margin - totalsW;
   const valueX = pageW - margin;
-
   const rows: [string, string][] = [["Sous-total HT", money(doc.sous_total, devise)]];
-  if (doc.remise_montant > 0)
-    rows.push(["Remise", `- ${money(doc.remise_montant, devise)}`]);
-  if (doc.tva_active && doc.montant_tva > 0)
-    rows.push(["TVA", money(doc.montant_tva, devise)]);
-
-  const totalsH = rows.length * 6.5 + (doc.tva_active ? 0 : 5) + 20;
+  if (doc.remise_montant > 0) rows.push(["Remise", `- ${money(doc.remise_montant, devise)}`]);
+  if (doc.tva_active && doc.montant_tva > 0) rows.push(["TVA", money(doc.montant_tva, devise)]);
+  const totalsH = rows.length * 7 + (doc.tva_active ? 0 : 6) + 20;
   if (ty + totalsH > pageH - 26) {
     pdf.addPage();
-    ty = 28;
+    ty = 24;
   }
-
-  pdf.setFontSize(9.5);
   rows.forEach(([k, v]) => {
     pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10.5);
     pdf.setTextColor(...muted);
     pdf.text(k, labelX, ty);
+    pdf.setFont("helvetica", "bold");
     pdf.setTextColor(...ink);
     pdf.text(v, valueX, ty, { align: "right" });
-    ty += 6.5;
+    ty += 7;
   });
   if (!doc.tva_active) {
-    pdf.setFontSize(8);
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10);
     pdf.setTextColor(...muted);
     pdf.text("TVA non applicable", labelX, ty);
-    ty += 5;
+    ty += 6;
   }
-
-  ty += 2;
+  ty += 1;
   pdf.setFillColor(r, g, b);
-  pdf.roundedRect(labelX - 4, ty, totalsW + 4, 13, 2, 2, "F");
+  pdf.roundedRect(labelX - 4, ty, totalsW + 4, 14, 2, 2, "F");
   pdf.setTextColor(255, 255, 255);
   pdf.setFont("helvetica", "bold");
-  pdf.setFontSize(10);
-  pdf.text("TOTAL TTC", labelX, ty + 8.4);
-  pdf.setFontSize(12);
-  pdf.text(money(doc.total_ttc, devise), valueX - 4, ty + 8.6, { align: "right" });
-  ty += 22;
+  pdf.setFontSize(11);
+  pdf.text("TOTAL TTC", labelX, ty + 9);
+  pdf.setFontSize(14);
+  pdf.text(money(doc.total_ttc, devise), valueX - 3, ty + 9.3, { align: "right" });
+  ty += 24;
 
-  // ============ NOTES / CONDITIONS ============
+  // Notes / conditions / mentions
   const blocks: [string, string][] = [];
   if (doc.conditions_paiement) blocks.push(["Conditions de paiement", doc.conditions_paiement]);
   if (doc.notes) blocks.push(["Notes", doc.notes]);
-  if (doc.entreprise.coordonnees_bancaires)
-    blocks.push(["Coordonnées bancaires", doc.entreprise.coordonnees_bancaires]);
-  if (doc.entreprise.mentions_legales)
-    blocks.push(["Mentions légales", doc.entreprise.mentions_legales]);
-
-  if (blocks.length) {
-    pdf.setDrawColor(...hair);
-    pdf.setLineWidth(0.3);
-    pdf.line(margin, ty - 4, pageW - margin, ty - 4);
-  }
-
+  if (doc.entreprise.coordonnees_bancaires) blocks.push(["Coordonnées bancaires", doc.entreprise.coordonnees_bancaires]);
+  if (doc.entreprise.mentions_legales) blocks.push(["Mentions légales", doc.entreprise.mentions_legales]);
   blocks.forEach(([title, body]) => {
+    pdf.setFontSize(10);
     const lines = pdf.splitTextToSize(body, contentW);
-    const needed = 6 + lines.length * 4.6 + 5;
+    const needed = 6 + lines.length * 5 + 5;
     if (ty + needed > pageH - 24) {
       pdf.addPage();
-      ty = 28;
+      ty = 24;
     }
     pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(8.5);
     pdf.setTextColor(r, g, b);
     pdf.text(title.toUpperCase(), margin, ty);
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(9);
     pdf.setTextColor(...muted);
-    pdf.text(lines, margin, ty + 5);
+    pdf.text(lines, margin, ty + 5.5, { lineHeightFactor: 1.4 });
     ty += needed;
   });
 
-  // ============ PIED DE PAGE (toutes les pages) ============
+  // Bon pour accord (devis)
+  if (isDevis) {
+    const sigH = 32;
+    if (ty + sigH > pageH - 24) {
+      pdf.addPage();
+      ty = 24;
+    }
+    const sigW = 88;
+    const sx = pageW - margin - sigW;
+    pdf.setDrawColor(...hair);
+    pdf.setLineWidth(0.4);
+    pdf.roundedRect(sx, ty, sigW, sigH, 2, 2, "S");
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10.5);
+    pdf.setTextColor(...ink);
+    pdf.text("Bon pour accord", sx + 5, ty + 7);
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10);
+    pdf.setTextColor(...muted);
+    pdf.text("Date et signature du client", sx + 5, ty + 12.5);
+  }
+
+  // Pied de page
   const total = pdf.getNumberOfPages();
   for (let p = 1; p <= total; p++) {
     pdf.setPage(p);
     pdf.setDrawColor(...hair);
-    pdf.setLineWidth(0.2);
-    pdf.line(margin, pageH - 16, pageW - margin, pageH - 16);
+    pdf.setLineWidth(0.3);
+    pdf.line(margin, pageH - 15, pageW - margin, pageH - 15);
     pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(7.5);
-    pdf.setTextColor(150, 155, 158);
-    pdf.text(`${doc.entreprise.nom} — Document généré avec JOKTALY`, margin, pageH - 11);
-    pdf.text(`Page ${p} / ${total}`, pageW - margin, pageH - 11, { align: "right" });
+    pdf.setFontSize(9);
+    pdf.setTextColor(...muted);
+    pdf.text(`${doc.entreprise.nom} — Document généré avec JOKTALY`, margin, pageH - 9.5);
+    pdf.text(`Page ${p} / ${total}`, pageW - margin, pageH - 9.5, { align: "right" });
   }
-
   return pdf;
 }
 
