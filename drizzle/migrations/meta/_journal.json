@@ -15,6 +15,13 @@
       "when": 1794041438500,
       "tag": "0001_align_plan_quota_reference",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794406054415,
+      "tag": "0002_lot1_security_subscriptions",
+      "breakpoints": true
     }
   ]
 }

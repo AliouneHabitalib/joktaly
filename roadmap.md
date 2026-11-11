@@ -6,3 +6,10 @@
 - [x] Supprimer la connexion Google
 
 - [x] Auditer les promesses et corriger les textes, témoignages et FAQ sans modifier les droits ni les prix.
+
+## Audit 2026-11 (plan approuvé)
+- [x] Lot 1 — sécurité profils, isolation clients/documents, lecture abonnements, expiration, renouvellement, page admin d'activation Wave, clé secrète du contrôle mensuel
+- [ ] Lot 2 — numérotation sûre, conversion/enregistrement tout-ou-rien, réglages documents en base, statistiques sans factures annulées
+- [ ] Lot 3 — dépenses, stocks, fournisseurs, bénéfice au tableau de bord, rapports + exports
+- [ ] Lot 4 — pages publiques et juridiques (attend les informations légales de JOKTALY)
+- [ ] Lot 5 — pays, numéros internationaux, TVA par pays

@@ -17,7 +17,7 @@ export const Route = createFileRoute("/api/public/hooks/quota-reset-check")({
         // header (the same key pg_cron sends). Blocks anonymous internet
         // callers from triggering service-role writes and reading platform
         // aggregates.
-        const expectedKey = process.env.SUPABASE_PUBLISHABLE_KEY;
+        const expectedKey = process.env.CRON_SECRET; // secret serveur dédié, jamais la clé publique
         const providedKey =
           request.headers.get("apikey") ??
           request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
