@@ -142,7 +142,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.line(margin, sepY, pageW - margin, sepY);
 
   // Client / détails
-  const blockY = sepY + 9;
+  const blockY = sepY + 8;
   const rightX = margin + contentW * 0.56;
   const clientW = rightX - margin - 6;
   pdf.setFont("helvetica", "bold");
@@ -195,7 +195,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   });
 
   // Objet
-  let oy = Math.max(cy, blockY - 6 + boxH) + 7;
+  let oy = Math.max(cy, blockY - 6 + boxH) + 5;
   if (doc.objet) {
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(10.5);
@@ -226,7 +226,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
     styles: {
       font: "helvetica",
       fontSize: 10.5,
-      cellPadding: { top: 3, bottom: 3, left: 2.2, right: 2.2 },
+      cellPadding: { top: 2.6, bottom: 2.6, left: 2.2, right: 2.2 },
       textColor: ink,
       lineColor: hair,
       lineWidth: { bottom: 0.2 },
@@ -255,7 +255,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
 
   // Totaux
   // @ts-expect-error lastAutoTable est ajouté par le plugin autoTable
-  let ty = (pdf.lastAutoTable?.finalY ?? oy + 60) + 9;
+  let ty = (pdf.lastAutoTable?.finalY ?? oy + 60) + 8;
   const totalsW = 88;
   const labelX = pageW - margin - totalsW;
   const valueX = pageW - margin;
@@ -323,7 +323,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
     pdf.setFontSize(10);
     const lines = pdf.splitTextToSize(body, contentW);
     const needed = 5.5 + lines.length * 4.95 + 4;
-    if (ty + needed > pageH - 24) {
+    if (ty + needed > pageH - 18) {
       pdf.addPage();
       ty = 24;
     }
