@@ -32,7 +32,7 @@ import { formatMontant, formatDate, addDays, toDateInput } from "@/lib/format";
 import { calculerTotaux, buildPdfDoc, type LigneDraft } from "@/lib/devis-facture-shared";
 import { buildDocumentMessage } from "@/lib/whatsapp";
 import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
-import { downloadPdf } from "@/lib/pdf";
+const downloadPdf = async (...a: Parameters<typeof import("@/lib/pdf").downloadPdf>) => (await import("@/lib/pdf")).downloadPdf(...a);
 
 export const Route = createFileRoute("/_authenticated/factures/$id")({
   head: privateHead("Créer une facture", "Créez ou modifiez une facture et enregistrez les paiements reçus."),

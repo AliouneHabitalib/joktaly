@@ -45,7 +45,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate } from "@/lib/format";
-import { downloadPdf, downloadBlankPdf } from "@/lib/pdf";
+const downloadPdf = async (...a: Parameters<typeof import("@/lib/pdf").downloadPdf>) => (await import("@/lib/pdf")).downloadPdf(...a);
+const downloadBlankPdf = async (...a: Parameters<typeof import("@/lib/pdf").downloadBlankPdf>) => (await import("@/lib/pdf")).downloadBlankPdf(...a);
 import { buildPdfDoc, toPdfEntreprise } from "@/lib/devis-facture-shared";
 import { buildDocumentMessage, buildRelanceMessage } from "@/lib/whatsapp";
 import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
