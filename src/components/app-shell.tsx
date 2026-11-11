@@ -39,7 +39,7 @@ export function AppShell() {
   });
 
   const nav = isAdmin
-    ? [...NAV, { to: "/admin/journal", label: "Journal admin", icon: ScrollText } as const]
+    ? [...NAV, { to: "/admin/journal", label: "Journal admin", icon: ScrollText } as const, { to: "/admin/abonnements", label: "Abonnements", icon: ScrollText } as const]
     : NAV;
 
   const handleLogout = async () => {

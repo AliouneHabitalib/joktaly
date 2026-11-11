@@ -26,6 +26,7 @@ import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticated/produits'
 import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
+import { Route as AuthenticatedAdminAbonnementsRouteImport } from './routes/_authenticated/admin.abonnements'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
 import { Route as AuthenticatedClientsIndexRouteImport } from './routes/_authenticated/clients.index'
 import { Route as AuthenticatedClientsIdRouteImport } from './routes/_authenticated/clients.$id'
@@ -122,6 +123,12 @@ const AuthCallbackRoute = AuthCallbackRouteImport.update({
   path: '/auth/callback',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminAbonnementsRoute =
+  AuthenticatedAdminAbonnementsRouteImport.update({
+    id: '/admin/abonnements',
+    path: '/admin/abonnements',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedAdminJournalRoute =
   AuthenticatedAdminJournalRouteImport.update({
     id: '/admin/journal',
@@ -195,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/abonnements': typeof AuthenticatedAdminAbonnementsRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/clients/$id': typeof AuthenticatedClientsIdRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
@@ -220,6 +228,7 @@ export interface FileRoutesByTo {
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/admin/abonnements': typeof AuthenticatedAdminAbonnementsRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/clients/$id': typeof AuthenticatedClientsIdRoute
   '/devis/$id': typeof AuthenticatedDevisIdRoute
@@ -250,6 +259,7 @@ export interface FileRoutesById {
   '/_authenticated/produits': typeof AuthenticatedProduitsRoute
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
   '/auth/callback': typeof AuthCallbackRoute
+  '/_authenticated/admin/abonnements': typeof AuthenticatedAdminAbonnementsRoute
   '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
   '/_authenticated/clients/$id': typeof AuthenticatedClientsIdRoute
   '/_authenticated/devis/$id': typeof AuthenticatedDevisIdRoute
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/produits'
     | '/statistiques'
     | '/auth/callback'
+    | '/admin/abonnements'
     | '/admin/journal'
     | '/clients/$id'
     | '/devis/$id'
@@ -305,6 +316,7 @@ export interface FileRouteTypes {
     | '/produits'
     | '/statistiques'
     | '/auth/callback'
+    | '/admin/abonnements'
     | '/admin/journal'
     | '/clients/$id'
     | '/devis/$id'
@@ -334,6 +346,7 @@ export interface FileRouteTypes {
     | '/_authenticated/produits'
     | '/_authenticated/statistiques'
     | '/auth/callback'
+    | '/_authenticated/admin/abonnements'
     | '/_authenticated/admin/journal'
     | '/_authenticated/clients/$id'
     | '/_authenticated/devis/$id'
@@ -482,6 +495,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin/abonnements': {
+      id: '/_authenticated/admin/abonnements'
+      path: '/admin/abonnements'
+      fullPath: '/admin/abonnements'
+      preLoaderRoute: typeof AuthenticatedAdminAbonnementsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/admin/journal': {
       id: '/_authenticated/admin/journal'
       path: '/admin/journal'
@@ -604,6 +624,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedFacturesRoute: typeof AuthenticatedFacturesRouteWithChildren
   AuthenticatedProduitsRoute: typeof AuthenticatedProduitsRoute
   AuthenticatedStatistiquesRoute: typeof AuthenticatedStatistiquesRoute
+  AuthenticatedAdminAbonnementsRoute: typeof AuthenticatedAdminAbonnementsRoute
   AuthenticatedAdminJournalRoute: typeof AuthenticatedAdminJournalRoute
   AuthenticatedParametresEntrepriseRoute: typeof AuthenticatedParametresEntrepriseRoute
 }
@@ -616,6 +637,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedFacturesRoute: AuthenticatedFacturesRouteWithChildren,
   AuthenticatedProduitsRoute: AuthenticatedProduitsRoute,
   AuthenticatedStatistiquesRoute: AuthenticatedStatistiquesRoute,
+  AuthenticatedAdminAbonnementsRoute: AuthenticatedAdminAbonnementsRoute,
   AuthenticatedAdminJournalRoute: AuthenticatedAdminJournalRoute,
   AuthenticatedParametresEntrepriseRoute:
     AuthenticatedParametresEntrepriseRoute,
