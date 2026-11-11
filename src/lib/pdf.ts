@@ -63,25 +63,25 @@ const hexToRgb = (hex: string): [number, number, number] => {
   return [(num >> 16) & 255, (num >> 8) & 255, num & 255];
 };
 
-export function generatePdf(doc: PdfDoc): jsPDF {
-  const pdf = new jsPDF({ unit: "mm", format: "a4" });
-  const [r, g, b] = hexToRgb(doc.entreprise.couleur_primaire || "#0A63F0");
-  const pageW = pdf.internal.pageSize.getWidth();
-  const pageH = pdf.internal.pageSize.getHeight();
-  const margin = 15;
-  const contentW = pageW - margin * 2;
-  const devise = doc.entreprise.devise;
-  const ink: [number, number, number] = [20, 24, 28];
-  const muted: [number, number, number] = [62, 68, 74];
-  const hair: [number, number, number] = [214, 219, 223];
-  const isDevis = doc.type === "devis";
+type Rgb = [number, number, number];
+const INK: Rgb = [20, 24, 28];
+const MUTED: Rgb = [62, 68, 74];
+const HAIR: Rgb = [214, 219, 223];
 
+/** En-tête commun (bandeau, logo, coordonnées, titre). Retourne l'ordonnée du séparateur. */
+function drawHeader(pdf: jsPDF, ent: PdfDoc["entreprise"], isDevis: boolean, numero: string | null, color: Rgb): number {
+  const [r, g, b] = color;
+  const pageW = pdf.internal.pageSize.getWidth();
+  const margin = 15;
+  const ink = INK;
+  const muted = MUTED;
+  const hair = HAIR;
   // Bandeau de marque
   pdf.setFillColor(r, g, b);
   pdf.rect(0, 0, pageW, 6, "F");
 
   let headerTextX = margin;
-  const logo = doc.entreprise.logo_url;
+  const logo = ent.logo_url;
   if (logo && /^data:image\/(png|jpe?g|svg\+xml|webp)/i.test(logo)) {
     try {
       const fmt = logo.includes("image/png") ? "PNG" : logo.includes("image/webp") ? "WEBP" : "JPEG";
@@ -96,29 +96,29 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.setTextColor(...ink);
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(18);
-  const nomLines = pdf.splitTextToSize(doc.entreprise.nom, leftW);
+  const nomLines = pdf.splitTextToSize(ent.nom, leftW);
   pdf.text(nomLines, headerTextX, 20);
   let hy = 20 + (nomLines.length - 1) * 7 + 6;
-  if (doc.entreprise.slogan) {
+  if (ent.slogan) {
     pdf.setFont("helvetica", "italic");
     pdf.setFontSize(10);
     pdf.setTextColor(...muted);
-    pdf.text(doc.entreprise.slogan, headerTextX, hy);
+    pdf.text(ent.slogan, headerTextX, hy);
     hy += 5.5;
   }
   pdf.setFont("helvetica", "normal");
   pdf.setFontSize(10);
   pdf.setTextColor(...muted);
   const coord: string[] = [];
-  if (doc.entreprise.adresse) coord.push(doc.entreprise.adresse);
-  const cityLine = [doc.entreprise.ville, doc.entreprise.pays].filter(Boolean).join(", ");
+  if (ent.adresse) coord.push(ent.adresse);
+  const cityLine = [ent.ville, ent.pays].filter(Boolean).join(", ");
   if (cityLine) coord.push(cityLine);
-  if (doc.entreprise.telephone) coord.push(`Tél : ${doc.entreprise.telephone}`);
-  const web = [doc.entreprise.email, doc.entreprise.site_web].filter(Boolean).join("  ·  ");
+  if (ent.telephone) coord.push(`Tél : ${ent.telephone}`);
+  const web = [ent.email, ent.site_web].filter(Boolean).join("  ·  ");
   if (web) coord.push(web);
   const legal = [
-    doc.entreprise.ninea ? `NINEA ${doc.entreprise.ninea}` : null,
-    doc.entreprise.rc ? `RC ${doc.entreprise.rc}` : null,
+    ent.ninea ? `NINEA ${ent.ninea}` : null,
+    ent.rc ? `RC ${ent.rc}` : null,
   ].filter(Boolean).join("  ·  ");
   if (legal) coord.push(legal);
   coord.forEach((line) => {
@@ -134,12 +134,30 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.text(isDevis ? "DEVIS" : "FACTURE", pageW - margin, 22, { align: "right" });
   pdf.setFontSize(12);
   pdf.setTextColor(...ink);
-  pdf.text(`N° ${doc.numero}`, pageW - margin, 29.5, { align: "right" });
+  if (numero) pdf.text(`N° ${numero}`, pageW - margin, 29.5, { align: "right" });
 
   const sepY = Math.max(hy + 2, 40);
   pdf.setDrawColor(...hair);
   pdf.setLineWidth(0.4);
   pdf.line(margin, sepY, pageW - margin, sepY);
+
+  return sepY;
+}
+
+export function generatePdf(doc: PdfDoc): jsPDF {
+  const pdf = new jsPDF({ unit: "mm", format: "a4" });
+  const [r, g, b] = hexToRgb(doc.entreprise.couleur_primaire || "#0A63F0");
+  const pageW = pdf.internal.pageSize.getWidth();
+  const pageH = pdf.internal.pageSize.getHeight();
+  const margin = 15;
+  const contentW = pageW - margin * 2;
+  const devise = doc.entreprise.devise;
+  const ink: [number, number, number] = [20, 24, 28];
+  const muted: [number, number, number] = [62, 68, 74];
+  const hair: [number, number, number] = [214, 219, 223];
+  const isDevis = doc.type === "devis";
+
+  const sepY = drawHeader(pdf, doc.entreprise, isDevis, doc.numero, [r, g, b]);
 
   // Client / détails
   const blockY = sepY + 8;
