@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { formatMontant, addDays, toDateInput } from "@/lib/format";
 import { calculerTotaux, type LigneDraft } from "@/lib/devis-facture-shared";
 import { buildPdfDoc } from "@/lib/devis-facture-shared";
-import { downloadPdf } from "@/lib/pdf";
+const downloadPdf = async (...a: Parameters<typeof import("@/lib/pdf").downloadPdf>) => (await import("@/lib/pdf")).downloadPdf(...a);
 import { getEntrepriseExtras } from "@/lib/entreprise-extras";
 import { buildDocumentMessage } from "@/lib/whatsapp";
 import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
