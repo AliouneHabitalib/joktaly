@@ -478,7 +478,7 @@ export function generateBlankPdf(type: "devis" | "facture", ent: PdfDoc["entrepr
     cx += c.w;
     pdf.line(cx, tableTop, cx, tableBottom);
   });
-  y = tableBottom + 7;
+  y = tableBottom + 6.5;
 
   // Totaux (droite) + signature ou mode de paiement (gauche)
   const totalsW = 88;
@@ -529,34 +529,31 @@ export function generateBlankPdf(type: "devis" | "facture", ent: PdfDoc["entrepr
       });
     });
   }
-  y = Math.max(y, boxTop + 26) + 8;
+  y = Math.max(y, boxTop + 26) + 6;
 
   // Coordonnées bancaires + mentions légales (si renseignées), en bas
-  const extras: [string, string[]][] = [];
+  pdf.setFont("helvetica", "normal");
   pdf.setFontSize(10);
-  if (ent.coordonnees_bancaires) extras.push(["COORDONNÉES BANCAIRES", pdf.splitTextToSize(ent.coordonnees_bancaires, contentW)]);
-  if (ent.mentions_legales) extras.push(["MENTIONS LÉGALES", pdf.splitTextToSize(ent.mentions_legales, contentW)]);
-  const extrasH = extras.reduce((a, [, ls]) => a + 5.5 + ls.length * 4.6 + 3, 0);
+  const extras: string[][] = [];
+  if (ent.coordonnees_bancaires) extras.push(pdf.splitTextToSize(`Coordonnées bancaires : ${ent.coordonnees_bancaires}`, contentW));
+  if (ent.mentions_legales) extras.push(pdf.splitTextToSize(ent.mentions_legales, contentW));
+  const extrasH = extras.reduce((a, ls) => a + ls.length * 4.6 + 1.5, 0);
 
   // Notes / conditions : lignes de saisie dans l'espace restant
   label(isDevis ? "NOTES ET CONDITIONS" : "NOTES ET CONDITIONS DE PAIEMENT", margin, y);
-  const notesEnd = pageH - 19 - extrasH;
-  let ly = y + 8;
-  let n = 0;
-  while (ly <= notesEnd - 1 || n < 2) {
+  const notesEnd = pageH - 19 - extrasH - 2;
+  let ly = y + 7.5;
+  for (let n = 0; n < 4 && ly + 0.8 <= notesEnd; n++) {
     field("", margin, ly, pageW - margin);
     ly += 7.5;
-    n++;
-    if (n >= 4) break;
   }
-  y = ly + 1;
-  extras.forEach(([t, ls]) => {
-    label(t, margin, y);
+  y = ly - 2;
+  extras.forEach((ls) => {
     pdf.setFont("helvetica", "normal");
     pdf.setFontSize(10);
     pdf.setTextColor(...MUTED);
-    pdf.text(ls, margin, y + 5.5, { lineHeightFactor: 1.3 });
-    y += 5.5 + ls.length * 4.6 + 3;
+    pdf.text(ls, margin, y, { lineHeightFactor: 1.3 });
+    y += ls.length * 4.6 + 1.5;
   });
 
   // Pied de page
