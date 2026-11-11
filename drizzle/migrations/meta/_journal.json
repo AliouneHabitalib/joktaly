@@ -22,6 +22,13 @@
       "when": 1794406054415,
       "tag": "0002_lot1_security_subscriptions",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794406286093,
+      "tag": "0003_lot2_safe_numbering_atomic_saves",
+      "breakpoints": true
     }
   ]
 }
