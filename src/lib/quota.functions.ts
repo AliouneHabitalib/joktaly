@@ -19,6 +19,7 @@ export const getUserQuota = createServerFn({ method: "GET" })
       .eq("user_id", userId)
       .maybeSingle();
 
+    const { data: effective } = await supabase.rpc("effective_plan", { _user_id: userId });
     const monthStartStr = getMonthStartISO();
 
     let devisCount = 0;
@@ -30,19 +31,19 @@ export const getUserQuota = createServerFn({ method: "GET" })
           .from("devis")
           .select("id", { count: "exact", head: true })
           .eq("entreprise_id", entreprise.id)
-          .gte("date_emission", monthStartStr),
+          .gte("created_at", monthStartStr),
         supabase
           .from("factures")
           .select("id", { count: "exact", head: true })
           .eq("entreprise_id", entreprise.id)
-          .gte("date_emission", monthStartStr),
+          .gte("created_at", monthStartStr),
       ]);
       devisCount = devisRes.count ?? 0;
       facturesCount = facturesRes.count ?? 0;
     }
 
     return {
-      plan: (profile?.plan as import("./plans").PlanType) ?? "gratuit",
+      plan: ((effective as string | null) ?? (profile?.plan as string) ?? "gratuit") as import("./plans").PlanType,
       devisCount,
       facturesCount,
     };

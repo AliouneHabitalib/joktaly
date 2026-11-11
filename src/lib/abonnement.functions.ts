@@ -17,7 +17,9 @@ export const getSubscriptionStatus = createServerFn({ method: "GET" })
         .maybeSingle(),
     ]);
 
-    const plan = (profile?.plan as string) ?? "gratuit";
+    const expiresAt = (profile as any)?.plan_expires_at as string | null;
+    const expired = !!expiresAt && new Date(expiresAt) < new Date();
+    const plan = expired ? "gratuit" : ((profile?.plan as string) ?? "gratuit");
     // Aucun prestataire de paiement : on ne bloque plus l'accès.
     const requiresPayment = false;
 
@@ -124,4 +126,54 @@ export const selectFreePlan = createServerFn({ method: "POST" })
       await (supabase as any).from("abonnements").update({ statut: "annule" }).eq("user_id", userId).eq("statut", "en_attente");
     } catch {}
     return { ok: true };
+  });
+
+/** Admin : liste des abonnements récents (en attente et payés). */
+export const listAbonnementsAdmin = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+    if (!isAdmin) throw new Error("Accès refusé");
+    const { data, error } = await (context.supabase as any)
+      .from("abonnements")
+      .select("id, user_id, plan, cycle, montant, statut, provider_token, created_at, paid_at")
+      .order("created_at", { ascending: false })
+      .limit(100);
+    if (error) throw new Error(error.message);
+    const ids = [...new Set((data ?? []).map((a: any) => a.user_id))];
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: profiles } = ids.length
+      ? await (supabaseAdmin as any).from("profiles").select("id, email, plan, plan_expires_at").in("id", ids)
+      : { data: [] };
+    const byId = new Map((profiles ?? []).map((p: any) => [p.id, p]));
+    return (data ?? []).map((a: any) => ({
+      ...a,
+      montant: Number(a.montant),
+      email: (byId.get(a.user_id) as any)?.email ?? "",
+      planActuel: (byId.get(a.user_id) as any)?.plan ?? "gratuit",
+      expireLe: (byId.get(a.user_id) as any)?.plan_expires_at ?? null,
+    })) as Array<{ id: string; user_id: string; plan: string; cycle: string; montant: number; statut: string; provider_token: string | null; created_at: string; paid_at: string | null; email: string; planActuel: string; expireLe: string | null }>;
+  });
+
+/** Admin : active un abonnement après vérification manuelle du paiement Wave. */
+export const activateAbonnementAdmin = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((d: { id: string; reference: string }) => {
+    if (!d?.id || typeof d.reference !== "string" || d.reference.trim().length < 3)
+      throw new Error("Référence de paiement Wave obligatoire");
+    return { id: d.id, reference: d.reference.trim().slice(0, 100) };
+  })
+  .handler(async ({ data, context }) => {
+    const { data: isAdmin } = await context.supabase.rpc("has_role", { _user_id: context.userId, _role: "admin" });
+    if (!isAdmin) throw new Error("Accès refusé");
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const admin = supabaseAdmin as any;
+    const { data: dup } = await admin.from("abonnements").select("id").eq("provider_token", data.reference).maybeSingle();
+    if (dup) throw new Error("Cette référence de paiement a déjà été utilisée");
+    const { data: row, error } = await admin.from("abonnements").select("id, user_id, plan, cycle, statut").eq("id", data.id).maybeSingle();
+    if (error || !row) throw new Error("Abonnement introuvable");
+    if (row.statut !== "en_attente") throw new Error("Cet abonnement n'est plus en attente");
+    await admin.from("abonnements").update({ provider: "wave_manuel", provider_token: data.reference }).eq("id", row.id);
+    const { activateAbonnement } = await import("./abonnement.server");
+    return activateAbonnement(row, { validated_by: context.userId, reference: data.reference });
   });
