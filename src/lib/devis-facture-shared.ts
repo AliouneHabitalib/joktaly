@@ -133,3 +133,24 @@ export function calculerTotaux(
 function round(n: number) {
   return Math.round(n * 100) / 100;
 }
+/** Profil entreprise au format PDF (pour les documents vierges). N'invente aucune valeur. */
+export function toPdfEntreprise(entreprise: EntrepriseLite): PdfDoc["entreprise"] {
+  const extras = getEntrepriseExtras(entreprise.id);
+  return {
+    nom: entreprise.nom,
+    slogan: entreprise.slogan,
+    logo_url: entreprise.logo_url,
+    adresse: entreprise.adresse,
+    ville: entreprise.ville,
+    pays: entreprise.pays,
+    telephone: entreprise.telephone,
+    email: entreprise.email,
+    site_web: entreprise.site_web,
+    ninea: entreprise.ninea,
+    rc: entreprise.rc,
+    devise: entreprise.devise ?? "FCFA",
+    couleur_primaire: entreprise.couleur_primaire ?? "#0A63F0",
+    coordonnees_bancaires: entreprise.coordonnees_bancaires,
+    mentions_legales: extras.mentions_legales ?? null,
+  };
+}
