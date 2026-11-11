@@ -391,3 +391,186 @@ export function getPdfBlob(doc: PdfDoc): Blob {
 export function getPdfDataUrl(doc: PdfDoc): string {
   return generatePdf(doc).output("datauristring");
 }
+/**
+ * Devis / facture vierge à imprimer et remplir à la main.
+ * Seul l'en-tête reprend le profil entreprise ; rien n'est enregistré ni numéroté.
+ */
+export function generateBlankPdf(type: "devis" | "facture", ent: PdfDoc["entreprise"]): jsPDF {
+  const pdf = new jsPDF({ unit: "mm", format: "a4" });
+  const color = hexToRgb(ent.couleur_primaire || "#0A63F0");
+  const [r, g, b] = color;
+  const pageW = pdf.internal.pageSize.getWidth();
+  const pageH = pdf.internal.pageSize.getHeight();
+  const margin = 15;
+  const contentW = pageW - margin * 2;
+  const isDevis = type === "devis";
+  const line: Rgb = [95, 101, 107];
+  const devise = ent.devise || "FCFA";
+
+  const sepY = drawHeader(pdf, ent, isDevis, null, color);
+
+  const label = (t: string, x: number, y: number) => {
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10);
+    pdf.setTextColor(r, g, b);
+    pdf.text(t, x, y);
+  };
+  const field = (t: string, x: number, y: number, x2: number) => {
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10.5);
+    pdf.setTextColor(...MUTED);
+    pdf.text(t, x, y);
+    const w = t ? pdf.getTextWidth(t) + 2 : 0;
+    pdf.setDrawColor(...line);
+    pdf.setLineWidth(0.3);
+    pdf.line(x + w, y + 0.8, x2, y + 0.8);
+  };
+
+  // Client (gauche) / détails (droite)
+  const blockY = sepY + 8;
+  const rightX = margin + contentW * 0.56;
+  label(isDevis ? "DEVIS ADRESSÉ À" : "FACTURÉ À", margin, blockY);
+  const clientFields = ["Client / Société :", "Adresse :", "Téléphone :", "E-mail :"];
+  clientFields.forEach((t, i) => field(t, margin, blockY + 8 + i * 7.5, rightX - 6));
+  label("DÉTAILS", rightX, blockY);
+  const detailFields = ["N° :", "Date :", isDevis ? "Valable jusqu'au :" : "Échéance :"];
+  detailFields.forEach((t, i) => field(t, rightX, blockY + 8 + i * 7.5, pageW - margin));
+  let y = blockY + 8 + clientFields.length * 7.5 + 2;
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(10.5);
+  pdf.setTextColor(...INK);
+  pdf.text("Objet :", margin, y);
+  field("", margin + 14, y, pageW - margin);
+  y += 6;
+
+  // Tableau vierge
+  const cols = [
+    { t: "#", w: 9 },
+    { t: "Description", w: 0 },
+    { t: "Qté", w: 13 },
+    { t: "Unité", w: 17 },
+    { t: "P.U. HT", w: 37 },
+    { t: "TVA", w: 14 },
+    { t: "Total TTC", w: 36 },
+  ];
+  cols[1].w = contentW - cols.reduce((a, c) => a + c.w, 0);
+  const headH = 8;
+  const rowH = 9;
+  const rowsN = 10;
+  pdf.setFillColor(r, g, b);
+  pdf.rect(margin, y, contentW, headH, "F");
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(10);
+  pdf.setTextColor(255, 255, 255);
+  let cx = margin;
+  cols.forEach((c) => {
+    pdf.text(c.t, cx + 2.2, y + 5.4);
+    cx += c.w;
+  });
+  const tableTop = y + headH;
+  const tableBottom = tableTop + rowH * rowsN;
+  pdf.setDrawColor(...line);
+  pdf.setLineWidth(0.3);
+  for (let i = 1; i <= rowsN; i++) pdf.line(margin, tableTop + i * rowH, pageW - margin, tableTop + i * rowH);
+  cx = margin;
+  pdf.line(margin, tableTop, margin, tableBottom);
+  cols.forEach((c) => {
+    cx += c.w;
+    pdf.line(cx, tableTop, cx, tableBottom);
+  });
+  y = tableBottom + 7;
+
+  // Totaux (droite) + signature ou mode de paiement (gauche)
+  const totalsW = 88;
+  const labelX = pageW - margin - totalsW;
+  const totalsTop = y;
+  ["Sous-total HT", "Remise", "TVA"].forEach((t) => {
+    field(t, labelX, y, pageW - margin - 14);
+    pdf.text(devise, pageW - margin, y, { align: "right" });
+    y += 7.5;
+  });
+  pdf.setFillColor(r, g, b);
+  pdf.roundedRect(labelX - 4, y - 4.5, totalsW + 4, 11, 2, 2, "F");
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(11);
+  pdf.setTextColor(255, 255, 255);
+  pdf.text("TOTAL TTC", labelX, y + 2.5);
+  pdf.setFontSize(10.5);
+  pdf.text(devise, pageW - margin - 3, y + 2.5, { align: "right" });
+  y += 9;
+  const leftW = contentW - totalsW - 10;
+  const boxTop = totalsTop - 5;
+  if (isDevis) {
+    pdf.setDrawColor(...line);
+    pdf.setLineWidth(0.4);
+    pdf.roundedRect(margin, boxTop, leftW, 26, 2, 2, "S");
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10.5);
+    pdf.setTextColor(...INK);
+    pdf.text("Bon pour accord", margin + 4, boxTop + 6.5);
+    pdf.setFont("helvetica", "normal");
+    pdf.setTextColor(...MUTED);
+    pdf.text("Date et signature du client", margin + 4, boxTop + 11.5);
+  } else {
+    label("MODE DE PAIEMENT", margin, totalsTop);
+    const rows = [["Espèces", "Wave", "Virement"], ["Orange Money", "Chèque"]];
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10.5);
+    pdf.setTextColor(...INK);
+    rows.forEach((row, ri) => {
+      let bx = margin;
+      const by = totalsTop + 7 + ri * 8;
+      row.forEach((t, ci) => {
+        pdf.setDrawColor(...line);
+        pdf.setLineWidth(0.4);
+        pdf.rect(bx, by - 3.6, 4.2, 4.2, "S");
+        pdf.text(t, bx + 6, by);
+        bx += ci === 0 && ri === 1 ? 34 : 27;
+      });
+    });
+  }
+  y = Math.max(y, boxTop + 26) + 8;
+
+  // Coordonnées bancaires + mentions légales (si renseignées), en bas
+  const extras: [string, string[]][] = [];
+  pdf.setFontSize(10);
+  if (ent.coordonnees_bancaires) extras.push(["COORDONNÉES BANCAIRES", pdf.splitTextToSize(ent.coordonnees_bancaires, contentW)]);
+  if (ent.mentions_legales) extras.push(["MENTIONS LÉGALES", pdf.splitTextToSize(ent.mentions_legales, contentW)]);
+  const extrasH = extras.reduce((a, [, ls]) => a + 5.5 + ls.length * 4.6 + 3, 0);
+
+  // Notes / conditions : lignes de saisie dans l'espace restant
+  label(isDevis ? "NOTES ET CONDITIONS" : "NOTES ET CONDITIONS DE PAIEMENT", margin, y);
+  const notesEnd = pageH - 19 - extrasH;
+  let ly = y + 8;
+  let n = 0;
+  while (ly <= notesEnd - 1 || n < 2) {
+    field("", margin, ly, pageW - margin);
+    ly += 7.5;
+    n++;
+    if (n >= 4) break;
+  }
+  y = ly + 1;
+  extras.forEach(([t, ls]) => {
+    label(t, margin, y);
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10);
+    pdf.setTextColor(...MUTED);
+    pdf.text(ls, margin, y + 5.5, { lineHeightFactor: 1.3 });
+    y += 5.5 + ls.length * 4.6 + 3;
+  });
+
+  // Pied de page
+  pdf.setDrawColor(...HAIR);
+  pdf.setLineWidth(0.3);
+  pdf.line(margin, pageH - 15, pageW - margin, pageH - 15);
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(9);
+  pdf.setTextColor(...MUTED);
+  pdf.text(`${ent.nom} — Document généré avec JOKTALY`, margin, pageH - 9.5);
+  pdf.text("Page 1 / 1", pageW - margin, pageH - 9.5, { align: "right" });
+  return pdf;
+}
+
+export function downloadBlankPdf(type: "devis" | "facture", ent: PdfDoc["entreprise"]) {
+  generateBlankPdf(type, ent).save(type === "devis" ? "devis-vierge.pdf" : "facture-vierge.pdf");
+}
