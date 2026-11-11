@@ -41,11 +41,12 @@ import {
   Download,
   MessageCircle,
   Wallet,
+  FileDown,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate } from "@/lib/format";
-import { downloadPdf } from "@/lib/pdf";
-import { buildPdfDoc } from "@/lib/devis-facture-shared";
+import { downloadPdf, downloadBlankPdf } from "@/lib/pdf";
+import { buildPdfDoc, toPdfEntreprise } from "@/lib/devis-facture-shared";
 import { buildDocumentMessage, buildRelanceMessage } from "@/lib/whatsapp";
 import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
 import { ListSkeleton } from "./devis.index";
@@ -187,11 +188,28 @@ function FacturesListPage() {
           <h1 className="text-2xl font-bold">Factures</h1>
           <p className="text-sm text-muted-foreground">{factures.length} facture(s)</p>
         </div>
-        <Button asChild>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            className="h-11 sm:h-10"
+            disabled={!entreprise}
+            onClick={() => {
+              if (!entreprise) return;
+              try {
+                downloadBlankPdf("facture", toPdfEntreprise(entreprise));
+              } catch {
+                toast.error("Impossible de générer le document vierge");
+              }
+            }}
+          >
+            <FileDown className="mr-1 h-4 w-4" /> Facture vierge
+          </Button>
+        <Button asChild className="h-11 sm:h-10">
           <Link to="/factures/$id" params={{ id: "new" }}>
             <Plus className="mr-1 h-4 w-4" /> Nouvelle facture
           </Link>
         </Button>
+        </div>
       </div>
 
       {/* KPIs */}

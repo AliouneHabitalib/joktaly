@@ -41,11 +41,12 @@ import {
   Download,
   MessageCircle,
   FileCheck2,
+  FileDown,
 } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant, formatDate } from "@/lib/format";
-import { downloadPdf } from "@/lib/pdf";
-import { buildPdfDoc } from "@/lib/devis-facture-shared";
+import { downloadPdf, downloadBlankPdf } from "@/lib/pdf";
+import { buildPdfDoc, toPdfEntreprise } from "@/lib/devis-facture-shared";
 import { buildDocumentMessage } from "@/lib/whatsapp";
 import { convertDevisToFacture } from "@/lib/convert-devis";
 import { WhatsappShareDialog, type WhatsappSharePayload } from "@/components/whatsapp-share-dialog";
@@ -196,11 +197,28 @@ function DevisListPage() {
             {devis.length} devis au total
           </p>
         </div>
-        <Button asChild>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant="outline"
+            className="h-11 sm:h-10"
+            disabled={!entreprise}
+            onClick={() => {
+              if (!entreprise) return;
+              try {
+                downloadBlankPdf("devis", toPdfEntreprise(entreprise));
+              } catch {
+                toast.error("Impossible de générer le document vierge");
+              }
+            }}
+          >
+            <FileDown className="mr-1 h-4 w-4" /> Devis vierge
+          </Button>
+        <Button asChild className="h-11 sm:h-10">
           <Link to="/devis/$id" params={{ id: "new" }}>
             <Plus className="mr-1 h-4 w-4" /> Nouveau devis
           </Link>
         </Button>
+        </div>
       </div>
 
       <div className="flex flex-wrap items-center gap-3">
