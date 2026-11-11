@@ -246,7 +246,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
       1: { cellWidth: "auto" },
       2: { halign: "right", cellWidth: 13 },
       3: { halign: "center", cellWidth: 17, textColor: muted },
-      4: { halign: "right", cellWidth: 33 },
+      4: { halign: "right", cellWidth: 37 },
       5: { halign: "center", cellWidth: 14, textColor: muted },
       6: { halign: "right", cellWidth: 36, fontStyle: "bold" },
     },
