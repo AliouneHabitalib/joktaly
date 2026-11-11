@@ -431,11 +431,11 @@ export function generateBlankPdf(type: "devis" | "facture", ent: PdfDoc["entrepr
   const rightX = margin + contentW * 0.56;
   label(isDevis ? "DEVIS ADRESSÉ À" : "FACTURÉ À", margin, blockY);
   const clientFields = ["Client / Société :", "Adresse :", "Téléphone :", "E-mail :"];
-  clientFields.forEach((t, i) => field(t, margin, blockY + 8 + i * 7.5, rightX - 6));
+  clientFields.forEach((t, i) => field(t, margin, blockY + 7.5 + i * 7, rightX - 6));
   label("DÉTAILS", rightX, blockY);
   const detailFields = ["N° :", "Date :", isDevis ? "Valable jusqu'au :" : "Échéance :"];
-  detailFields.forEach((t, i) => field(t, rightX, blockY + 8 + i * 7.5, pageW - margin));
-  let y = blockY + 8 + clientFields.length * 7.5 + 2;
+  detailFields.forEach((t, i) => field(t, rightX, blockY + 7.5 + i * 7, pageW - margin));
+  let y = blockY + 7.5 + clientFields.length * 7 + 1.5;
   pdf.setFont("helvetica", "bold");
   pdf.setFontSize(10.5);
   pdf.setTextColor(...INK);
@@ -529,7 +529,7 @@ export function generateBlankPdf(type: "devis" | "facture", ent: PdfDoc["entrepr
       });
     });
   }
-  y = Math.max(y, boxTop + 26) + 6;
+  y = Math.max(y, boxTop + 26) + 5;
 
   // Coordonnées bancaires + mentions légales (si renseignées), en bas
   pdf.setFont("helvetica", "normal");
@@ -541,8 +541,8 @@ export function generateBlankPdf(type: "devis" | "facture", ent: PdfDoc["entrepr
 
   // Notes / conditions : lignes de saisie dans l'espace restant
   label(isDevis ? "NOTES ET CONDITIONS" : "NOTES ET CONDITIONS DE PAIEMENT", margin, y);
-  const notesEnd = pageH - 19 - extrasH - 2;
-  let ly = y + 7.5;
+  const notesEnd = pageH - 18 - extrasH;
+  let ly = y + 7;
   for (let n = 0; n < 4 && ly + 0.8 <= notesEnd; n++) {
     field("", margin, ly, pageW - margin);
     ly += 7.5;
