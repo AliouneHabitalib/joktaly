@@ -79,56 +79,61 @@ export function PrintDocument({ doc, autoPrint = true }: Props) {
         }
         .pp-logo img { max-width: 100%; max-height: 100%; object-fit: contain; }
         .pp-logo-fallback { color: ${couleur}; font-weight: 800; font-size: 22px; }
-        .pp-brand-name { font-size: 20px; font-weight: 800; line-height: 1.15; }
-        .pp-brand-slogan { font-size: 11px; opacity: 0.9; margin-top: 2px; }
+        .pp-brand-name { font-size: 24px; font-weight: 800; line-height: 1.15; }
+        .pp-brand-slogan { font-size: 13px; opacity: 0.9; margin-top: 2px; }
         .pp-doctype { text-align: right; }
-        .pp-doctype-label { font-size: 24px; font-weight: 800; letter-spacing: 1px; }
-        .pp-doctype-num { font-size: 12px; opacity: 0.95; margin-top: 4px; }
+        .pp-doctype-label { font-size: 34px; font-weight: 800; letter-spacing: 1px; }
+        .pp-doctype-num { font-size: 15px; opacity: 0.95; margin-top: 4px; }
         .pp-body { padding: 24px 32px 32px; }
         .pp-row { display: flex; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
         .pp-col { flex: 1; min-width: 0; }
         .pp-label {
-          font-size: 10px; font-weight: 700; letter-spacing: 0.6px;
+          font-size: 13px; font-weight: 700; letter-spacing: 0.6px;
           color: ${couleur}; text-transform: uppercase; margin-bottom: 6px;
         }
-        .pp-text { font-size: 12px; color: #2d2d2d; line-height: 1.55; }
-        .pp-text strong { color: #1a1a1a; }
-        .pp-meta-line { display: flex; justify-content: space-between; font-size: 12px; padding: 2px 0; }
-        .pp-meta-line span:first-child { color: #666; }
-        .pp-meta-line span:last-child { font-weight: 600; }
+        .pp-text { font-size: 14px; color: #3e444a; line-height: 1.55; overflow-wrap: anywhere; }
+        .pp-text strong { color: #14181c; font-size: 16px; }
+        .pp-meta-line { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; padding: 3px 0; }
+        .pp-meta-line span:first-child { color: #3e444a; }
+        .pp-meta-line span:last-child { font-weight: 600; color: #14181c; white-space: nowrap; }
         .pp-objet {
           background: #f8f9fa; border-left: 3px solid ${couleur};
           padding: 10px 14px; border-radius: 4px; margin-bottom: 18px;
-          font-size: 12px;
+          font-size: 14px; color: #14181c;
         }
-        .pp-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-bottom: 18px; }
+        .pp-table { width: 100%; border-collapse: collapse; font-size: 14px; margin-bottom: 18px; color: #14181c; }
+        .pp-table thead { display: table-header-group; }
+        .pp-table tr { break-inside: avoid; }
         .pp-table thead th {
           background: ${couleur}; color: #fff; text-align: left;
-          padding: 9px 8px; font-weight: 700; font-size: 10px; letter-spacing: 0.3px;
+          padding: 10px 8px; font-weight: 700; font-size: 13px; letter-spacing: 0.3px;
         }
         .pp-table tbody td {
-          padding: 8px; border-bottom: 1px solid #eee; vertical-align: top;
+          padding: 9px 8px; border-bottom: 1px solid #d6dbdf; vertical-align: top; overflow-wrap: anywhere;
         }
-        .pp-table tbody tr:nth-child(even) td { background: #fafbfc; }
+        .pp-table tbody tr:nth-child(even) td { background: #f6f8f9; }
         .pp-num { text-align: right; white-space: nowrap; }
         .pp-center { text-align: center; }
-        .pp-totals { margin-left: auto; width: 280px; font-size: 12px; }
+        .pp-totals { margin-left: auto; width: 340px; max-width: 100%; font-size: 14px; }
+        .pp-closing { display: flex; gap: 24px; align-items: flex-start; break-inside: avoid; }
+        .pp-sign { flex: 1; border: 1px solid #d6dbdf; border-radius: 6px; padding: 12px 14px; min-height: 98px; font-size: 14px; color: #3e444a; }
+        .pp-sign strong { display: block; color: #14181c; margin-bottom: 4px; }
         .pp-totals .pp-meta-line { padding: 4px 0; }
         .pp-total-final {
           background: ${couleur}; color: #fff;
           padding: 10px 14px; border-radius: 4px;
           display: flex; justify-content: space-between;
-          font-size: 14px; font-weight: 800; margin-top: 6px;
+          font-size: 19px; font-weight: 800; margin-top: 6px; gap: 12px;
         }
-        .pp-section { margin-top: 18px; font-size: 11px; color: #333; }
+        .pp-section { margin-top: 18px; font-size: 14px; color: #3e444a; break-inside: avoid; }
         .pp-section-title {
-          font-size: 10px; font-weight: 700; letter-spacing: 0.5px;
+          font-size: 13px; font-weight: 700; letter-spacing: 0.5px;
           color: ${couleur}; text-transform: uppercase; margin-bottom: 4px;
         }
         .pp-section p { white-space: pre-wrap; line-height: 1.5; }
         .pp-footer {
           margin-top: 28px; padding-top: 12px; border-top: 1px solid #e5e5e5;
-          font-size: 10px; color: #888; text-align: center;
+          font-size: 12px; color: #3e444a; text-align: center;
         }
         .pp-toolbar {
           max-width: 800px; margin: 0 auto 16px;
@@ -257,6 +262,13 @@ export function PrintDocument({ doc, autoPrint = true }: Props) {
               </tbody>
             </table>
 
+            <div className="pp-closing">
+            {isDevis && (
+              <div className="pp-sign">
+                <strong>Bon pour accord</strong>
+                Date et signature du client
+              </div>
+            )}
             <div className="pp-totals">
               <div className="pp-meta-line">
                 <span>Sous-total HT</span><span>{formatMontant(doc.sous_total, devise)}</span>
@@ -273,7 +285,7 @@ export function PrintDocument({ doc, autoPrint = true }: Props) {
                   </div>
                 )
               ) : (
-                <div className="pp-meta-line" style={{ color: "#999", fontSize: 10 }}>
+                <div className="pp-meta-line" style={{ fontSize: 13 }}>
                   <span>TVA non applicable</span><span>—</span>
                 </div>
               )}
@@ -281,6 +293,7 @@ export function PrintDocument({ doc, autoPrint = true }: Props) {
                 <span>TOTAL TTC</span>
                 <span>{formatMontant(doc.total_ttc, devise)}</span>
               </div>
+            </div>
             </div>
 
             {doc.conditions_paiement && (
@@ -299,6 +312,13 @@ export function PrintDocument({ doc, autoPrint = true }: Props) {
               <div className="pp-section">
                 <div className="pp-section-title">Coordonnées bancaires</div>
                 <p>{doc.entreprise.coordonnees_bancaires}</p>
+              </div>
+            )}
+
+            {doc.entreprise.mentions_legales && (
+              <div className="pp-section">
+                <div className="pp-section-title">Mentions légales</div>
+                <p>{doc.entreprise.mentions_legales}</p>
               </div>
             )}
 
