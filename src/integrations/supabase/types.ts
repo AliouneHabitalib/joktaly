@@ -295,6 +295,7 @@ export type Database = {
           couleur_primaire: string
           created_at: string
           devise: string
+          document_settings: Json
           email: string | null
           id: string
           logo_url: string | null
@@ -316,6 +317,7 @@ export type Database = {
           couleur_primaire?: string
           created_at?: string
           devise?: string
+          document_settings?: Json
           email?: string | null
           id?: string
           logo_url?: string | null
@@ -337,6 +339,7 @@ export type Database = {
           couleur_primaire?: string
           created_at?: string
           devise?: string
+          document_settings?: Json
           email?: string | null
           id?: string
           logo_url?: string | null
@@ -651,6 +654,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      convert_devis_to_facture: { Args: { _devis_id: string }; Returns: Json }
       effective_plan: {
         Args: { _user_id: string }
         Returns: Database["public"]["Enums"]["plan_type"]
@@ -668,6 +672,14 @@ export type Database = {
       }
       next_devis_numero: { Args: { _entreprise_id: string }; Returns: string }
       next_facture_numero: { Args: { _entreprise_id: string }; Returns: string }
+      save_devis: {
+        Args: { _data: Json; _id: string; _lignes: Json }
+        Returns: Json
+      }
+      save_facture: {
+        Args: { _data: Json; _id: string; _lignes: Json }
+        Returns: Json
+      }
       user_owns_entreprise: {
         Args: { _entreprise_id: string }
         Returns: boolean
