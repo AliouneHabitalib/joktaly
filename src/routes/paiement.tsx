@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useAuth } from "@/hooks/use-auth";
 import { Button } from "@/components/ui/button";
@@ -57,10 +57,17 @@ function PaiementPage() {
     if (!loading && !user) navigate({ to: "/login" });
   }, [user, loading, navigate]);
 
-  const { data: status, refetch } = useQuery({
+  const qc = useQueryClient();
+  const [waveClicked, setWaveClicked] = useState(false);
+  const { data: status, refetch, isFetching } = useQuery({
     queryKey: ["subscription-status"],
     enabled: !!user,
     queryFn: () => fetchStatus(),
+    // Tant que la formule n'est pas active, on revérifie régulièrement
+    refetchInterval: (q) => (!q.state.data || q.state.data.plan === "gratuit" ? 5000 : false),
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: true,
+    refetchOnMount: "always",
   });
 
   const plan = normalizePlan(search.plan ?? status?.pending?.plan) ?? "starter";
@@ -74,12 +81,21 @@ function PaiementPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, plan, cycle]);
 
+  // null = pas encore lu ; true = formule déjà active à l'ouverture
+  const initiallyActive = useRef<boolean | null>(null);
   useEffect(() => {
-    if (busy) return;
-    if (status && !status.requiresPayment && status.plan !== "gratuit") {
-      navigate({ to: "/dashboard" });
+    if (busy || !status) return;
+    const paid = ["starter", "pro", "business", "essentiel"].includes(status.plan);
+    if (initiallyActive.current === null) initiallyActive.current = paid;
+    if (!paid || status.requiresPayment) return;
+    if (!initiallyActive.current) {
+      const nom = PRICING[normalizePlan(status.plan) ?? "starter"].nom;
+      toast.success(`Paiement confirmé : votre formule ${nom} est activée`);
+      qc.invalidateQueries({ queryKey: ["subscription-status"] });
+      qc.invalidateQueries({ queryKey: ["quota"] });
     }
-  }, [status, navigate, busy]);
+    navigate({ to: "/dashboard", replace: true });
+  }, [status, navigate, busy, qc]);
 
   const handleFree = async () => {
     setBusy(true);
@@ -142,11 +158,33 @@ function PaiementPage() {
           <p className="mt-1 text-xs text-muted-foreground">Veuillez payer JOKTALY avec Wave</p>
         </div>
         <Button asChild className="mt-4 w-full">
-          <a href={`https://pay.wave.com/m/M_sn_Aix0xKrbNhnP/c/sn/?amount=${total}`} target="_blank" rel="noopener noreferrer">
+          <a
+            href={`https://pay.wave.com/m/M_sn_Aix0xKrbNhnP/c/sn/?amount=${total}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setWaveClicked(true)}
+          >
             <CreditCard className="mr-2 h-4 w-4" />
             Payer {total.toLocaleString("fr-FR")} FCFA avec Wave
           </a>
         </Button>
+
+        {waveClicked && (
+          <div role="status" className="mt-4 rounded-lg border bg-background/60 p-4 text-center text-sm">
+            <p>
+              Paiement en attente de confirmation. Cette page se met à jour toute seule dès que votre
+              formule est activée.
+            </p>
+            <Button
+              variant="outline"
+              className="mt-3 h-11 w-full"
+              disabled={isFetching}
+              onClick={() => refetch()}
+            >
+              {isFetching ? "Vérification…" : "J'ai payé : vérifier maintenant"}
+            </Button>
+          </div>
+        )}
 
         <button
           onClick={handleFree}
