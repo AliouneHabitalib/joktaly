@@ -142,7 +142,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.line(margin, sepY, pageW - margin, sepY);
 
   // Client / détails
-  const blockY = sepY + 9;
+  const blockY = sepY + 8;
   const rightX = margin + contentW * 0.56;
   const clientW = rightX - margin - 6;
   pdf.setFont("helvetica", "bold");
@@ -195,7 +195,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   });
 
   // Objet
-  let oy = Math.max(cy, blockY - 6 + boxH) + 7;
+  let oy = Math.max(cy, blockY - 6 + boxH) + 5;
   if (doc.objet) {
     pdf.setFont("helvetica", "bold");
     pdf.setFontSize(10.5);
@@ -226,7 +226,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
     styles: {
       font: "helvetica",
       fontSize: 10.5,
-      cellPadding: { top: 3, bottom: 3, left: 2.2, right: 2.2 },
+      cellPadding: { top: 2.6, bottom: 2.6, left: 2.2, right: 2.2 },
       textColor: ink,
       lineColor: hair,
       lineWidth: { bottom: 0.2 },
@@ -246,7 +246,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
       1: { cellWidth: "auto" },
       2: { halign: "right", cellWidth: 13 },
       3: { halign: "center", cellWidth: 17, textColor: muted },
-      4: { halign: "right", cellWidth: 33 },
+      4: { halign: "right", cellWidth: 37 },
       5: { halign: "center", cellWidth: 14, textColor: muted },
       6: { halign: "right", cellWidth: 36, fontStyle: "bold" },
     },
@@ -255,17 +255,35 @@ export function generatePdf(doc: PdfDoc): jsPDF {
 
   // Totaux
   // @ts-expect-error lastAutoTable est ajouté par le plugin autoTable
-  let ty = (pdf.lastAutoTable?.finalY ?? oy + 60) + 9;
+  let ty = (pdf.lastAutoTable?.finalY ?? oy + 60) + 8;
   const totalsW = 88;
   const labelX = pageW - margin - totalsW;
   const valueX = pageW - margin;
   const rows: [string, string][] = [["Sous-total HT", money(doc.sous_total, devise)]];
   if (doc.remise_montant > 0) rows.push(["Remise", `- ${money(doc.remise_montant, devise)}`]);
   if (doc.tva_active && doc.montant_tva > 0) rows.push(["TVA", money(doc.montant_tva, devise)]);
-  const totalsH = rows.length * 7 + (doc.tva_active ? 0 : 6) + 20;
-  if (ty + totalsH > pageH - 26) {
+  const totalsH = rows.length * 7 + (doc.tva_active ? 0 : 6) + 16;
+  const sigH = 26;
+  const blockH = Math.max(totalsH, isDevis ? sigH : 0);
+  // Totaux et zone « Bon pour accord » restent toujours ensemble
+  if (ty + blockH > pageH - 20) {
     pdf.addPage();
     ty = 24;
+  }
+  const totalsTop = ty - 5;
+  if (isDevis) {
+    const sigW = contentW - totalsW - 10;
+    pdf.setDrawColor(...hair);
+    pdf.setLineWidth(0.4);
+    pdf.roundedRect(margin, totalsTop, sigW, sigH, 2, 2, "S");
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(10.5);
+    pdf.setTextColor(...ink);
+    pdf.text("Bon pour accord", margin + 4, totalsTop + 6.5);
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(10);
+    pdf.setTextColor(...muted);
+    pdf.text("Date et signature du client", margin + 4, totalsTop + 11.5);
   }
   rows.forEach(([k, v]) => {
     pdf.setFont("helvetica", "normal");
@@ -293,7 +311,7 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   pdf.text("TOTAL TTC", labelX, ty + 9);
   pdf.setFontSize(14);
   pdf.text(money(doc.total_ttc, devise), valueX - 3, ty + 9.3, { align: "right" });
-  ty += 24;
+  ty = Math.max(ty + 14, isDevis ? totalsTop + sigH : 0) + 9;
 
   // Notes / conditions / mentions
   const blocks: [string, string][] = [];
@@ -304,8 +322,8 @@ export function generatePdf(doc: PdfDoc): jsPDF {
   blocks.forEach(([title, body]) => {
     pdf.setFontSize(10);
     const lines = pdf.splitTextToSize(body, contentW);
-    const needed = 6 + lines.length * 5 + 5;
-    if (ty + needed > pageH - 24) {
+    const needed = 5.5 + lines.length * 4.95 + 4;
+    if (ty + needed > pageH - 18) {
       pdf.addPage();
       ty = 24;
     }
@@ -317,28 +335,6 @@ export function generatePdf(doc: PdfDoc): jsPDF {
     pdf.text(lines, margin, ty + 5.5, { lineHeightFactor: 1.4 });
     ty += needed;
   });
-
-  // Bon pour accord (devis)
-  if (isDevis) {
-    const sigH = 32;
-    if (ty + sigH > pageH - 24) {
-      pdf.addPage();
-      ty = 24;
-    }
-    const sigW = 88;
-    const sx = pageW - margin - sigW;
-    pdf.setDrawColor(...hair);
-    pdf.setLineWidth(0.4);
-    pdf.roundedRect(sx, ty, sigW, sigH, 2, 2, "S");
-    pdf.setFont("helvetica", "bold");
-    pdf.setFontSize(10.5);
-    pdf.setTextColor(...ink);
-    pdf.text("Bon pour accord", sx + 5, ty + 7);
-    pdf.setFont("helvetica", "normal");
-    pdf.setFontSize(10);
-    pdf.setTextColor(...muted);
-    pdf.text("Date et signature du client", sx + 5, ty + 12.5);
-  }
 
   // Pied de page
   const total = pdf.getNumberOfPages();
