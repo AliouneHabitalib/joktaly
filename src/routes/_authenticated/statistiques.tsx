@@ -92,6 +92,7 @@ function AdvancedStatistics() {
       });
     }
     for (const f of data?.factures ?? []) {
+      if (f.statut === "annulee") continue;
       const d = new Date(f.date_emission);
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
       const m = list.find((x) => x.key === key);

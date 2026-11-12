@@ -18,6 +18,7 @@ export interface EntrepriseLite {
   devise?: string | null;
   couleur_primaire?: string | null;
   coordonnees_bancaires?: string | null;
+  document_settings?: unknown;
 }
 
 export async function buildPdfDoc(params: {
@@ -26,7 +27,7 @@ export async function buildPdfDoc(params: {
   entreprise: EntrepriseLite;
 }): Promise<PdfDoc> {
   const { type, id, entreprise } = params;
-  const extras = getEntrepriseExtras(entreprise.id);
+  const extras = getEntrepriseExtras(entreprise);
   const table = type === "devis" ? "devis" : "factures";
   const lignesTable = type === "devis" ? "devis_lignes" : "factures_lignes";
   const fk = type === "devis" ? "devis_id" : "facture_id";
@@ -135,7 +136,7 @@ function round(n: number) {
 }
 /** Profil entreprise au format PDF (pour les documents vierges). N'invente aucune valeur. */
 export function toPdfEntreprise(entreprise: EntrepriseLite): PdfDoc["entreprise"] {
-  const extras = getEntrepriseExtras(entreprise.id);
+  const extras = getEntrepriseExtras(entreprise);
   return {
     nom: entreprise.nom,
     slogan: entreprise.slogan,

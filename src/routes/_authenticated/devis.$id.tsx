@@ -149,7 +149,7 @@ function DevisEditorPage() {
   // Pré-remplir depuis les paramètres entreprise (nouveau devis uniquement)
   useEffect(() => {
     if (!isNew || !entreprise) return;
-    const extras = getEntrepriseExtras(entreprise.id);
+    const extras = getEntrepriseExtras(entreprise);
     setConditions((c) => c || extras.conditions_paiement || "");
     if (entreprise.tva_taux != null) setTvaTaux((t) => (t === 18 ? Number(entreprise.tva_taux) : t));
   }, [isNew, entreprise]);
@@ -266,29 +266,13 @@ function DevisEditorPage() {
         conditions_paiement: conditions || null,
       };
 
-      let devisId = id;
-      if (isNew) {
-        const { data: numero, error: nerr } = await supabase.rpc("next_devis_numero", {
-          _entreprise_id: entreprise.id,
-        });
-        if (nerr) throw nerr;
-        const { data: created, error } = await supabase
-          .from("devis")
-          .insert({ ...devisData, numero: numero as string })
-          .select()
-          .single();
-        if (error) throw error;
-        devisId = created.id;
-      } else {
-        const { error } = await supabase.from("devis").update(devisData).eq("id", id);
-        if (error) throw error;
-        await supabase.from("devis_lignes").delete().eq("devis_id", id);
-      }
-
-      const { error: lerr } = await supabase
-        .from("devis_lignes")
-        .insert(lignesPayload.map((l) => ({ ...l, devis_id: devisId })));
-      if (lerr) throw lerr;
+      const { data: saved, error: serr } = await supabase.rpc("save_devis", {
+        _id: (isNew ? null : id) as string,
+        _data: devisData as never,
+        _lignes: lignesPayload as never,
+      });
+      if (serr) throw serr;
+      const devisId = (saved as { id: string }).id;
 
       return { devisId, thenDownload: opts.thenDownload };
     },

@@ -272,29 +272,13 @@ function FactureEditorPage() {
         conditions_paiement: conditions || null,
       };
 
-      let factureId = id;
-      if (isNew) {
-        const { data: numero, error: nerr } = await supabase.rpc("next_facture_numero", {
-          _entreprise_id: entreprise.id,
-        });
-        if (nerr) throw nerr;
-        const { data: created, error } = await supabase
-          .from("factures")
-          .insert({ ...factureData, numero: numero as string })
-          .select()
-          .single();
-        if (error) throw error;
-        factureId = created.id;
-      } else {
-        const { error } = await supabase.from("factures").update(factureData).eq("id", id);
-        if (error) throw error;
-        await supabase.from("factures_lignes").delete().eq("facture_id", id);
-      }
-
-      const { error: lerr } = await supabase
-        .from("factures_lignes")
-        .insert(lignesPayload.map((l) => ({ ...l, facture_id: factureId })));
-      if (lerr) throw lerr;
+      const { data: saved, error: serr } = await supabase.rpc("save_facture", {
+        _id: (isNew ? null : id) as string,
+        _data: factureData as never,
+        _lignes: lignesPayload as never,
+      });
+      if (serr) throw serr;
+      const factureId = (saved as { id: string }).id;
 
       return { factureId, thenDownload: opts.thenDownload, thenEmail: opts.thenEmail };
     },

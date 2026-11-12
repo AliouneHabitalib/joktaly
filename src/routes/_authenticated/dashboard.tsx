@@ -37,8 +37,9 @@ function DashboardPage() {
       ]);
       const factures = facturesRes.data ?? [];
       const devis = devisRes.data ?? [];
-      const ca = factures.filter((f) => f.statut === "payee").reduce((s, f) => s + Number(f.total_ttc), 0);
+      // Chiffre d'affaires = montants réellement encaissés, factures annulées exclues.
       const actives = factures.filter((f) => f.statut !== "annulee");
+      const ca = actives.reduce((s, f) => s + Number(f.montant_paye), 0);
       const totalFacture = actives.reduce((s, f) => s + Number(f.total_ttc), 0);
       const encaisse = actives.reduce((s, f) => s + Number(f.montant_paye), 0);
       const tauxRecouvrement = totalFacture > 0 ? Math.round((encaisse / totalFacture) * 100) : 0;

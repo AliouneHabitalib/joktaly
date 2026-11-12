@@ -105,8 +105,12 @@ function ParametresEntreprisePage() {
     if (!entreprise) return;
     let extras: Partial<FormState> = {};
     try {
-      const raw = localStorage.getItem(extrasKey(entreprise.id));
-      if (raw) extras = JSON.parse(raw);
+      const db = (entreprise as { document_settings?: unknown }).document_settings;
+      if (db && typeof db === "object" && Object.keys(db).length) extras = db as Partial<FormState>;
+      else {
+        const raw = localStorage.getItem(extrasKey(entreprise.id));
+        if (raw) extras = JSON.parse(raw);
+      }
     } catch {}
     setForm({
       ...DEFAULTS,
@@ -189,6 +193,11 @@ function ParametresEntreprisePage() {
         conditions_paiement: form.conditions_paiement,
         mentions_legales: form.mentions_legales,
       };
+      const { error: xerr } = await supabase
+        .from("entreprises")
+        .update({ document_settings: extras })
+        .eq("id", id);
+      if (xerr) throw xerr;
       localStorage.setItem(extrasKey(id), JSON.stringify(extras));
       await queryClient.invalidateQueries({ queryKey: ["entreprise", user.id] });
       toast.success("Paramètres enregistrés avec succès.");
