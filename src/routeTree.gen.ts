@@ -23,6 +23,7 @@ import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/devis'
 import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticated/factures'
+import { Route as AuthenticatedFournisseursRouteImport } from './routes/_authenticated/fournisseurs'
 import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticated/produits'
 import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
@@ -107,6 +108,12 @@ const AuthenticatedFacturesRoute = AuthenticatedFacturesRouteImport.update({
   path: '/factures',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedFournisseursRoute =
+  AuthenticatedFournisseursRouteImport.update({
+    id: '/fournisseurs',
+    path: '/fournisseurs',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedProduitsRoute = AuthenticatedProduitsRouteImport.update({
   id: '/produits',
   path: '/produits',
@@ -199,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/devis': typeof AuthenticatedDevisRouteWithChildren
   '/factures': typeof AuthenticatedFacturesRouteWithChildren
+  '/fournisseurs': typeof AuthenticatedFournisseursRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -225,6 +233,7 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/aide': typeof AuthenticatedAideRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/fournisseurs': typeof AuthenticatedFournisseursRoute
   '/produits': typeof AuthenticatedProduitsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -256,6 +265,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/devis': typeof AuthenticatedDevisRouteWithChildren
   '/_authenticated/factures': typeof AuthenticatedFacturesRouteWithChildren
+  '/_authenticated/fournisseurs': typeof AuthenticatedFournisseursRoute
   '/_authenticated/produits': typeof AuthenticatedProduitsRoute
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
   '/auth/callback': typeof AuthCallbackRoute
@@ -287,6 +297,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/devis'
     | '/factures'
+    | '/fournisseurs'
     | '/produits'
     | '/statistiques'
     | '/auth/callback'
@@ -313,6 +324,7 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/aide'
     | '/dashboard'
+    | '/fournisseurs'
     | '/produits'
     | '/statistiques'
     | '/auth/callback'
@@ -343,6 +355,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard'
     | '/_authenticated/devis'
     | '/_authenticated/factures'
+    | '/_authenticated/fournisseurs'
     | '/_authenticated/produits'
     | '/_authenticated/statistiques'
     | '/auth/callback'
@@ -472,6 +485,13 @@ declare module '@tanstack/react-router' {
       path: '/factures'
       fullPath: '/factures'
       preLoaderRoute: typeof AuthenticatedFacturesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/fournisseurs': {
+      id: '/_authenticated/fournisseurs'
+      path: '/fournisseurs'
+      fullPath: '/fournisseurs'
+      preLoaderRoute: typeof AuthenticatedFournisseursRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/_authenticated/produits': {
@@ -622,6 +642,7 @@ interface AuthenticatedRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDevisRoute: typeof AuthenticatedDevisRouteWithChildren
   AuthenticatedFacturesRoute: typeof AuthenticatedFacturesRouteWithChildren
+  AuthenticatedFournisseursRoute: typeof AuthenticatedFournisseursRoute
   AuthenticatedProduitsRoute: typeof AuthenticatedProduitsRoute
   AuthenticatedStatistiquesRoute: typeof AuthenticatedStatistiquesRoute
   AuthenticatedAdminAbonnementsRoute: typeof AuthenticatedAdminAbonnementsRoute
@@ -635,6 +656,7 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDevisRoute: AuthenticatedDevisRouteWithChildren,
   AuthenticatedFacturesRoute: AuthenticatedFacturesRouteWithChildren,
+  AuthenticatedFournisseursRoute: AuthenticatedFournisseursRoute,
   AuthenticatedProduitsRoute: AuthenticatedProduitsRoute,
   AuthenticatedStatistiquesRoute: AuthenticatedStatistiquesRoute,
   AuthenticatedAdminAbonnementsRoute: AuthenticatedAdminAbonnementsRoute,

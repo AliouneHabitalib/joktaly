@@ -154,6 +154,63 @@ export type Database = {
           },
         ]
       }
+      depenses: {
+        Row: {
+          categorie: string
+          created_at: string
+          date_depense: string
+          description: string | null
+          entreprise_id: string
+          fournisseur_id: string | null
+          id: string
+          justificatif_path: string | null
+          montant: number
+          montant_paye: number
+          updated_at: string
+        }
+        Insert: {
+          categorie?: string
+          created_at?: string
+          date_depense?: string
+          description?: string | null
+          entreprise_id: string
+          fournisseur_id?: string | null
+          id?: string
+          justificatif_path?: string | null
+          montant?: number
+          montant_paye?: number
+          updated_at?: string
+        }
+        Update: {
+          categorie?: string
+          created_at?: string
+          date_depense?: string
+          description?: string | null
+          entreprise_id?: string
+          fournisseur_id?: string | null
+          id?: string
+          justificatif_path?: string | null
+          montant?: number
+          montant_paye?: number
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "depenses_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "depenses_fournisseur_id_fkey"
+            columns: ["fournisseur_id"]
+            isOneToOne: false
+            referencedRelation: "fournisseurs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       devis: {
         Row: {
           client_id: string
@@ -507,6 +564,50 @@ export type Database = {
           },
         ]
       }
+      fournisseurs: {
+        Row: {
+          adresse: string | null
+          created_at: string
+          email: string | null
+          entreprise_id: string
+          id: string
+          nom: string
+          notes: string | null
+          telephone: string | null
+          updated_at: string
+        }
+        Insert: {
+          adresse?: string | null
+          created_at?: string
+          email?: string | null
+          entreprise_id: string
+          id?: string
+          nom: string
+          notes?: string | null
+          telephone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          adresse?: string | null
+          created_at?: string
+          email?: string | null
+          entreprise_id?: string
+          id?: string
+          nom?: string
+          notes?: string | null
+          telephone?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "fournisseurs_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       paiements: {
         Row: {
           created_at: string
@@ -630,6 +731,91 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      stock_articles: {
+        Row: {
+          created_at: string
+          entreprise_id: string
+          id: string
+          nom: string
+          prix_achat: number
+          quantite: number
+          reference: string | null
+          seuil_alerte: number
+          unite: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          entreprise_id: string
+          id?: string
+          nom: string
+          prix_achat?: number
+          quantite?: number
+          reference?: string | null
+          seuil_alerte?: number
+          unite?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          entreprise_id?: string
+          id?: string
+          nom?: string
+          prix_achat?: number
+          quantite?: number
+          reference?: string | null
+          seuil_alerte?: number
+          unite?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_articles_entreprise_id_fkey"
+            columns: ["entreprise_id"]
+            isOneToOne: false
+            referencedRelation: "entreprises"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock_mouvements: {
+        Row: {
+          article_id: string
+          created_at: string
+          date_mouvement: string
+          id: string
+          note: string | null
+          quantite: number
+          type: string
+        }
+        Insert: {
+          article_id: string
+          created_at?: string
+          date_mouvement?: string
+          id?: string
+          note?: string | null
+          quantite: number
+          type: string
+        }
+        Update: {
+          article_id?: string
+          created_at?: string
+          date_mouvement?: string
+          id?: string
+          note?: string | null
+          quantite?: number
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_mouvements_article_id_fkey"
+            columns: ["article_id"]
+            isOneToOne: false
+            referencedRelation: "stock_articles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {

@@ -29,6 +29,13 @@
       "when": 1794406286093,
       "tag": "0003_lot2_safe_numbering_atomic_saves",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794442200865,
+      "tag": "0004_lot3_depenses_stocks_fournisseurs",
+      "breakpoints": true
     }
   ]
 }
