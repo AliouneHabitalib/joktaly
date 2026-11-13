@@ -28,12 +28,13 @@ function DashboardPage() {
     queryKey: ["dashboard-stats", entreprise?.id],
     enabled: !!entreprise?.id,
     queryFn: async () => {
-      const [facturesRes, devisRes, clientsRes, recentFacturesRes, recentDevisRes] = await Promise.all([
+      const [facturesRes, devisRes, clientsRes, recentFacturesRes, recentDevisRes, depensesRes] = await Promise.all([
         supabase.from("factures").select("id, numero, total_ttc, montant_paye, statut, date_emission, date_echeance, client_id").eq("entreprise_id", entreprise!.id),
         supabase.from("devis").select("id, numero, total_ttc, statut, date_emission, client_id").eq("entreprise_id", entreprise!.id),
         supabase.from("clients").select("id", { count: "exact", head: true }).eq("entreprise_id", entreprise!.id),
         supabase.from("factures").select("id, numero, total_ttc, statut, date_emission, client:clients(nom, entreprise_nom)").eq("entreprise_id", entreprise!.id).order("created_at", { ascending: false }).limit(5),
         supabase.from("devis").select("id, numero, total_ttc, statut, date_emission, client:clients(nom, entreprise_nom)").eq("entreprise_id", entreprise!.id).order("created_at", { ascending: false }).limit(5),
+        supabase.from("depenses").select("montant").eq("entreprise_id", entreprise!.id),
       ]);
       const factures = facturesRes.data ?? [];
       const devis = devisRes.data ?? [];
@@ -68,8 +69,11 @@ function DashboardPage() {
         m.ca += Number(f.montant_paye);
       }
 
+      const depenses = (depensesRes.data ?? []).reduce((s, d) => s + Number(d.montant), 0);
       return {
         ca,
+        depenses,
+        benefice: encaisse - depenses,
         totalFacture,
         encaisse,
         tauxRecouvrement,
@@ -122,8 +126,9 @@ function DashboardPage() {
         </div>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-        <KpiCard icon={TrendingUp} label="Chiffre d'affaires" value={formatMontant(stats?.ca ?? 0, entreprise?.devise)} sub="Factures payées" tone="primary" />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <KpiCard icon={TrendingUp} label="Bénéfice estimé" value={formatMontant(stats?.benefice ?? 0, entreprise?.devise)} sub="Encaissé − dépenses" tone="primary" />
+        <KpiCard icon={Wallet} label="Dépenses" value={formatMontant(stats?.depenses ?? 0, entreprise?.devise)} sub="Total enregistré" />
         <KpiCard icon={Receipt} label="Total facturé" value={formatMontant(stats?.totalFacture ?? 0, entreprise?.devise)} sub="Hors factures annulées" />
         <KpiCard icon={Wallet} label="Encaissé" value={formatMontant(stats?.encaisse ?? 0, entreprise?.devise)} sub={`Recouvrement ${stats?.tauxRecouvrement ?? 0}%`} tone="primary" />
         <KpiCard icon={Receipt} label="Factures impayées" value={`${stats?.impayesNombre ?? 0}`} sub={formatMontant(stats?.impayesMontant ?? 0, entreprise?.devise)} tone="warning" />

@@ -1,5 +1,5 @@
 import { Link, useRouterState, useNavigate, Outlet } from "@tanstack/react-router";
-import { LayoutDashboard, FileText, Receipt, Users, Package, BarChart3, Settings, HelpCircle, LogOut, Menu, X, ScrollText } from "lucide-react";
+import { LayoutDashboard, FileText, Receipt, Users, Package, BarChart3, Settings, HelpCircle, LogOut, Menu, X, ScrollText, Wallet, Boxes, Truck, FileBarChart } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,11 @@ const NAV = [
   { to: "/factures", label: "Factures", icon: Receipt },
   { to: "/clients", label: "Clients", icon: Users },
   { to: "/produits", label: "Produits", icon: Package },
+  { to: "/depenses", label: "Dépenses", icon: Wallet },
+  { to: "/stocks", label: "Stocks", icon: Boxes },
+  { to: "/fournisseurs", label: "Fournisseurs", icon: Truck },
   { to: "/statistiques", label: "Statistiques", icon: BarChart3 },
+  { to: "/rapports", label: "Rapports", icon: FileBarChart },
   { to: "/parametres/entreprise", label: "Paramètres", icon: Settings },
   { to: "/aide", label: "Aide", icon: HelpCircle },
 ] as const;

@@ -21,11 +21,14 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAideRouteImport } from './routes/_authenticated/aide'
 import { Route as AuthenticatedClientsRouteImport } from './routes/_authenticated/clients'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedDepensesRouteImport } from './routes/_authenticated/depenses'
 import { Route as AuthenticatedDevisRouteImport } from './routes/_authenticated/devis'
 import { Route as AuthenticatedFacturesRouteImport } from './routes/_authenticated/factures'
 import { Route as AuthenticatedFournisseursRouteImport } from './routes/_authenticated/fournisseurs'
 import { Route as AuthenticatedProduitsRouteImport } from './routes/_authenticated/produits'
+import { Route as AuthenticatedRapportsRouteImport } from './routes/_authenticated/rapports'
 import { Route as AuthenticatedStatistiquesRouteImport } from './routes/_authenticated/statistiques'
+import { Route as AuthenticatedStocksRouteImport } from './routes/_authenticated/stocks'
 import { Route as AuthCallbackRouteImport } from './routes/auth.callback'
 import { Route as AuthenticatedAdminAbonnementsRouteImport } from './routes/_authenticated/admin.abonnements'
 import { Route as AuthenticatedAdminJournalRouteImport } from './routes/_authenticated/admin.journal'
@@ -98,6 +101,11 @@ const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedDepensesRoute = AuthenticatedDepensesRouteImport.update({
+  id: '/depenses',
+  path: '/depenses',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedDevisRoute = AuthenticatedDevisRouteImport.update({
   id: '/devis',
   path: '/devis',
@@ -119,12 +127,22 @@ const AuthenticatedProduitsRoute = AuthenticatedProduitsRouteImport.update({
   path: '/produits',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedRapportsRoute = AuthenticatedRapportsRouteImport.update({
+  id: '/rapports',
+  path: '/rapports',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedStatistiquesRoute =
   AuthenticatedStatistiquesRouteImport.update({
     id: '/statistiques',
     path: '/statistiques',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedStocksRoute = AuthenticatedStocksRouteImport.update({
+  id: '/stocks',
+  path: '/stocks',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth/callback',
   path: '/auth/callback',
@@ -204,11 +222,14 @@ export interface FileRoutesByFullPath {
   '/aide': typeof AuthenticatedAideRoute
   '/clients': typeof AuthenticatedClientsRouteWithChildren
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/depenses': typeof AuthenticatedDepensesRoute
   '/devis': typeof AuthenticatedDevisRouteWithChildren
   '/factures': typeof AuthenticatedFacturesRouteWithChildren
   '/fournisseurs': typeof AuthenticatedFournisseursRoute
   '/produits': typeof AuthenticatedProduitsRoute
+  '/rapports': typeof AuthenticatedRapportsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/stocks': typeof AuthenticatedStocksRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/abonnements': typeof AuthenticatedAdminAbonnementsRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
@@ -233,9 +254,12 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/aide': typeof AuthenticatedAideRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/depenses': typeof AuthenticatedDepensesRoute
   '/fournisseurs': typeof AuthenticatedFournisseursRoute
   '/produits': typeof AuthenticatedProduitsRoute
+  '/rapports': typeof AuthenticatedRapportsRoute
   '/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/stocks': typeof AuthenticatedStocksRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/admin/abonnements': typeof AuthenticatedAdminAbonnementsRoute
   '/admin/journal': typeof AuthenticatedAdminJournalRoute
@@ -263,11 +287,14 @@ export interface FileRoutesById {
   '/_authenticated/aide': typeof AuthenticatedAideRoute
   '/_authenticated/clients': typeof AuthenticatedClientsRouteWithChildren
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/depenses': typeof AuthenticatedDepensesRoute
   '/_authenticated/devis': typeof AuthenticatedDevisRouteWithChildren
   '/_authenticated/factures': typeof AuthenticatedFacturesRouteWithChildren
   '/_authenticated/fournisseurs': typeof AuthenticatedFournisseursRoute
   '/_authenticated/produits': typeof AuthenticatedProduitsRoute
+  '/_authenticated/rapports': typeof AuthenticatedRapportsRoute
   '/_authenticated/statistiques': typeof AuthenticatedStatistiquesRoute
+  '/_authenticated/stocks': typeof AuthenticatedStocksRoute
   '/auth/callback': typeof AuthCallbackRoute
   '/_authenticated/admin/abonnements': typeof AuthenticatedAdminAbonnementsRoute
   '/_authenticated/admin/journal': typeof AuthenticatedAdminJournalRoute
@@ -295,11 +322,14 @@ export interface FileRouteTypes {
     | '/aide'
     | '/clients'
     | '/dashboard'
+    | '/depenses'
     | '/devis'
     | '/factures'
     | '/fournisseurs'
     | '/produits'
+    | '/rapports'
     | '/statistiques'
+    | '/stocks'
     | '/auth/callback'
     | '/admin/abonnements'
     | '/admin/journal'
@@ -324,9 +354,12 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/aide'
     | '/dashboard'
+    | '/depenses'
     | '/fournisseurs'
     | '/produits'
+    | '/rapports'
     | '/statistiques'
+    | '/stocks'
     | '/auth/callback'
     | '/admin/abonnements'
     | '/admin/journal'
@@ -353,11 +386,14 @@ export interface FileRouteTypes {
     | '/_authenticated/aide'
     | '/_authenticated/clients'
     | '/_authenticated/dashboard'
+    | '/_authenticated/depenses'
     | '/_authenticated/devis'
     | '/_authenticated/factures'
     | '/_authenticated/fournisseurs'
     | '/_authenticated/produits'
+    | '/_authenticated/rapports'
     | '/_authenticated/statistiques'
+    | '/_authenticated/stocks'
     | '/auth/callback'
     | '/_authenticated/admin/abonnements'
     | '/_authenticated/admin/journal'
@@ -473,6 +509,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedDashboardRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/depenses': {
+      id: '/_authenticated/depenses'
+      path: '/depenses'
+      fullPath: '/depenses'
+      preLoaderRoute: typeof AuthenticatedDepensesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/devis': {
       id: '/_authenticated/devis'
       path: '/devis'
@@ -501,11 +544,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProduitsRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/rapports': {
+      id: '/_authenticated/rapports'
+      path: '/rapports'
+      fullPath: '/rapports'
+      preLoaderRoute: typeof AuthenticatedRapportsRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/statistiques': {
       id: '/_authenticated/statistiques'
       path: '/statistiques'
       fullPath: '/statistiques'
       preLoaderRoute: typeof AuthenticatedStatistiquesRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
+    '/_authenticated/stocks': {
+      id: '/_authenticated/stocks'
+      path: '/stocks'
+      fullPath: '/stocks'
+      preLoaderRoute: typeof AuthenticatedStocksRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
     '/auth/callback': {
@@ -640,11 +697,14 @@ interface AuthenticatedRouteChildren {
   AuthenticatedAideRoute: typeof AuthenticatedAideRoute
   AuthenticatedClientsRoute: typeof AuthenticatedClientsRouteWithChildren
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedDepensesRoute: typeof AuthenticatedDepensesRoute
   AuthenticatedDevisRoute: typeof AuthenticatedDevisRouteWithChildren
   AuthenticatedFacturesRoute: typeof AuthenticatedFacturesRouteWithChildren
   AuthenticatedFournisseursRoute: typeof AuthenticatedFournisseursRoute
   AuthenticatedProduitsRoute: typeof AuthenticatedProduitsRoute
+  AuthenticatedRapportsRoute: typeof AuthenticatedRapportsRoute
   AuthenticatedStatistiquesRoute: typeof AuthenticatedStatistiquesRoute
+  AuthenticatedStocksRoute: typeof AuthenticatedStocksRoute
   AuthenticatedAdminAbonnementsRoute: typeof AuthenticatedAdminAbonnementsRoute
   AuthenticatedAdminJournalRoute: typeof AuthenticatedAdminJournalRoute
   AuthenticatedParametresEntrepriseRoute: typeof AuthenticatedParametresEntrepriseRoute
@@ -654,11 +714,14 @@ const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedAideRoute: AuthenticatedAideRoute,
   AuthenticatedClientsRoute: AuthenticatedClientsRouteWithChildren,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedDepensesRoute: AuthenticatedDepensesRoute,
   AuthenticatedDevisRoute: AuthenticatedDevisRouteWithChildren,
   AuthenticatedFacturesRoute: AuthenticatedFacturesRouteWithChildren,
   AuthenticatedFournisseursRoute: AuthenticatedFournisseursRoute,
   AuthenticatedProduitsRoute: AuthenticatedProduitsRoute,
+  AuthenticatedRapportsRoute: AuthenticatedRapportsRoute,
   AuthenticatedStatistiquesRoute: AuthenticatedStatistiquesRoute,
+  AuthenticatedStocksRoute: AuthenticatedStocksRoute,
   AuthenticatedAdminAbonnementsRoute: AuthenticatedAdminAbonnementsRoute,
   AuthenticatedAdminJournalRoute: AuthenticatedAdminJournalRoute,
   AuthenticatedParametresEntrepriseRoute:
