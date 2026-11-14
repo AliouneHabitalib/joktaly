@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Plus, Pencil, Trash2, Wallet, Paperclip } from "lucide-react";
+import { Plus, Pencil, Trash2, Wallet, Paperclip, HandCoins } from "lucide-react";
 import { toast } from "sonner";
 import { privateHead } from "@/lib/private-head";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,6 +34,8 @@ function DepensesPage() {
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [file, setFile] = useState<File | null>(null);
+  const [pay, setPay] = useState<{ id: string; reste: number } | null>(null);
+  const [payForm, setPayForm] = useState({ montant: "", date: toDateInput(new Date()), mode: "" });
   const devise = entreprise?.devise ?? "FCFA";
 
   const { data } = useQuery({
@@ -53,7 +55,7 @@ function DepensesPage() {
     mutationFn: async () => {
       const montant = Number(form.montant);
       if (!(montant > 0)) throw new Error("Indiquez un montant supérieur à 0.");
-      const paye = form.montant_paye === "" ? montant : Number(form.montant_paye);
+      const paye = editId ? 0 : form.montant_paye === "" ? montant : Number(form.montant_paye);
       if (paye < 0 || paye > montant) throw new Error("Le montant payé doit être entre 0 et le montant total.");
       let justificatif_path: string | undefined;
       if (file) {
@@ -68,7 +70,7 @@ function DepensesPage() {
         categorie: form.categorie,
         description: form.description || null,
         montant,
-        montant_paye: paye,
+        ...(editId ? {} : { montant_paye: paye }),
         fournisseur_id: form.fournisseur_id === NONE ? null : form.fournisseur_id,
         ...(justificatif_path ? { justificatif_path } : {}),
       };
@@ -78,11 +80,30 @@ function DepensesPage() {
       if (res.error) throw res.error;
     },
     onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["rapports"] });
       toast.success("Dépense enregistrée");
       setOpen(false);
       qc.invalidateQueries({ queryKey: ["depenses"] });
       qc.invalidateQueries({ queryKey: ["fournisseurs"] });
       qc.invalidateQueries({ queryKey: ["dashboard-stats"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const addPay = useMutation({
+    mutationFn: async () => {
+      const m = Number(payForm.montant);
+      if (!(m > 0)) throw new Error("Indiquez un montant supérieur à 0.");
+      if (m > pay!.reste) throw new Error("Le paiement dépasse le reste à payer.");
+      const { error } = await supabase.from("depenses_paiements").insert({ depense_id: pay!.id, montant: m, date_paiement: payForm.date, mode: payForm.mode || null });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Paiement enregistré");
+      setPay(null);
+      qc.invalidateQueries({ queryKey: ["depenses"] });
+      qc.invalidateQueries({ queryKey: ["fournisseurs"] });
+      qc.invalidateQueries({ queryKey: ["rapports"] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -146,6 +167,9 @@ function DepensesPage() {
                       {restant > 0 && <div className="text-xs text-destructive">reste {formatMontant(restant, devise)}</div>}
                     </td>
                     <td className="p-3 text-right whitespace-nowrap">
+                      {restant > 0 && (
+                        <Button size="icon" variant="ghost" className="h-11 w-11" aria-label="Enregistrer un paiement" onClick={() => { setPay({ id: r.id, reste: restant }); setPayForm({ montant: String(restant), date: toDateInput(new Date()), mode: "" }); }}><HandCoins className="h-4 w-4" /></Button>
+                      )}
                       {r.justificatif_path && (
                         <Button size="icon" variant="ghost" className="h-11 w-11" aria-label="Voir le justificatif" onClick={() => openJustificatif(r.justificatif_path!)}><Paperclip className="h-4 w-4" /></Button>
                       )}
@@ -181,7 +205,7 @@ function DepensesPage() {
             <div className="grid gap-1.5"><Label>Description</Label><Input className="text-base md:text-sm" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="grid gap-1.5"><Label>Montant ({devise}) *</Label><Input type="number" inputMode="decimal" min="0" className="text-base md:text-sm" value={form.montant} onChange={(e) => setForm({ ...form, montant: e.target.value })} /></div>
-              <div className="grid gap-1.5"><Label>Déjà payé</Label><Input type="number" inputMode="decimal" min="0" placeholder="Tout" className="text-base md:text-sm" value={form.montant_paye} onChange={(e) => setForm({ ...form, montant_paye: e.target.value })} /></div>
+              {!editId && <div className="grid gap-1.5"><Label>Déjà payé</Label><Input type="number" inputMode="decimal" min="0" placeholder="Tout" className="text-base md:text-sm" value={form.montant_paye} onChange={(e) => setForm({ ...form, montant_paye: e.target.value })} /></div>}
             </div>
             <div className="grid gap-1.5"><Label>Fournisseur</Label>
               <Select value={form.fournisseur_id} onValueChange={(v) => setForm({ ...form, fournisseur_id: v })}>
@@ -194,7 +218,21 @@ function DepensesPage() {
             </div>
             <div className="grid gap-1.5"><Label>Justificatif (photo ou PDF, 5 Mo max)</Label><Input type="file" accept="image/*,application/pdf" onChange={(e) => setFile(e.target.files?.[0] ?? null)} /></div>
           </div>
+          {editId && <p className="text-xs text-muted-foreground">Les paiements se saisissent avec le bouton « Enregistrer un paiement », pour garder leur date.</p>}
           <DialogFooter><Button className="h-11" disabled={save.isPending} onClick={() => save.mutate()}>Enregistrer</Button></DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={!!pay} onOpenChange={(o) => !o && setPay(null)}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Enregistrer un paiement</DialogTitle></DialogHeader>
+          <p className="text-sm text-muted-foreground">Reste à payer : {formatMontant(pay?.reste ?? 0, devise)}</p>
+          <div className="grid gap-3">
+            <div className="grid gap-1.5"><Label>Montant *</Label><Input type="number" inputMode="decimal" min="0" className="text-base md:text-sm" value={payForm.montant} onChange={(e) => setPayForm({ ...payForm, montant: e.target.value })} /></div>
+            <div className="grid gap-1.5"><Label>Date du paiement</Label><Input type="date" className="text-base md:text-sm" value={payForm.date} onChange={(e) => setPayForm({ ...payForm, date: e.target.value })} /></div>
+            <div className="grid gap-1.5"><Label>Moyen (espèces, Wave…)</Label><Input className="text-base md:text-sm" value={payForm.mode} onChange={(e) => setPayForm({ ...payForm, mode: e.target.value })} /></div>
+          </div>
+          <DialogFooter><Button className="h-11" disabled={addPay.isPending} onClick={() => addPay.mutate()}>Enregistrer</Button></DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

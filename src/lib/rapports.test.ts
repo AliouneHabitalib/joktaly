@@ -29,3 +29,22 @@ describe("rapports", () => {
     expect(toCsv([["a;b", 1]])).toBe('\uFEFF"a;b";1');
   });
 });
+
+import { computeTresorerie } from "./rapports";
+describe("trésorerie", () => {
+  it("solde début/fin à partir du solde de départ et des paiements datés", () => {
+    const t = computeTresorerie(
+      {
+        soldeInitial: 100000,
+        soldeInitialDate: "2026-10-01",
+        entrees: [{ date: "2026-10-15", montant: 20000 }, { date: "2026-11-05", montant: 30000 }, { date: "2026-09-01", montant: 999 }],
+        sorties: [{ date: "2026-10-20", montant: 5000 }, { date: "2026-11-10", montant: 12000 }],
+      },
+      { debut: "2026-11-01", fin: "2026-11-30" },
+    );
+    expect(t.soldeDebut).toBe(115000);
+    expect(t.entrees).toBe(30000);
+    expect(t.sorties).toBe(12000);
+    expect(t.soldeFin).toBe(133000);
+  });
+});

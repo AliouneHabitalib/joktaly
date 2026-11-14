@@ -36,6 +36,13 @@
       "when": 1794442200865,
       "tag": "0004_lot3_depenses_stocks_fournisseurs",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794614899882,
+      "tag": "0005_cashflow_depenses_paiements",
+      "breakpoints": true
     }
   ]
 }

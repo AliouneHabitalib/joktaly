@@ -54,3 +54,23 @@ export function toCsv(rows: (string | number)[][]): string {
   };
   return "\uFEFF" + rows.map((r) => r.map(esc).join(";")).join("\r\n");
 }
+
+export interface TresorerieInput {
+  soldeInitial: number;
+  soldeInitialDate: string | null;
+  entrees: { date: string; montant: number }[];
+  sorties: { date: string; montant: number }[];
+}
+
+/** Trésorerie réelle : solde de départ + paiements reçus − paiements faits, mouvements datés. */
+export function computeTresorerie(input: TresorerieInput, b: { debut: string; fin: string }) {
+  const from = input.soldeInitialDate ?? "0000-01-01";
+  const sum = (xs: { date: string; montant: number }[], pred: (d: string) => boolean) =>
+    xs.filter((x) => x.date.slice(0, 10) >= from && pred(x.date.slice(0, 10))).reduce((s, x) => s + Number(x.montant), 0);
+  const before = (d: string) => d < b.debut;
+  const within = (d: string) => d >= b.debut && d <= b.fin;
+  const soldeDebut = input.soldeInitial + sum(input.entrees, before) - sum(input.sorties, before);
+  const entrees = sum(input.entrees, within);
+  const sorties = sum(input.sorties, within);
+  return { soldeDebut, entrees, sorties, soldeFin: soldeDebut + entrees - sorties };
+}

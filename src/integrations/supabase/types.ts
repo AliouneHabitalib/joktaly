@@ -211,6 +211,41 @@ export type Database = {
           },
         ]
       }
+      depenses_paiements: {
+        Row: {
+          created_at: string
+          date_paiement: string
+          depense_id: string
+          id: string
+          mode: string | null
+          montant: number
+        }
+        Insert: {
+          created_at?: string
+          date_paiement?: string
+          depense_id: string
+          id?: string
+          mode?: string | null
+          montant: number
+        }
+        Update: {
+          created_at?: string
+          date_paiement?: string
+          depense_id?: string
+          id?: string
+          mode?: string | null
+          montant?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "depenses_paiements_depense_id_fkey"
+            columns: ["depense_id"]
+            isOneToOne: false
+            referencedRelation: "depenses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       devis: {
         Row: {
           client_id: string
@@ -362,6 +397,8 @@ export type Database = {
           rc: string | null
           site_web: string | null
           slogan: string | null
+          solde_initial: number
+          solde_initial_date: string | null
           telephone: string | null
           tva_taux: number
           updated_at: string
@@ -384,6 +421,8 @@ export type Database = {
           rc?: string | null
           site_web?: string | null
           slogan?: string | null
+          solde_initial?: number
+          solde_initial_date?: string | null
           telephone?: string | null
           tva_taux?: number
           updated_at?: string
@@ -406,6 +445,8 @@ export type Database = {
           rc?: string | null
           site_web?: string | null
           slogan?: string | null
+          solde_initial?: number
+          solde_initial_date?: string | null
           telephone?: string | null
           tva_taux?: number
           updated_at?: string
