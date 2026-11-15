@@ -5,3 +5,4 @@
 - Paid plans are effective only until plan_expires_at; use public.effective_plan() in DB rules and treat expired plans as gratuit in app code (keeps quotas consistent).
 - Quote/invoice saves and quote→invoice conversion go through DB functions (save_devis, save_facture, convert_devis_to_facture) so numbering is locked and writes are all-or-nothing.
 - Stock quantities change only through stock_mouvements (a trigger applies them and refuses negative stock), so history and quantity stay consistent.
+- Expense montant_paye is derived from depenses_paiements by trigger (client values ignored on update), so cash-out dates stay exact.

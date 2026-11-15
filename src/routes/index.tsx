@@ -1,3 +1,4 @@
+import { LEGAL_LINKS } from "@/components/legal-page";
 import { useEffect, useState } from "react";
 import { createFileRoute, Link, redirect } from "@tanstack/react-router";
 import { supabase } from "@/integrations/supabase/client";
@@ -571,6 +572,11 @@ function Index() {
         </div>
         <div className="container mx-auto mt-10 flex flex-col items-center justify-between gap-2 border-t px-4 pt-6 text-sm text-muted-foreground md:flex-row">
           <p>© {new Date().getFullYear()} JOKTALY. Tous droits réservés.</p>
+          <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+            {LEGAL_LINKS.map((l) => (
+              <Link key={l.to} to={l.to} className="hover:text-primary">{l.label}</Link>
+            ))}
+          </nav>
           <p>
             Made with <span aria-label="amour">❤️</span> pour l'Afrique
           </p>

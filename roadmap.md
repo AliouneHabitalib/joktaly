@@ -11,5 +11,6 @@
 - [x] Lot 1 — sécurité profils, isolation clients/documents, lecture abonnements, expiration, renouvellement, page admin d'activation Wave, clé secrète du contrôle mensuel
 - [x] Lot 2 — numérotation sûre, conversion/enregistrement tout-ou-rien, réglages documents en base, statistiques sans factures annulées
 - [x] Lot 3 — dépenses, stocks, fournisseurs, bénéfice au tableau de bord, rapports + exports
-- [ ] Lot 4 — pages publiques et juridiques (attend les informations légales de JOKTALY)
+- [x] Lot 4 — pages publiques et juridiques (raison sociale exacte et adresse détaillée à confirmer)
+- [x] Trésorerie réelle — paiements de dépenses datés, solde de départ
 - [ ] Lot 5 — pays, numéros internationaux, TVA par pays
