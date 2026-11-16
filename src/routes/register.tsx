@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { authErrorFr } from "@/lib/auth-errors";
 import { isPaidPlan, normalizePlan } from "@/lib/pricing";
 import { useAuth } from "@/hooks/use-auth";
+import { COUNTRIES, defaultVatRate, getCountry } from "@/lib/countries";
 
 export const Route = createFileRoute("/register")({
   component: RegisterPage,
@@ -104,6 +105,7 @@ function RegisterPage() {
       pays: form.pays,
       telephone: form.telephone,
       email: form.email,
+      tva_taux: defaultVatRate(form.pays),
     });
     setLoading(false);
     if (errEnt) return toast.error("Impossible d'enregistrer votre entreprise. Merci de réessayer.");
@@ -115,8 +117,6 @@ function RegisterPage() {
     }
     navigate({ to: "/dashboard" });
   };
-
-  const PAYS = ["Sénégal", "Côte d'Ivoire", "Mali", "Burkina Faso", "Cameroun", "Guinée", "Togo", "Bénin"];
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-muted/30 p-4">
@@ -146,13 +146,13 @@ function RegisterPage() {
           <div className="grid grid-cols-2 gap-3">
             <div className="space-y-2">
               <Label htmlFor="pays">Pays</Label>
-              <select id="pays" className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-xs" value={form.pays} onChange={(e) => setForm({ ...form, pays: e.target.value })}>
-                {PAYS.map((p) => <option key={p}>{p}</option>)}
+              <select id="pays" className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-1 text-base shadow-xs sm:h-9 sm:text-sm" value={form.pays} onChange={(e) => setForm({ ...form, pays: e.target.value })}>
+                {COUNTRIES.map((country) => <option key={country.nom} value={country.nom}>{country.nom}</option>)}
               </select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="tel">Téléphone</Label>
-              <Input id="tel" type="tel" value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} />
+              <Input id="tel" type="tel" value={form.telephone} onChange={(e) => setForm({ ...form, telephone: e.target.value })} placeholder={`+${getCountry(form.pays)?.indicatif ?? "221"} …`} />
             </div>
           </div>
           <div className="space-y-2">

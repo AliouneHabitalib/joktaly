@@ -13,4 +13,4 @@
 - [x] Lot 3 — dépenses, stocks, fournisseurs, bénéfice au tableau de bord, rapports + exports
 - [x] Lot 4 — pages publiques et juridiques (raison sociale exacte et adresse détaillée à confirmer)
 - [x] Trésorerie réelle — paiements de dépenses datés, solde de départ
-- [ ] Lot 5 — pays, numéros internationaux, TVA par pays
+- [x] Lot 5 — pays, numéros internationaux, TVA par pays (taux indicatifs modifiables)

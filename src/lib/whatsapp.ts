@@ -1,16 +1,29 @@
 import { formatMontant } from "./format";
+import { getCountry } from "./countries";
 
 export interface WhatsappTarget {
   phone: string | null;
   message: string;
 }
 
-export function normalizePhone(raw: string | null | undefined): string {
+/** Convertit un numéro local ou international au format attendu par wa.me. */
+export function normalizePhone(
+  raw: string | null | undefined,
+  country: string | null | undefined = "Sénégal",
+): string {
   if (!raw) return "";
-  const digits = raw.replace(/\D/g, "");
-  // Numéro local sénégalais (7xxxxxxxx / 77xxxxxxx) → préfixe pays 221
-  if (digits.length === 9 && digits.startsWith("7")) return `221${digits}`;
-  return digits;
+  const value = raw.trim();
+  if (!value) return "";
+  const international = value.startsWith("+") || value.startsWith("00");
+  let digits = value.replace(/\D/g, "");
+  if (value.startsWith("00")) digits = digits.slice(2);
+  if (international) return digits;
+
+  const countryInfo = getCountry(country);
+  const indicatif = countryInfo?.indicatif;
+  if (!indicatif || digits.startsWith(indicatif)) return digits;
+  const localDigits = countryInfo.conserverZero ? digits : digits.replace(/^0+/, "");
+  return `${indicatif}${localDigits}`;
 }
 
 export function buildDocumentMessage(params: {
@@ -60,8 +73,8 @@ export function buildRelanceMessage(params: {
   ].join("\n").trim();
 }
 
-export function whatsappUrl(phone: string, message: string): string {
-  const p = normalizePhone(phone);
+export function whatsappUrl(phone: string, message: string, country?: string | null): string {
+  const p = normalizePhone(phone, country);
   return p
     ? `https://wa.me/${p}?text=${encodeURIComponent(message)}`
     : `https://wa.me/?text=${encodeURIComponent(message)}`;

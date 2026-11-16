@@ -164,11 +164,12 @@ function FacturesListPage() {
     if (!entreprise) return;
     const { data: client } = await supabase
       .from("clients")
-      .select("whatsapp, telephone, nom, prenom")
+      .select("whatsapp, telephone, nom, prenom, pays")
       .eq("id", f.client_id)
       .single();
     setWaPayload({
       phone: client?.whatsapp || client?.telephone || "",
+      country: client?.pays || entreprise.pays,
       title: relance ? `Relancer le client — ${f.numero}` : `Envoyer la facture ${f.numero}`,
       message: (relance ? buildRelanceMessage : buildDocumentMessage)({
         type: "facture",

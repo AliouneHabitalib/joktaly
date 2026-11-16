@@ -157,11 +157,12 @@ function DevisListPage() {
     if (!entreprise) return;
     const { data: client } = await supabase
       .from("clients")
-      .select("whatsapp, telephone, nom, prenom")
+      .select("whatsapp, telephone, nom, prenom, pays")
       .eq("id", d.client_id)
       .single();
     setWaPayload({
       phone: client?.whatsapp || client?.telephone || "",
+      country: client?.pays || entreprise.pays,
       title: `Envoyer le devis ${d.numero}`,
       message: buildDocumentMessage({
         type: "devis",

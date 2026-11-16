@@ -49,13 +49,13 @@ const MODE_LABEL: Record<ModePaiement, string> = {
   cheque: "Chèque",
 };
 
-const newLigne = (): LigneDraft => ({
+const newLigne = (tvaTaux = 18): LigneDraft => ({
   id: crypto.randomUUID(),
   description: "",
   quantite: 1,
   unite: "unité",
   prix_unitaire: 0,
-  tva_taux: 18,
+  tva_taux: tvaTaux,
 });
 
 function FactureEditorPage() {
@@ -171,6 +171,18 @@ function FactureEditorPage() {
     }
   }, [existing]);
 
+  // Pré-remplir le taux des nouvelles lignes depuis les réglages de l'entreprise.
+  useEffect(() => {
+    if (!isNew || !entreprise || entreprise.tva_taux == null) return;
+    const taux = Number(entreprise.tva_taux);
+    setTvaTaux((current) => (current === 18 ? taux : current));
+    setLignes((current) => {
+      const first = current[0];
+      const untouched = current.length === 1 && first && !first.description && first.prix_unitaire === 0;
+      return untouched && first.tva_taux === 18 ? [newLigne(taux)] : current;
+    });
+  }, [isNew, entreprise]);
+
   const totaux = useMemo(
     () => calculerTotaux(lignes, tvaActive, remisePourcent),
     [lignes, tvaActive, remisePourcent],
@@ -191,11 +203,12 @@ function FactureEditorPage() {
     }
     const { data: client } = await supabase
       .from("clients")
-      .select("nom, prenom, telephone, whatsapp")
+      .select("nom, prenom, telephone, whatsapp, pays")
       .eq("id", clientId)
       .single();
     setWaPayload({
       phone: client?.whatsapp || client?.telephone || "",
+      country: client?.pays || entreprise.pays,
       title: `Envoyer la facture ${(existing as any)?.numero ?? ""}`.trim(),
       message: buildDocumentMessage({
         type: "facture",
@@ -529,7 +542,7 @@ function FactureEditorPage() {
                 key={l.id}
                 className="grid grid-cols-12 gap-2 rounded-lg border bg-background p-3"
               >
-                <div className="col-span-12 md:col-span-5">
+                <div className="col-span-12 md:col-span-4">
                   <Label className="text-xs">Description</Label>
                   <Input
                     value={l.description}
@@ -568,6 +581,18 @@ function FactureEditorPage() {
                     }
                   />
                 </div>
+                <div className="col-span-4 md:col-span-1">
+                  <Label className="text-xs">TVA %</Label>
+                  <Input
+                    aria-label={`TVA ligne ${i + 1}`}
+                    type="number"
+                    min="0"
+                    max="100"
+                    step="0.01"
+                    value={l.tva_taux}
+                    onChange={(e) => updateLigne(i, { tva_taux: parseFloat(e.target.value) || 0 })}
+                  />
+                </div>
                 <div className="col-span-6 md:col-span-2">
                   <Label className="text-xs">Total HT</Label>
                   <div className="flex h-9 items-center justify-end rounded-md border bg-muted/30 px-3 text-sm tabular-nums">
@@ -594,7 +619,7 @@ function FactureEditorPage() {
         <Button
           variant="outline"
           className="mt-3"
-          onClick={() => setLignes((prev) => [...prev, newLigne()])}
+          onClick={() => setLignes((prev) => [...prev, newLigne(tvaTaux)])}
         >
           <Plus className="mr-1 h-4 w-4" /> Ajouter une ligne
         </Button>
@@ -619,8 +644,9 @@ function FactureEditorPage() {
             {tvaActive && (
               <div className="grid gap-3 sm:grid-cols-2">
                 <div>
-                  <Label className="text-xs">Taux TVA par défaut (%)</Label>
+                  <Label className="text-xs">Taux TVA des nouvelles lignes (%)</Label>
                   <Input
+                    aria-label="Taux TVA des nouvelles lignes"
                     type="number"
                     min="0"
                     step="0.1"

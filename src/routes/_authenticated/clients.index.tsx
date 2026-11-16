@@ -30,6 +30,14 @@ import {
 import { Plus, Search, Pencil, Trash2, Users } from "lucide-react";
 import { toast } from "sonner";
 import { formatMontant } from "@/lib/format";
+import { COUNTRIES, getCountry } from "@/lib/countries";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export const Route = createFileRoute("/_authenticated/clients/")({
   head: privateHead("Mes clients", "Consultez et gérez la liste de vos clients dans votre espace JOKTALY."),
@@ -173,7 +181,7 @@ function ClientsPage() {
 
   const openCreate = () => {
     setEditing(null);
-    setForm(EMPTY_FORM);
+    setForm({ ...EMPTY_FORM, pays: entreprise?.pays ?? "Sénégal" });
     setDialogOpen(true);
   };
 
@@ -188,7 +196,7 @@ function ClientsPage() {
       whatsapp: c.whatsapp ?? "",
       adresse: c.adresse ?? "",
       ville: c.ville ?? "",
-      pays: c.pays ?? "Sénégal",
+      pays: c.pays ?? entreprise?.pays ?? "Sénégal",
       notes: c.notes ?? "",
     });
     setDialogOpen(true);
@@ -325,13 +333,17 @@ function ClientsPage() {
             />
             <Field
               label="Téléphone"
+              type="tel"
               value={form.telephone}
               onChange={(v) => setForm({ ...form, telephone: v })}
+              placeholder={`Ex. +${getCountry(form.pays)?.indicatif ?? "221"} …`}
             />
             <Field
               label="WhatsApp"
+              type="tel"
               value={form.whatsapp}
               onChange={(v) => setForm({ ...form, whatsapp: v })}
+              placeholder="Numéro local ou international avec +"
             />
             <Field label="Ville" value={form.ville} onChange={(v) => setForm({ ...form, ville: v })} />
             <Field
@@ -340,7 +352,25 @@ function ClientsPage() {
               onChange={(v) => setForm({ ...form, adresse: v })}
               className="sm:col-span-2"
             />
-            <Field label="Pays" value={form.pays} onChange={(v) => setForm({ ...form, pays: v })} />
+            <div>
+              <Label className="text-xs">Pays</Label>
+              <Select value={form.pays} onValueChange={(pays) => setForm({ ...form, pays })}>
+                <SelectTrigger aria-label="Pays du client" className="h-11 sm:h-9"><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  {form.pays && !getCountry(form.pays) && (
+                    <SelectItem value={form.pays}>{form.pays}</SelectItem>
+                  )}
+                  {COUNTRIES.map((country) => (
+                    <SelectItem key={country.nom} value={country.nom}>
+                      {country.nom} (+{country.indicatif})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <p className="mt-1 text-xs text-muted-foreground">
+                Utilisé pour compléter les numéros WhatsApp locaux.
+              </p>
+            </div>
             <div className="sm:col-span-2">
               <Label className="text-xs">Notes</Label>
               <Textarea
@@ -394,17 +424,19 @@ function Field({
   onChange,
   type = "text",
   className = "",
+  placeholder,
 }: {
   label: string;
   value: string;
   onChange: (v: string) => void;
   type?: string;
   className?: string;
+  placeholder?: string;
 }) {
   return (
     <div className={className}>
       <Label className="text-xs">{label}</Label>
-      <Input type={type} value={value} onChange={(e) => onChange(e.target.value)} />
+      <Input type={type} value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} />
     </div>
   );
 }

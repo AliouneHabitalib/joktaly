@@ -19,6 +19,7 @@ export interface WhatsappSharePayload {
   phone: string;
   message: string;
   title?: string;
+  country?: string | null;
 }
 
 export function WhatsappShareDialog({
@@ -52,7 +53,7 @@ export function WhatsappShareDialog({
   };
 
   const handleSend = () => {
-    window.open(whatsappUrl(phone, message), "_blank", "noopener");
+    window.open(whatsappUrl(phone, message, payload?.country), "_blank", "noopener");
     onOpenChange(false);
   };
 
@@ -71,9 +72,12 @@ export function WhatsappShareDialog({
             <Input
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="Ex. 221771234567"
+              placeholder="Ex. +221 77 123 45 67"
               inputMode="tel"
             />
+            <p className="mt-1 text-xs text-muted-foreground">
+              Le pays du client sert à compléter un numéro local. Un numéro commençant par + est conservé tel quel.
+            </p>
             {!phone.trim() && (
               <p className="mt-1 text-xs text-muted-foreground">
                 Sans numéro, WhatsApp vous laissera choisir le destinataire.

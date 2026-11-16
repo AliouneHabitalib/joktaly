@@ -36,6 +36,7 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { COUNTRIES, defaultVatRate, getCountry } from "@/lib/countries";
 
 export const Route = createFileRoute("/_authenticated/parametres/entreprise")({
   head: privateHead("Paramètres de l'entreprise", "Modifiez les informations, le logo et l'identité visuelle de votre entreprise."),
@@ -264,10 +265,36 @@ function ParametresEntreprisePage() {
             <Input value={form.ville} onChange={(e) => update("ville", e.target.value)} />
           </Field>
           <Field label="Pays">
-            <Input value={form.pays} onChange={(e) => update("pays", e.target.value)} />
+            <Select
+              value={form.pays}
+              onValueChange={(pays) =>
+                setForm((current) => ({
+                  ...current,
+                  pays,
+                  tva_taux: String(defaultVatRate(pays, Number(current.tva_taux) || 0)),
+                }))
+              }
+            >
+              <SelectTrigger aria-label="Pays de l'entreprise" className="h-11 sm:h-9"><SelectValue /></SelectTrigger>
+              <SelectContent>
+                {form.pays && !getCountry(form.pays) && (
+                  <SelectItem value={form.pays}>{form.pays}</SelectItem>
+                )}
+                {COUNTRIES.map((country) => (
+                  <SelectItem key={country.nom} value={country.nom}>
+                    {country.nom} (+{country.indicatif})
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </Field>
           <Field label="Téléphone">
-            <Input value={form.telephone} onChange={(e) => update("telephone", e.target.value)} />
+            <Input
+              type="tel"
+              value={form.telephone}
+              onChange={(e) => update("telephone", e.target.value)}
+              placeholder={`Ex. +${getCountry(form.pays)?.indicatif ?? "221"} …`}
+            />
           </Field>
           <Field label="Email">
             <Input type="email" value={form.email} onChange={(e) => update("email", e.target.value)} />
@@ -293,6 +320,7 @@ function ParametresEntreprisePage() {
           </Field>
           <Field label="Taux de TVA par défaut (%)">
             <Input
+              aria-label="Taux de TVA par défaut"
               type="number"
               min="0"
               max="100"
@@ -300,6 +328,9 @@ function ParametresEntreprisePage() {
               value={form.tva_taux}
               onChange={(e) => update("tva_taux", e.target.value)}
             />
+            <p className="text-xs text-muted-foreground">
+              Le pays propose un taux indicatif, que vous pouvez modifier. Vérifiez le taux applicable à votre activité ; chaque ligne du document reste réglable.
+            </p>
           </Field>
         </CardContent>
       </Card>
@@ -390,9 +421,9 @@ function ParametresEntreprisePage() {
               </div>
               <div className="space-y-1 px-4 py-3 text-sm">
                 <div className="flex justify-between"><span>Sous-total</span><span>150 000 {form.devise}</span></div>
-                <div className="flex justify-between"><span>TVA ({form.tva_taux || 0}%)</span><span>27 000 {form.devise}</span></div>
+                <div className="flex justify-between"><span>TVA ({form.tva_taux || 0}%)</span><span>{(150000 * (Number(form.tva_taux) || 0) / 100).toLocaleString("fr-FR")} {form.devise}</span></div>
                 <div className="flex justify-between font-semibold" style={{ color: preview.primary }}>
-                  <span>Total TTC</span><span>177 000 {form.devise}</span>
+                  <span>Total TTC</span><span>{(150000 * (1 + (Number(form.tva_taux) || 0) / 100)).toLocaleString("fr-FR")} {form.devise}</span>
                 </div>
               </div>
             </div>
