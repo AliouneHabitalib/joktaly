@@ -3,10 +3,10 @@ import { PLANS, PUBLIC_PLANS, checkLimit, type PlanType } from "./plans";
 import { PRICING, monthlyPrice, chargedAmount } from "./pricing";
 
 const reference: Record<PlanType, [number, number | null, number | null, number | null, number, boolean, boolean, boolean]> = {
-  gratuit: [0, 3, 1, 5, 1, false, false, false],
-  starter: [3000, 10, 5, 30, 1, false, false, false],
-  pro: [6000, 20, 10, 50, 1, false, true, false],
-  essentiel: [6000, 20, 10, 50, 1, false, true, false],
+  gratuit: [0, 3, 1, 5, 1, true, false, false],
+  starter: [3000, 10, 5, 30, 1, true, false, false],
+  pro: [6000, 20, 10, 50, 1, true, true, false],
+  essentiel: [6000, 20, 10, 50, 1, true, true, false],
   business: [15000, null, null, null, 5, true, true, true],
 };
 

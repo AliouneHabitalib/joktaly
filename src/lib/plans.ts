@@ -41,7 +41,7 @@ const pro = definePlan({
   id: "pro", nom: "Pro", prix_fcfa: 6000, prix_usd: 10,
   limites: {
     devis_par_mois: 20, factures_par_mois: 10, clients_max: 50,
-    utilisateurs: 1, statistiques_avancees: false, rappels_auto: true, api_access: false,
+    utilisateurs: 1, statistiques_avancees: true, rappels_auto: true, api_access: false,
   },
 }, ["Modèles personnalisés (bientôt)"]);
 
@@ -50,14 +50,14 @@ export const PLANS: Record<PlanType, PlanConfig> = {
     id: "gratuit", nom: "Gratuit", prix_fcfa: 0, prix_usd: 0,
     limites: {
       devis_par_mois: 3, factures_par_mois: 1, clients_max: 5,
-      utilisateurs: 1, statistiques_avancees: false, rappels_auto: false, api_access: false,
+      utilisateurs: 1, statistiques_avancees: true, rappels_auto: false, api_access: false,
     },
   }, []),
   starter: definePlan({
     id: "starter", nom: "Starter", prix_fcfa: 3000, prix_usd: 5,
     limites: {
       devis_par_mois: 10, factures_par_mois: 5, clients_max: 30,
-      utilisateurs: 1, statistiques_avancees: false, rappels_auto: false, api_access: false,
+      utilisateurs: 1, statistiques_avancees: true, rappels_auto: false, api_access: false,
     },
   }, ["Conversion devis → facture"]),
   pro,
